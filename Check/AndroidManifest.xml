@@ -20,8 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectReportActivity"></activity>
-        <activity android:name=".ReportActivity"></activity>
+        <activity
+            android:name=".SelectReportActivity"
+            android:label="@string/app_name"
+            android:theme="@style/test" />
+        <activity android:name=".ReportActivity" />
     </application>
 
 </manifest>

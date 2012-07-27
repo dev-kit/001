@@ -8,5 +8,6 @@
     <string name="car_number">车号</string>
     <string name="notes">记事</string>
     <string name="time">时间</string>
+    <string name="check">外勤系统 : 确报</string>
 
 </resources>
