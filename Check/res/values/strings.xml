@@ -9,5 +9,6 @@
     <string name="notes">记事</string>
     <string name="time">时间</string>
     <string name="check">外勤系统 : 确报</string>
+    <string name="USER_DM">USER_DM</string>
 
 </resources>

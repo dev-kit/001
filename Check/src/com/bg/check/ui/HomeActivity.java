@@ -1,6 +1,8 @@
 
 package com.bg.check.ui;
 
+import com.bg.check.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

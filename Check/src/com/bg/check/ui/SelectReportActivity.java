@@ -1,6 +1,9 @@
 
 package com.bg.check.ui;
 
+import com.bg.check.R;
+import com.bg.check.ui.database.Databasehelper;
+
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
@@ -30,6 +33,7 @@ public class SelectReportActivity extends ListActivity {
 
 //        setFullscreen();
 
+        Databasehelper.getInstance(this.getApplicationContext()).getWritableDatabase();
         initQueryHandler();
         // kick off a query for the threads which match the search string
         // mQueryHandler.startQuery(0, null, null, null, null, null, null);
