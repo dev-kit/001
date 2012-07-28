@@ -6,27 +6,61 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
-    private static final String USER_ZMLM = "USER_ZMLM";
+    public static final String TASK_LYFX = "TASK_LYFX";
 
-    private static final String USER_TIME = "USER_TIME";
+    public static final String TASK_JLSJ = "TASK_JLSJ";
 
-    private static final String USER_ROLE = "USER_ROLE";
+    public static final String TASK_ZZXH = "TASK_ZZXH";
 
-    private static final String USER_ONLINE = "USER_ONLINE";
+    public static final String TASK_QSXH = "TASK_QSXH";
 
-    private static final String USER_MOBILE = "USER_MOBILE";
+    public static final String TASK_JCWZ = "TASK_JCWZ";
 
-    private static final String USER_NAME = "USER_NAME";
+    public static final String TASK_MESSAGEID = "TASK_MESSAGEID";
 
-    private static final String USER_DM = "USER_DM";
+    public static final String TASK_DQSJ = "TASK_DQSJ";
+
+    public static final String TASK_LX = "TASK_LX";
+
+    public static final String TASK_ZMLM = "TASK_ZMLM";
+
+    public static final String TASK_SCHM = "TASK_SCHM";
+
+    public static final String TASK_ZYR = "TASK_ZYR";
+
+    public static final String TASK_CZBZ = "TASK_CZBZ";
+
+    public static final String TASK_GDM = "TASK_GDM";
+
+    public static final String TASK_CC = "TASK_CC";
+
+    public static final String TASK_CONTENTID = "TASK_CONTENTID";
+
+    public static final String XLTASK_ID = "XLTASK_ID";
+
+    public static final String TASK_ID = "TASK_ID";
+
+    public static final String USER_ZMLM = "USER_ZMLM";
+
+    public static final String USER_TIME = "USER_TIME";
+
+    public static final String USER_ROLE = "USER_ROLE";
+
+    public static final String USER_ONLINE = "USER_ONLINE";
+
+    public static final String USER_MOBILE = "USER_MOBILE";
+
+    public static final String USER_NAME = "USER_NAME";
+
+    public static final String USER_DM = "USER_DM";
 
     private static final String DATABASE_NAME = "lzbdata";
 
-    static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_SC_USER = "sc_user";
+    public static final String TABLE_SC_USER = "sc_user";
     
-    private static final String TABLE_SC_TASK = "sc_task";
+    public static final String TABLE_SC_TASK = "sc_task";
 
     private static Databasehelper sInstance = null;
 
@@ -54,34 +88,43 @@ public class Databasehelper extends SQLiteOpenHelper {
     
     private void createTaskTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK + " (" +
-                "TASK_ID" + " NUMBER(10) not null," +
-                "XLTASK_ID"  + " NUMBER(10)," +
-                "TASK_CONTENTID" + " NUMBER(20)," +
-                "TASK_CC"   + "   VARCHAR2(30) not null," +
-                "TASK_GDM"   + " VARCHAR2(20) not null," +
-                "TASK_CZBZ"  + " NUMBER(1) not null," +
-                "TASK_ZYR"    + " VARCHAR2(10) not null," +
-                "TASK_SCHM"  + " VARCHAR2(10)," +
-                "TASK_ZMLM"  + " VARCHAR2(4) not null," +
-                "TASK_LX"   + " NUMBER(2) not null," +
-                "TASK_DQSJ"  + " DATE," +
-                "TASK_MESSAGEID" + " NUMBER(10)," +
-                "TASK_JCWZ"   + " VARCHAR2(2)," +
-                "TASK_QSXH"  + " NUMBER(3)," +
-                "TASK_ZZXH"   + " NUMBER(3)," +
-                "TASK_JLSJ"   + " DATE," +
-                "TASK_LYFX"   + " VARCHAR2(10));");
+                TASK_ID + " NUMBER(10) not null," +
+                XLTASK_ID  + " NUMBER(10)," +
+                TASK_CONTENTID + " NUMBER(20)," +
+                TASK_CC   + "   VARCHAR2(30) not null," +
+                TASK_GDM   + " VARCHAR2(20) not null," +
+                TASK_CZBZ  + " NUMBER(1) not null," +
+                TASK_ZYR    + " VARCHAR2(10) not null," +
+                TASK_SCHM  + " VARCHAR2(10)," +
+                TASK_ZMLM  + " VARCHAR2(4) not null," +
+                TASK_LX   + " NUMBER(2) not null," +
+                TASK_DQSJ  + " DATE," +
+                TASK_MESSAGEID + " NUMBER(10)," +
+                TASK_JCWZ   + " VARCHAR2(2)," +
+                TASK_QSXH  + " NUMBER(3)," +
+                TASK_ZZXH   + " NUMBER(3)," +
+                TASK_JLSJ   + " DATE," +
+                TASK_LYFX   + " VARCHAR2(10));");
     }
 
     /**
-     * Return a singleton helper for the combined MMS and SMS
-     * database.
+     * Return a singleton helper for the database. You should involve init() when application 
+     * is launched firstly.
      */
-    public static synchronized Databasehelper getInstance(Context context) {
+    public static Databasehelper getInstance() {
+        if (sInstance == null) {
+            throw new IllegalStateException();
+        }
+        return sInstance;
+    }
+
+    public static synchronized void init(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
+        }
         if (sInstance == null) {
             sInstance = new Databasehelper(context);
         }
-        return sInstance;
     }
 
     @Override

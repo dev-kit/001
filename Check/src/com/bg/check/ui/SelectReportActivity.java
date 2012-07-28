@@ -1,14 +1,13 @@
 
 package com.bg.check.ui;
 
-import com.bg.check.R;
-import com.bg.check.database.Databasehelper;
-
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +16,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CursorAdapter;
+
+import com.bg.check.R;
+import com.bg.check.database.Databasehelper;
 
 public class SelectReportActivity extends ListActivity {
 
@@ -33,12 +35,24 @@ public class SelectReportActivity extends ListActivity {
 
 //        setFullscreen();
 
-        Databasehelper.getInstance(this.getApplicationContext()).getWritableDatabase();
         initQueryHandler();
         // kick off a query for the threads which match the search string
         // mQueryHandler.startQuery(0, null, null, null, null, null, null);
     }
 
+    private static class AsyncQueryReportTask extends AsyncTask<Context, Void, Cursor> {
+
+
+        @Override
+        protected Cursor doInBackground(Context... params) {
+            SQLiteDatabase db = Databasehelper.getInstance().getReadableDatabase();
+            db.query(Databasehelper.TABLE_SC_TASK, null, null, null, null, null, null);
+//            db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+            return null;
+        }
+
+        
+    }
     public void setFullscreen() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
