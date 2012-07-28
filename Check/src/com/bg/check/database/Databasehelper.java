@@ -6,6 +6,46 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
+    private static final String TASK_CONTENT_CONTENT_ID = "CONTENT_ID";
+
+    private static final String TASK_CONTENT_LJZYSX = "LJZYSX";
+
+    private static final String TASK_CONTENT_HJZYSX = "HJZYSX";
+
+    private static final String TASK_CONTENT_LSSJ = "LSSJ";
+
+    private static final String TASK_CONTENT_HJ_YSJ = "HJ_YSJ";
+
+    private static final String TASK_CONTENT_HJ_ZSJ = "HJ_ZSJ";
+
+    private static final String TASK_CONTENT_QBID = "QBID";
+
+    private static final String TASK_CONTENT_JSL = "JSL";
+
+    private static final String TASK_CONTENT_PB = "PB";
+
+    private static final String TASK_CONTENT_FZM = "FZM";
+
+    private static final String TASK_CONTENT_SHR = "SHR";
+
+    private static final String TASK_CONTENT_PM = "PM";
+
+    private static final String TASK_CONTENT_DZM = "DZM";
+
+    private static final String TASK_CONTENT_ZAIZ = "ZAIZ";
+
+    private static final String TASK_CONTENT_ZMLM = "ZMLM";
+
+    private static final String TASK_CONTENT_YZ = "YZ";
+
+    private static final String TASK_CONTENT_CZ = "CZ";
+
+    private static final String TASK_CONTENT_CH = "CH";
+
+    private static final String TASK_CONTENT_SWH = "SWH";
+
+    private static final String TASK_CONTENT_PK = "PK";
+
     public static final String TASK_LYFX = "TASK_LYFX";
 
     public static final String TASK_JLSJ = "TASK_JLSJ";
@@ -72,6 +112,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createUserTable(db);
         createTaskTable(db);
+        createTaskContentTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -105,6 +146,31 @@ public class Databasehelper extends SQLiteOpenHelper {
                 TASK_ZZXH   + " NUMBER(3)," +
                 TASK_JLSJ   + " DATE," +
                 TASK_LYFX   + " VARCHAR2(10));");
+    }
+
+    private void createTaskContentTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + "sc_task_content" + " (" +
+                TASK_CONTENT_CONTENT_ID + "  TEXT, " +
+                TASK_CONTENT_PK + "  TEXT, " +
+                TASK_CONTENT_SWH + "  TEXT," +
+                TASK_CONTENT_CH + "  TEXT, " +
+                TASK_CONTENT_CZ + "  TEXT, " +
+                TASK_CONTENT_YZ + "  TEXT, " +
+                TASK_CONTENT_ZMLM + "  TEXT, " +
+                TASK_CONTENT_ZAIZ + "  TEXT, " +
+                TASK_CONTENT_DZM + "  TEXT," +
+                TASK_CONTENT_PM + "  TEXT, " +
+                TASK_CONTENT_SHR + "  TEXT," +
+                TASK_CONTENT_FZM + "  TEXT," +
+                TASK_CONTENT_PB + "  TEXT, " +
+                TASK_CONTENT_JSL + "  TEXT," +
+                TASK_CONTENT_QBID + "  TEXT,   " +
+                TASK_CONTENT_HJ_ZSJ + "  TEXT, " +
+                TASK_CONTENT_HJ_YSJ + "  TEXT, " +
+                TASK_CONTENT_LSSJ + "  TEXT,   " +
+                TASK_CONTENT_HJZYSX + "  TEXT, " +
+                TASK_CONTENT_LJZYSX + "  TEXT" +
+                ");");
     }
 
     /**
