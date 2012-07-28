@@ -2,7 +2,7 @@
 package com.bg.check.ui;
 
 import com.bg.check.R;
-import com.bg.check.ui.database.Databasehelper;
+import com.bg.check.database.Databasehelper;
 
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;

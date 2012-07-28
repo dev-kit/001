@@ -1,5 +1,5 @@
 
-package com.bg.check.ui.database;
+package com.bg.check.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,9 +41,6 @@ public class Databasehelper extends SQLiteOpenHelper {
     }
 
     private void createUserTable(SQLiteDatabase db) {
-//        CREATE TABLE sc_qbzw (FLAG_UP TEXT, TASK_MESSAGEID TEXT, ZXSJ TEXT, USERDM TEXT, PK TEXT, SWH NUMERIC, CH TEXT, CZ TEXT, YZ TEXT, ZMLM TEXT, ZAIZ TEXT, DZM TEXT, PM TEXT, SHR TEXT, FZM TEXT, PB TEXT, JSL TEXT, QBID TEXT, HJ_ZSJ TEXT, HJ_YSJ TEXT, LSSJ TEXT, HJZYSX TEXT, LJZYSX TEXT);
-//        CREATE TABLE tasks (JSSJ_ZT TEXT, JSSJ TEXT, KSSJ_ZT TEXT, KSSJ TEXT, HZSJ_ZT TEXT, HZSJ TEXT, ZXJG TEXT, TASK_MESSAGEID TEXT, TASK_ID TEXT, TASK_CONTENTID TEXT, TASK_CZBZ TEXT, TASK_CC TEXT, TASK_GDM TEXT, TASK_ZYR TEXT, TASK_SCHM TEXT, TASK_LX TEXT, TASK_ZMLM TEXT, TASK_JLSJ TEXT, TASK_JCWZ TEXT, TASK_QSXH TEXT, TASK_ZZXH TEXT, USERDM TEXT);
-
         db.execSQL("CREATE TABLE " + TABLE_SC_USER + " (" +
                 USER_DM +     " VARCHAR2(20) not null," +
                 USER_NAME +  " VARCHAR2(20) not null," +
