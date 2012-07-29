@@ -16,10 +16,6 @@
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -32,7 +28,16 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:label="@string/login_title" />
+            android:label="@string/login_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.ConfirmReportActivity"
+            android:label="@string/confirm_report_title" />
 
         <activity
             android:theme="@android:style/Theme.Black.NoTitleBar"
