@@ -1,12 +1,12 @@
 
 package com.bg.check.ui;
 
-import com.bg.check.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+
+import com.bg.check.R;
 
 public class HomeActivity extends Activity {
 
@@ -14,7 +14,8 @@ public class HomeActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        final Intent onClickIntent = new Intent(this, SelectReportActivity.class);
+//        final Intent onClickIntent = new Intent(this, SelectReportActivity.class);
+        final Intent onClickIntent = new Intent(this, LoginActivity.class);
         startActivity(onClickIntent);
     }
 

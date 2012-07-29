@@ -12,20 +12,31 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name=".Welcome" >
+
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.SelectReportActivity"
             android:label="@string/app_name"
             android:theme="@style/test" />
-        <activity android:name=".ui.ReportActivity" />
+
+        <activity
+            android:name=".ui.ReportActivity" />
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/login_title" />
+
+        <activity
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:name=".ui.SettingActivity"/>
     </application>
 
 </manifest>

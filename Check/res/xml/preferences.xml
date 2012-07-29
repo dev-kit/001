@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/setting_basic">
+
+        <EditTextPreference
+            android:key="edit_ip"
+            android:title="@string/setting_ip_title"
+            android:summary="@string/setting_ip_summary"
+            android:dialogTitle="@string/setting_ip_summary" />
+
+        <EditTextPreference
+            android:key="edit_port"
+            android:title="@string/setting_port_title"
+            android:summary="@string/setting_port_summary"
+            android:dialogTitle="@string/setting_port_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/setting_report_content">
+        <CheckBoxPreference
+                android:key="checkbox_order"
+                android:title="@string/setting_order"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_train_id"
+                android:title="@string/setting_train_id"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_train_type"
+                android:title="@string/setting_train_type"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_station_start"
+                android:title="@string/setting_station_start"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_station_stop"
+                android:title="@string/setting_station_stop"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_product"
+                android:title="@string/setting_product"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_record"
+                android:title="@string/setting_record"/>
+
+        <CheckBoxPreference
+                android:key="checkbox_importance"
+                android:title="@string/setting_importance"/>
+    </PreferenceCategory>
+</PreferenceScreen>

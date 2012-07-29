@@ -15,4 +15,32 @@
     <string name="in_order">顺</string>
     <string name="start">开始</string>
 
+    <!-- For setting screen -->
+    <string name="setting_basic">网络设置</string>
+    <string name="setting_ip_title">IP</string>
+    <string name="setting_ip_summary">IP地址设置</string>
+    <string name="setting_port_title">端口</string>
+    <string name="setting_port_summary">端口号设置</string>
+    <string name="setting_order">顺位</string>
+    <string name="setting_train_id">车号</string>
+    <string name="setting_train_type">车种</string>
+    <string name="setting_station_start">发站</string>
+    <string name="setting_station_stop">到站</string>
+    <string name="setting_product">品名</string>
+    <string name="setting_record">记事栏</string>
+    <string name="setting_importance">重点内容</string>
+    <string name="setting_report_content">确报播报内容</string>
+
+    <!-- For login screen -->
+    <string name="login_title">外勤作业系统</string>
+    <string name="login_user_code">代码</string>
+    <string name="login_password">密码</string>
+    <string name="login_role">岗位</string>
+    <string name="login_name">姓名</string>
+    <string name="button_login">登陆</string>
+    <string name="button_exit">退出</string>
+    <string name="button_setting">设置</string>
+    <string name="message_query">查询中…</string>
+    <string name="error_message_no_user_found">无效代码，请重新输入！</string>
+    <string name="ok">确定</string>
 </resources>
