@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
-    private static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "_id";
 
     public static final String TASK_CONTENT_CONTENT_ID = "CONTENT_ID";
 
@@ -104,7 +104,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     
     public static final String TABLE_SC_TASK = "sc_task";
 
-    public static final String SC_TASK_CONTENT = "sc_task_content";
+    public static final String TABLE_SC_TASK_CONTENT = "sc_task_content";
 
     private static Databasehelper sInstance = null;
 
@@ -155,7 +155,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     }
 
     private void createTaskContentTable(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + SC_TASK_CONTENT + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_SC_TASK_CONTENT + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
                 TASK_CONTENT_CONTENT_ID + "  TEXT, " +
                 TASK_CONTENT_PK + "  TEXT, " +

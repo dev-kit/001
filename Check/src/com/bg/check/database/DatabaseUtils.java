@@ -15,6 +15,14 @@ public final class DatabaseUtils {
         Databasehelper.USER_ROLE
     };
 
+    private final static String[] TASK_CONTENT = {
+        Databasehelper.TASK_CONTENT_CONTENT_ID + " AS _id ",
+        Databasehelper.TASK_CONTENT_CH,
+        Databasehelper.TASK_CONTENT_CZ,
+        Databasehelper.TASK_CONTENT_DZM,
+        Databasehelper.TASK_CONTENT_FZM
+    };
+
     public final static User getUser(String usercode) {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
         final String selection = Databasehelper.USER_DM + "=?";
@@ -29,5 +37,10 @@ public final class DatabaseUtils {
         }
 
         return null;
+    }
+
+    public final static Cursor queryConfirmReport() {
+        final SQLiteDatabase db = mDatabase.getReadableDatabase();
+        return db.query(Databasehelper.TABLE_SC_TASK_CONTENT, TASK_CONTENT, null, null, null, null, null);
     }
 }

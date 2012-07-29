@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
 
         mButtonLogin.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                // TODO: Perform login
+                login();
             }
         });
 
@@ -144,20 +144,21 @@ public class LoginActivity extends Activity {
         mEditName.setText(null);
         mEditRole.setText(null);
         mButtonLogin.setEnabled(false);
-        mButtonExit.setEnabled(false);
-        mButtonSetting.setEnabled(false);
     }
 
     private void setUserInformation(User user) {
         mEditName.setText(user.mName);
         mEditRole.setText(user.mCode);
         mButtonLogin.setEnabled(true);
-        mButtonExit.setEnabled(true);
-        mButtonSetting.setEnabled(true);
     }
 
     private void gotoSetting() {
         final Intent intent = new Intent(LoginActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
+
+    private void login() {
+        final Intent intent = new Intent(LoginActivity.this, ConfirmReportActivity.class);
         startActivity(intent);
     }
 }

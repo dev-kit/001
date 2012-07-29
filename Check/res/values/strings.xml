@@ -25,8 +25,14 @@
     <string name="jsl">记事栏：</string>
     <string name="zdnr">重点内容：</string>
     <string name="sfcz">是否操作：</string>
+    <string name="title">标题</string>
+    <string name="content">内容</string>
+    <string name="up">上</string>
+    <string name="tts">语音播报</string>
+    <string name="down">下</string>
+    <string name="retrun">返回</string>
 
-    <!-- For setting screen -->
+    <!-- For Setting screen -->
     <string name="setting_basic">网络设置</string>
     <string name="setting_ip_title">IP</string>
     <string name="setting_ip_summary">IP地址设置</string>
@@ -42,7 +48,7 @@
     <string name="setting_importance">重点内容</string>
     <string name="setting_report_content">确报播报内容</string>
 
-    <!-- For login screen -->
+    <!-- For Login screen -->
     <string name="login_title">外勤作业系统</string>
     <string name="login_user_code">代码</string>
     <string name="login_password">密码</string>
@@ -54,11 +60,12 @@
     <string name="message_query">查询中…</string>
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
     <string name="ok">确定</string>
-    <string name="title">标题</string>
-    <string name="content">内容</string>
-    <string name="up">上</string>
-    <string name="tts">语音播报</string>
-    <string name="down">下</string>
-    <string name="retrun">返回</string>
+
+    <!-- For Confrim Report screen -->
+    <string name="confirm_report_title">确报</string>
+    <string name="record_order">顺位</string>
+    <string name="train_id">车号</string>
+    <string name="record">记事</string>
+    <string name="record_time">时间</string>
 
 </resources>

@@ -60,7 +60,7 @@ public class ReportActivity extends Activity implements OnClickListener {
         @Override
         protected Cursor doInBackground(Void... params) {
             SQLiteDatabase db = Databasehelper.getInstance().getReadableDatabase();
-            Cursor c = db.query(Databasehelper.SC_TASK_CONTENT, null, null, null, null, null, null);
+            Cursor c = db.query(Databasehelper.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
             return c;
         }
 
