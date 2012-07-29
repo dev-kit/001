@@ -9,11 +9,22 @@
     <string name="notes">记事</string>
     <string name="time">时间</string>
     <string name="check">外勤系统 : 确报</string>
+    <string name="title_car">外勤系统 : 车辆</string>
     <string name="USER_DM">USER_DM</string>
     <string name="order">正</string>
     <string name="reverse_order">反</string>
     <string name="in_order">顺</string>
     <string name="start">开始</string>
+    <!-- For report screen -->
+    <string name="sw">顺位：</string>
+    <string name="ch">车号：</string>
+    <string name="cz">车种：</string>
+    <string name="fz">发站：</string>
+    <string name="dz">到站：</string>
+    <string name="pm">品名：</string>
+    <string name="jsl">记事栏：</string>
+    <string name="zdnr">重点内容：</string>
+    <string name="sfcz">是否操作：</string>
 
     <!-- For setting screen -->
     <string name="setting_basic">网络设置</string>
@@ -43,4 +54,11 @@
     <string name="message_query">查询中…</string>
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
     <string name="ok">确定</string>
+    <string name="title">标题</string>
+    <string name="content">内容</string>
+    <string name="up">上</string>
+    <string name="tts">语音播报</string>
+    <string name="down">下</string>
+    <string name="retrun">返回</string>
+
 </resources>

@@ -1,6 +1,9 @@
 
 package com.bg.check.ui;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
@@ -54,10 +57,8 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
         ((RadioButton)findViewById(R.id.reverse_order)).setOnCheckedChangeListener(this);
         findViewById(R.id.start).setOnClickListener(this);
 
+        // kick off a query
         new AsyncQueryReportTask().execute(null);
-
-        // kick off a query for the threads which match the search string
-        // mQueryHandler.startQuery(0, null, null, null, null, null, null);
     }
 
     private void initListAdapter() {
@@ -96,6 +97,47 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
         return true;
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton button, boolean click) {
+        switch (button.getId()) {
+            case R.id.order:
+                if (click) {
+                    ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
+                }
+                break;
+            case R.id.reverse_order:
+                if (click) {
+                    ((RadioButton)findViewById(R.id.order)).setChecked(false);
+                }
+                break;
+            default:
+                Log.e(":::::::", "onCheckedChanged");
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.start) {
+            Cursor c = mCursorAdapter.getCursor();
+            if (c.getCount() <= 0) {
+                Log.e(":::::::", "onClick");
+                return;
+            }
+            Intent intent = new Intent(this, ReportActivity.class);
+
+            if (((RadioButton)findViewById(R.id.order)).isChecked()) {
+                intent.putExtra(ReportActivity.ORDER, 1);
+            } else if (((RadioButton)findViewById(R.id.reverse_order)).isChecked()) {
+                intent.putExtra(ReportActivity.ORDER, 2);
+            } else {
+                intent.putExtra(ReportActivity.ORDER, 3);
+                intent.putExtra(Databasehelper.TASK_CONTENT_SWH, c.getPosition());
+            }
+            startActivity(intent);
+        }
+    }
+
     private class AsyncQueryReportTask extends AsyncTask<Void, Void, Cursor> {
 
         @Override
@@ -127,44 +169,13 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
             s.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapter, View v, int pos, long id) {
                     cursor.moveToPosition(pos);
+                    ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
+                    ((RadioButton)findViewById(R.id.order)).setChecked(false);
                 }
 
                 public void onNothingSelected(AdapterView<?> arg0) {
                 }
             });
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton button, boolean click) {
-        switch (button.getId()) {
-            case R.id.order:
-                if (click) {
-                    ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
-                }
-                break;
-            case R.id.reverse_order:
-                if (click) {
-                    ((RadioButton)findViewById(R.id.order)).setChecked(false);
-                }
-                break;
-            default:
-                Log.e(":::::::", "onCheckedChanged");
-        }
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.start) {
-            Cursor c = mCursorAdapter.getCursor();
-            if (c.getCount() <= 0) {
-                Log.e(":::::::", "onClick");
-                return;
-            }
-            Intent intent = new Intent(this, ReportActivity.class);
-            intent.putExtra(Databasehelper.TASK_CONTENT_SWH, c.getCount());
-            startActivity(intent);
         }
     }
 }

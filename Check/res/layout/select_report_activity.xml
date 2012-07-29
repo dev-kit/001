@@ -30,43 +30,43 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/location" />
+            android:text="@string/location"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="@string/car_number" />
+            android:text="@string/car_number"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@string/notes" />
+            android:text="@string/notes"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@string/time" />
+            android:text="@string/time"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
+        style="?android:attr/listViewWhiteStyle"
         android:layout_width="match_parent"
         android:layout_height="407dp"
-        style="?android:attr/listViewWhiteStyle"
         android:background="@android:color/white"
         android:cacheColorHint="@android:color/white"
         android:fadingEdgeLength="16dip" >
@@ -84,8 +84,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/spinner"
             android:layout_marginLeft="12dp"
-            android:text="@string/order"
-            android:checked="true" />
+            android:checked="true"
+            android:text="@string/order" />
 
         <RadioButton
             android:id="@+id/reverse_order"
@@ -94,8 +94,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/order"
-            android:text="@string/reverse_order"
-            android:checked="false" />
+            android:checked="false"
+            android:text="@string/reverse_order" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,8 +103,8 @@
             android:layout_alignBottom="@+id/start"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/spinner"
-            android:textSize="14dp"
-            android:text="@string/in_order" />
+            android:text="@string/in_order"
+            android:textSize="14dp" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -112,8 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/start"
             android:layout_alignBottom="@+id/start"
-            android:layout_marginRight="28dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="28dp"
             android:layout_toLeftOf="@+id/start" />
 
         <Button
@@ -122,10 +122,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
             android:layout_centerVertical="true"
-            android:text="@string/start"
-            android:clickable="false" />
+            android:layout_marginRight="14dp"
+            android:clickable="false"
+            android:text="@string/start" />
     </RelativeLayout>
 
 </LinearLayout>
