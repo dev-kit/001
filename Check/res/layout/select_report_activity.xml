@@ -84,7 +84,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/spinner"
             android:layout_marginLeft="12dp"
-            android:text="@string/order" />
+            android:text="@string/order"
+            android:checked="true" />
 
         <RadioButton
             android:id="@+id/reverse_order"
@@ -93,7 +94,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/order"
-            android:text="@string/reverse_order" />
+            android:text="@string/reverse_order"
+            android:checked="false" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -122,7 +124,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="14dp"
             android:layout_centerVertical="true"
-            android:text="@string/start" />
+            android:text="@string/start"
+            android:clickable="false" />
     </RelativeLayout>
 
 </LinearLayout>
