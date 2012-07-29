@@ -64,11 +64,65 @@
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="434dp"
+        android:layout_width="match_parent"
+        android:layout_height="407dp"
+        style="?android:attr/listViewWhiteStyle"
         android:background="@android:color/white"
         android:cacheColorHint="@android:color/white"
         android:fadingEdgeLength="16dip" >
     </ListView>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/spinner"
+            android:layout_marginLeft="12dp"
+            android:text="@string/order" />
+
+        <RadioButton
+            android:id="@+id/reverse_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/order"
+            android:text="@string/reverse_order" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/start"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/spinner"
+            android:textSize="14dp"
+            android:text="@string/in_order" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/start"
+            android:layout_alignBottom="@+id/start"
+            android:layout_marginRight="28dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/start" />
+
+        <Button
+            android:id="@+id/start"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:layout_centerVertical="true"
+            android:text="@string/start" />
+    </RelativeLayout>
 
 </LinearLayout>

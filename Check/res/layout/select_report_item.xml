@@ -17,35 +17,44 @@
  */
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingRight="15dip"
-    android:paddingLeft="15dip" >
+    android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/title"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/sw"
         android:layout_width="wrap_content"
-        android:paddingTop="2dip"
-        android:maxLines="1"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
 
-    <view
-        class="com.android.mms.ui.SearchActivity$TextViewSnippet"
-        android:id="@+id/subtitle"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:textSize="12sp"
-        android:maxLines="1"
+    <TextView
+        android:id="@+id/ch"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true" />
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <TextView
+        android:id="@+id/js"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:textColor="@color/text_color_black" />
 
 </LinearLayout>

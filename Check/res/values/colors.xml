@@ -26,8 +26,8 @@
     <drawable name="class_zero_background">#7f040000</drawable>
 
     <!-- text color -->
-    <drawable name="text_color_red">#ffff4444</drawable>
-    <drawable name="text_color_black">#ff000000</drawable>
+    <color name="text_color_red">#ffff4444</color>
+    <color name="text_color_black">#ff000000</color>
     <color name="text_hairline">#ffcccccc</color>
     <color name="message_count_color">#66333333</color>
 
