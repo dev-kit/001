@@ -6,45 +6,47 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
-    private static final String TASK_CONTENT_CONTENT_ID = "CONTENT_ID";
+    private static final String COLUMN_ID = "_id";
 
-    private static final String TASK_CONTENT_LJZYSX = "LJZYSX";
+    public static final String TASK_CONTENT_CONTENT_ID = "CONTENT_ID";
 
-    private static final String TASK_CONTENT_HJZYSX = "HJZYSX";
+    public static final String TASK_CONTENT_LJZYSX = "LJZYSX";
 
-    private static final String TASK_CONTENT_LSSJ = "LSSJ";
+    public static final String TASK_CONTENT_HJZYSX = "HJZYSX";
 
-    private static final String TASK_CONTENT_HJ_YSJ = "HJ_YSJ";
+    public static final String TASK_CONTENT_LSSJ = "LSSJ";
 
-    private static final String TASK_CONTENT_HJ_ZSJ = "HJ_ZSJ";
+    public static final String TASK_CONTENT_HJ_YSJ = "HJ_YSJ";
 
-    private static final String TASK_CONTENT_QBID = "QBID";
+    public static final String TASK_CONTENT_HJ_ZSJ = "HJ_ZSJ";
 
-    private static final String TASK_CONTENT_JSL = "JSL";
+    public static final String TASK_CONTENT_QBID = "QBID";
 
-    private static final String TASK_CONTENT_PB = "PB";
+    public static final String TASK_CONTENT_JSL = "JSL";
 
-    private static final String TASK_CONTENT_FZM = "FZM";
+    public static final String TASK_CONTENT_PB = "PB";
 
-    private static final String TASK_CONTENT_SHR = "SHR";
+    public static final String TASK_CONTENT_FZM = "FZM";
 
-    private static final String TASK_CONTENT_PM = "PM";
+    public static final String TASK_CONTENT_SHR = "SHR";
 
-    private static final String TASK_CONTENT_DZM = "DZM";
+    public static final String TASK_CONTENT_PM = "PM";
 
-    private static final String TASK_CONTENT_ZAIZ = "ZAIZ";
+    public static final String TASK_CONTENT_DZM = "DZM";
 
-    private static final String TASK_CONTENT_ZMLM = "ZMLM";
+    public static final String TASK_CONTENT_ZAIZ = "ZAIZ";
 
-    private static final String TASK_CONTENT_YZ = "YZ";
+    public static final String TASK_CONTENT_ZMLM = "ZMLM";
 
-    private static final String TASK_CONTENT_CZ = "CZ";
+    public static final String TASK_CONTENT_YZ = "YZ";
 
-    private static final String TASK_CONTENT_CH = "CH";
+    public static final String TASK_CONTENT_CZ = "CZ";
 
-    private static final String TASK_CONTENT_SWH = "SWH";
+    public static final String TASK_CONTENT_CH = "CH";
 
-    private static final String TASK_CONTENT_PK = "PK";
+    public static final String TASK_CONTENT_SWH = "SWH";
+
+    public static final String TASK_CONTENT_PK = "PK";
 
     public static final String TASK_LYFX = "TASK_LYFX";
 
@@ -94,13 +96,15 @@ public class Databasehelper extends SQLiteOpenHelper {
 
     public static final String USER_DM = "USER_DM";
 
-    private static final String DATABASE_NAME = "lzbdata";
+    public static final String DATABASE_NAME = "lzbdata";
 
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_SC_USER = "sc_user";
     
     public static final String TABLE_SC_TASK = "sc_task";
+
+    public static final String SC_TASK_CONTENT = "sc_task_content";
 
     private static Databasehelper sInstance = null;
 
@@ -117,6 +121,7 @@ public class Databasehelper extends SQLiteOpenHelper {
 
     private void createUserTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_USER + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY," +
                 USER_DM +     " VARCHAR2(20) not null," +
                 USER_NAME +  " VARCHAR2(20) not null," +
                 USER_MOBILE +" VARCHAR2(20)," +
@@ -129,6 +134,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     
     private void createTaskTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY," +
                 TASK_ID + " NUMBER(10) not null," +
                 XLTASK_ID  + " NUMBER(10)," +
                 TASK_CONTENTID + " NUMBER(20)," +
@@ -149,7 +155,8 @@ public class Databasehelper extends SQLiteOpenHelper {
     }
 
     private void createTaskContentTable(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + "sc_task_content" + " (" +
+        db.execSQL("CREATE TABLE " + SC_TASK_CONTENT + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY," +
                 TASK_CONTENT_CONTENT_ID + "  TEXT, " +
                 TASK_CONTENT_PK + "  TEXT, " +
                 TASK_CONTENT_SWH + "  TEXT," +
