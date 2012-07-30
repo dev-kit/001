@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +28,9 @@ public class CheckerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                R.layout.login_activity_title);
         mInflater = LayoutInflater.from(this);
         initUi();
         initListAdapter();
@@ -53,7 +57,7 @@ public class CheckerActivity extends Activity {
 
     private void initListAdapter() {
         mList = (ListView) findViewById(R.id.list);
-        Cursor cursor = DatabaseUtils.queryConfirmReport();
+        Cursor cursor = DatabaseUtils.queryTask();
         mAdapter = new ReportAdapter(this, cursor);
         mList.setAdapter(mAdapter);
     }
@@ -82,10 +86,10 @@ public class CheckerActivity extends Activity {
                 holder.mNotification = (TextView) view.findViewById(R.id.notification);
             }
 
-            holder.mOrder.setText("order");
-            holder.mTrack.setText("train number");
-            holder.mPosition.setText("record");
-            holder.mNotification.setText("time");
+            holder.mOrder.setText("D23");
+            holder.mTrack.setText("CD05");
+            holder.mPosition.setText("×ó");
+            holder.mNotification.setText("20:02");
         }
 
         @Override

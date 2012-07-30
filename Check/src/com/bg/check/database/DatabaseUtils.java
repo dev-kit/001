@@ -39,7 +39,7 @@ public final class DatabaseUtils {
         return null;
     }
 
-    public final static Cursor queryConfirmReport() {
+    public final static Cursor queryTask() {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
         return db.query(Databasehelper.TABLE_SC_TASK_CONTENT, TASK_CONTENT, null, null, null, null, null);
     }

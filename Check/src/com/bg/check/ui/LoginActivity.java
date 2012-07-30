@@ -41,9 +41,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.login_activity);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.login_activity_title);
-        setContentView(R.layout.login_activity);
         mResources = getResources();
         initUi();
     }
@@ -183,5 +183,6 @@ public class LoginActivity extends Activity {
     private void login() {
         final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
         startActivity(intent);
+        finish();
     }
 }
