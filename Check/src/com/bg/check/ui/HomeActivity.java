@@ -19,9 +19,6 @@ public class HomeActivity extends Activity {
         final Intent onClickIntent = new Intent(this, SelectReportActivity.class);
 //        final Intent onClickIntent = new Intent(this, LoginActivity.class);
         startActivity(onClickIntent);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics); 
-        Log.d("::::::::::", displayMetrics.toString());
         finish();
     }
 

@@ -6,6 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
+    private static final String TASK_CONTENT_USERDM = "USERDM";
+
+    private static final String TASK_CONTENTZXSJ = "ZXSJ";
+
+    private static final String TASK_CONTENT_FLAG_UP = "FLAG_UP";
+
     public static final String COLUMN_ID = "_id";
 
     public static final String TASK_CONTENT_CONTENT_ID = "CONTENT_ID";
@@ -157,6 +163,10 @@ public class Databasehelper extends SQLiteOpenHelper {
     private void createTaskContentTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK_CONTENT + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
+                TASK_CONTENT_FLAG_UP + " TEXT," +
+                TASK_MESSAGEID + " TEXT," +
+                TASK_CONTENTZXSJ + " TEXT," +
+                TASK_CONTENT_USERDM + " TEXT," +
                 TASK_CONTENT_CONTENT_ID + "  TEXT, " +
                 TASK_CONTENT_PK + "  TEXT, " +
                 TASK_CONTENT_SWH + "  TEXT," +
