@@ -35,7 +35,7 @@ public class ReportActivity extends Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.report_activity);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.select_report_activity_title);
+                R.layout.report_activity_title);
 
         initFromIntent();
 
