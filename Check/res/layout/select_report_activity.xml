@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/spinner"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="10dp"
             android:checked="true"
             android:text="@string/order" />
 
@@ -104,7 +104,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/spinner"
             android:text="@string/in_order"
-            android:textSize="14dp" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <Spinner
             android:id="@+id/spinner"
@@ -113,7 +113,7 @@
             android:layout_alignBaseline="@+id/start"
             android:layout_alignBottom="@+id/start"
             android:layout_centerVertical="true"
-            android:layout_marginRight="28dp"
+            android:layout_marginRight="14dp"
             android:layout_toLeftOf="@+id/start" />
 
         <Button

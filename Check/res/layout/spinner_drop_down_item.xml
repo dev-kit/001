@@ -17,14 +17,15 @@
  */
 -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:gravity="left"
-    android:paddingLeft="8dip"
-    android:textStyle="bold"
-    android:textColor="@color/text_color_black"
-    android:textSize="14dip"
-    android:singleLine="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee" />
+    style="?android:attr/spinnerDropDownItemStyle" >
+
+    <strong>
+    android:singleLine="false"
+    </strong>
+    android:layout_width="fill_parent"  
+    android:layout_height="?android:attr/listPreferredItemHeight"  
+    android:ellipsize="marquee"
+
+</CheckedTextView>

@@ -214,40 +214,44 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="175dp"
         android:background="@color/text_color_black" >
 
-        <Button
+        <ImageView
             android:id="@+id/up"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
+            android:layout_weight="1"
+            android:src="@drawable/navigation_previous_item"
             android:text="@string/up" />
 
-        <Button
-            android:id="@+id/tts"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="14dp"
-            android:text="@string/tts" />
-
-        <Button
+        <ImageView
             android:id="@+id/down"
-            style="?android:attr/buttonStyleSmall"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
+            android:src="@drawable/navigation_next_item"
             android:text="@string/down" />
 
-        <Button
-            android:id="@+id/ret"
-            style="?android:attr/buttonStyleSmall"
+        <ImageView
+            android:id="@+id/tts"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
-            android:text="@string/retrun" />
+            android:text="@string/tts"
+            android:src="@drawable/device_access_volume_on" />
+
+        <ImageView
+            android:id="@+id/ret"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp"
+            android:text="@string/retrun"
+            android:src="@drawable/content_undo" />
     </LinearLayout>
 
 </LinearLayout>
