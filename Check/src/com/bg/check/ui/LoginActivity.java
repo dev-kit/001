@@ -2,9 +2,9 @@ package com.bg.check.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,11 +12,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.database.DatabaseUtils;
@@ -32,9 +32,9 @@ public class LoginActivity extends Activity {
     private EditText mEditPassword;
     private EditText mEditRole;
     private EditText mEditName;
-    private Button mButtonLogin;
-    private Button mButtonExit;
-    private Button mButtonSetting;
+    private TextView mButtonLogin;
+    private TextView mButtonExit;
+    private TextView mButtonSetting;
     private Resources mResources;
 
     @Override
@@ -53,9 +53,9 @@ public class LoginActivity extends Activity {
         mEditPassword = (EditText) findViewById(R.id.edit_password);
         mEditRole = (EditText) findViewById(R.id.edit_role);
         mEditName = (EditText) findViewById(R.id.edit_name);
-        mButtonLogin = (Button) findViewById(R.id.button_login);
-        mButtonExit = (Button) findViewById(R.id.button_exit);
-        mButtonSetting = (Button) findViewById(R.id.button_setting);
+        mButtonLogin = (TextView) findViewById(R.id.button_login);
+        mButtonExit = (TextView) findViewById(R.id.button_exit);
+        mButtonSetting = (TextView) findViewById(R.id.button_setting);
 
         mEditUsercode.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
