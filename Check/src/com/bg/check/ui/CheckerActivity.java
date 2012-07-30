@@ -2,11 +2,14 @@ package com.bg.check.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,32 +17,44 @@ import android.widget.TextView;
 import com.bg.check.R;
 import com.bg.check.database.DatabaseUtils;
 
-public class ConfirmReportActivity extends Activity {
+public class CheckerActivity extends Activity {
 
     private ListView mList;
-    private TextView mHeaderOrder;
     private CursorAdapter mAdapter;
     private LayoutInflater mInflater;
+    private Button mButtonStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirm_report);
         mInflater = LayoutInflater.from(this);
+        initUi();
         initListAdapter();
+    }
+
+    private void initUi() {
+        setContentView(R.layout.checker_activity);
+        mButtonStart = (Button) findViewById(R.id.button_start);
+
+        mButtonStart.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = 1;
+                gotoReport(id);
+            }
+        });
+    }
+
+    private void gotoReport(int order) {
+        final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
+        intent.putExtra(ReportActivity.ORDER, order);
+        startActivity(intent);
     }
 
     private void initListAdapter() {
         mList = (ListView) findViewById(R.id.list);
         Cursor cursor = DatabaseUtils.queryConfirmReport();
         mAdapter = new ReportAdapter(this, cursor);
-        final View header = mInflater.inflate(R.layout.confirm_report_list_header, null, false);
-//        mHeaderOrder = (TextView) header.findViewById(R.id.order)).setText(R.string.record_order);
-        mHeaderOrder = (TextView) header.findViewById(R.id.order);
-//        ((TextView) header.findViewById(R.id.train_id)).setText(R.string.train_id);
-//        ((TextView) header.findViewById(R.id.record)).setText(R.string.record);
-//        ((TextView) header.findViewById(R.id.time)).setText(R.string.record_time);
-        mList.addHeaderView(header, null, false);
         mList.setAdapter(mAdapter);
     }
 
@@ -47,9 +62,9 @@ public class ConfirmReportActivity extends Activity {
 
         private class ViewHolder {
             TextView mOrder;
-            TextView mTrainNumber;
-            TextView mRecord;
-            TextView mTime;
+            TextView mTrack;
+            TextView mPosition;
+            TextView mNotification;
         }
 
         public ReportAdapter(Context context, Cursor c) {
@@ -61,23 +76,21 @@ public class ConfirmReportActivity extends Activity {
             ViewHolder holder = (ViewHolder) view.getTag();
             if (holder == null) {
                 holder = new ViewHolder();
-                holder.mOrder = (TextView) view.findViewById(R.id.order);
-                holder.mTrainNumber = (TextView) view.findViewById(R.id.train_id);
-                holder.mRecord = (TextView) view.findViewById(R.id.record);
-                holder.mTime = (TextView) view.findViewById(R.id.time);
+                holder.mOrder = (TextView) view.findViewById(R.id.train_order);
+                holder.mTrack = (TextView) view.findViewById(R.id.track);
+                holder.mPosition = (TextView) view.findViewById(R.id.position);
+                holder.mNotification = (TextView) view.findViewById(R.id.notification);
             }
 
-            holder.mOrder.setText("orderasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf");
-            holder.mTrainNumber.setText("train number, nasdfasdfasdfasdfasdfasdfasdfasdfasdfnumbernumber");
-            holder.mRecord.setText("record");
-            holder.mTime.setText("time");
-
-//            mHeaderOrder.setWidth(holder.mOrder.getWidth());
+            holder.mOrder.setText("order");
+            holder.mTrack.setText("train number");
+            holder.mPosition.setText("record");
+            holder.mNotification.setText("time");
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-            return mInflater.inflate(R.layout.confirm_report_list_item, null, false);
+            return mInflater.inflate(R.layout.checker_list_item, null, false);
         }
         
     }

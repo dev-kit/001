@@ -61,11 +61,15 @@
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
     <string name="ok">确定</string>
 
-    <!-- For Confrim Report screen -->
-    <string name="confirm_report_title">确报</string>
-    <string name="record_order">顺位</string>
-    <string name="train_id">车号</string>
-    <string name="record">记事</string>
-    <string name="record_time">时间</string>
+    <!-- For Checker screen -->
+    <string name="checker_title">外勤系统：货检作业</string>
+    <string name="button_start">开始</string>
+    <string name="button_voice">语音</string>
+    <string name="button_return">回执</string>
+    <string name="train_order">车次</string>
+    <string name="track">股道</string>
+    <string name="position">位置</string>
+    <string name="notification">通知</string>
+    <string name="product_check">货检</string>
 
 </resources>

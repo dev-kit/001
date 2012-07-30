@@ -35,8 +35,9 @@
         </activity>
 
         <activity
-            android:name=".ui.ConfirmReportActivity"
-            android:label="@string/confirm_report_title" />
+            android:theme="@android:style/Theme.Black"
+            android:name=".ui.CheckerActivity"
+            android:label="@string/checker_title"/>
 
         <activity
             android:theme="@android:style/Theme.Black.NoTitleBar"

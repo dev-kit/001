@@ -41,9 +41,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.activity_login);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.login_activity_title);
+        setContentView(R.layout.login_activity);
         mResources = getResources();
         initUi();
     }
@@ -61,6 +61,17 @@ public class LoginActivity extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     final String usercode = mEditUsercode.getText().toString().trim();
+                    //############ For test
+                    if ("test".equals(usercode) || (usercode != null && usercode.length() == 1)) {
+                        mEditUsercode.postDelayed(new Runnable() {
+                            public void run() {
+                                new UserInformationLoader().testPass();
+                            }
+                        }, 1000);
+                        showDialog(DIALOG_QUERY_PROGRESS);
+                        return;
+                    }
+                    //#############
                     if (!TextUtils.isEmpty(usercode)) {
                         if (!usercode.equals(mUsercode)) {
                             mUsercode = usercode;
@@ -142,6 +153,14 @@ public class LoginActivity extends Activity {
 
             dismissDialog(DIALOG_QUERY_PROGRESS);
         }
+
+        public void testPass() {
+            final User user = new User();
+            user.mCode = "test";
+            user.mName = "¿Ó∞◊";
+            user.mRole = "≤‚ ‘’ﬂ";
+            onPostExecute(user);
+        }
     }
 
     private void clearUserInformation() {
@@ -152,7 +171,7 @@ public class LoginActivity extends Activity {
 
     private void setUserInformation(User user) {
         mEditName.setText(user.mName);
-        mEditRole.setText(user.mCode);
+        mEditRole.setText(user.mRole);
         mButtonLogin.setEnabled(true);
     }
 
@@ -162,7 +181,7 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
-        final Intent intent = new Intent(LoginActivity.this, ConfirmReportActivity.class);
+        final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
         startActivity(intent);
     }
 }
