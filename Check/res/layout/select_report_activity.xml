@@ -77,34 +77,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <RadioButton
-            android:id="@+id/order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/spinner"
-            android:layout_marginLeft="10dp"
-            android:checked="true"
-            android:text="@string/order" />
-
-        <RadioButton
-            android:id="@+id/reverse_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/order"
-            android:checked="false"
-            android:text="@string/reverse_order" />
-
         <TextView
+            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/start"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/spinner"
             android:text="@string/in_order"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -114,18 +95,40 @@
             android:layout_alignBottom="@+id/start"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
+            android:layout_marginTop="14dp"
             android:layout_toLeftOf="@+id/start" />
 
-        <Button
+        <ImageButton
             android:id="@+id/start"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
+            android:background="#ff000000"
             android:clickable="false"
+            android:src="@drawable/start"
             android:text="@string/start" />
+
+        <RadioButton
+            android:id="@+id/order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="14dp"
+            android:checked="true"
+            android:text="@string/order" />
+
+        <RadioButton
+            android:id="@+id/reverse_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="17dp"
+            android:layout_toLeftOf="@+id/textView1"
+            android:checked="false"
+            android:text="@string/reverse_order" />
+
     </RelativeLayout>
 
 </LinearLayout>
