@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:text="@string/product_check"/>
 
@@ -22,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:text="测试"/>
 
@@ -30,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:text="000"/>
 
@@ -38,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:text="16:30"/>
     </LinearLayout>
@@ -60,6 +64,7 @@
             android:padding="5dp"
             android:focusable="true"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/start"/>
 
         <TextView
@@ -73,6 +78,7 @@
             android:padding="5dp"
             android:focusable="true"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/voice"/>
 
         <TextView
@@ -86,6 +92,7 @@
             android:padding="5dp"
             android:focusable="true"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/feedback"/>
 
         <TextView
@@ -99,6 +106,7 @@
             android:padding="5dp"
             android:focusable="true"
             android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/exit"/>
     </LinearLayout>
 

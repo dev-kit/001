@@ -23,6 +23,7 @@
         android:layout_marginRight="2dp"
         android:layout_toRightOf="@+id/imageView1"
         android:text="@string/checker_title"
+        android:textColor="@android:color/white"
         android:textSize="15dp" />
 
 </RelativeLayout>

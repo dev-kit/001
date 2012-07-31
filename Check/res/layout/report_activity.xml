@@ -4,14 +4,14 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/text_color_black" >
+        android:background="@drawable/toolbar_bg" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/title"
@@ -28,8 +28,9 @@
             android:textColor="?android:attr/textColorPrimaryInverse" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -37,8 +38,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:gravity="left"
             android:text="@string/sw"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -49,8 +50,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -60,6 +62,7 @@
             android:layout_gravity="left"
             android:layout_marginLeft="25dp"
             android:text="@string/ch"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -70,8 +73,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -80,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/cz"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -90,8 +95,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -100,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/fz"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -110,8 +117,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -120,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/dz"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -130,8 +139,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -140,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/pm"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -150,8 +161,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -160,6 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/jsl"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -170,8 +183,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -180,6 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="@string/zdnr"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -190,8 +205,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -199,6 +215,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
+            android:gravity="right"
             android:text="@string/sfcz"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -210,48 +227,65 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <include layout="@layout/divider_vertical"/>
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="149dp"
-        android:background="@color/text_color_black" >
+        android:layout_marginTop="124dp"
+        android:background="@drawable/toolbar_bg" >
 
-        <ImageView
+        <TextView
             android:id="@+id/up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="14dp"
+            android:padding="8dp"
             android:layout_weight="1"
-            android:src="@drawable/navigation_previous_item"
+            android:gravity="center"
+            android:drawableTop="@drawable/navigation_previous_item"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
             android:text="@string/up" />
 
-        <ImageView
+        <TextView
             android:id="@+id/down"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="14dp"
-            android:src="@drawable/navigation_next_item"
+            android:padding="8dp"
+            android:gravity="center"
+            android:drawableTop="@drawable/navigation_next_item"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
             android:text="@string/down" />
 
-        <ImageView
+        <TextView
             android:id="@+id/tts"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="14dp"
+            android:padding="8dp"
             android:text="@string/tts"
-            android:src="@drawable/device_access_volume_on" />
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@drawable/clicker_bg_selector"
+            android:drawableTop="@drawable/ic_voice" />
 
-        <ImageView
+        <TextView
             android:id="@+id/ret"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="14dp"
+            android:padding="8dp"
             android:text="@string/retrun"
-            android:src="@drawable/content_undo" />
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@drawable/clicker_bg_selector"
+            android:drawableTop="@drawable/content_undo" />
     </LinearLayout>
 
 </LinearLayout>
