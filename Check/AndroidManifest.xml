@@ -8,40 +8,31 @@
         android:targetSdkVersion="15" />
 
     <application
+        android:name=".Welcome"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".Welcome" >
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
-
-        <activity
-            android:name=".ui.SelectReportActivity"
-            android:theme="@style/test" />
-
-        <activity
-            android:name=".ui.ReportActivity" />
-
+        <activity android:name=".ui.SelectReportActivity" />
+        <activity android:name=".ui.ReportActivity" />
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/login_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:theme="@android:style/Theme.Black"
             android:name=".ui.CheckerActivity"
-            android:label="@string/checker_title"/>
-
+            android:label="@string/checker_title" />
         <activity
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:name=".ui.SettingActivity"/>
+            android:name=".ui.SettingActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
     </application>
 
 </manifest>

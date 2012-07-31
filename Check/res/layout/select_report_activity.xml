@@ -66,7 +66,7 @@
         android:id="@android:id/list"
         style="?android:attr/listViewWhiteStyle"
         android:layout_width="match_parent"
-        android:layout_height="407dp"
+        android:layout_height="380dp"
         android:background="@android:color/white"
         android:cacheColorHint="@android:color/white"
         android:fadingEdgeLength="16dip" >
@@ -105,7 +105,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:background="#ff000000"
+            android:background="#88ffffff"
             android:clickable="false"
             android:src="@drawable/start"
             android:text="@string/start" />

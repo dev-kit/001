@@ -214,7 +214,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="149dp"
         android:background="@color/text_color_black" >
 
         <ImageView
