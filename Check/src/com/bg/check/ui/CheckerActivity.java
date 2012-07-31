@@ -29,6 +29,7 @@ public class CheckerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.checker_activity);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.login_activity_title);
         mInflater = LayoutInflater.from(this);
@@ -37,7 +38,6 @@ public class CheckerActivity extends Activity {
     }
 
     private void initUi() {
-        setContentView(R.layout.checker_activity);
         mButtonStart = (Button) findViewById(R.id.button_start);
 
         mButtonStart.setOnClickListener(new OnClickListener() {
