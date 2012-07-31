@@ -23,6 +23,7 @@ public class CheckerActivity extends Activity {
     private CursorAdapter mAdapter;
     private LayoutInflater mInflater;
     private TextView mStart;
+    private TextView mExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class CheckerActivity extends Activity {
 
     private void initUi() {
         mStart = (TextView) findViewById(R.id.start);
+        mExit = (TextView) findViewById(R.id.exit);
 
         mStart.setOnClickListener(new OnClickListener() {
             @Override
@@ -46,6 +48,24 @@ public class CheckerActivity extends Activity {
                 gotoReport(id);
             }
         });
+
+        mExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoLogin();
+            }
+        });
+    }
+
+    private void gotoLogin() {
+        final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
     }
 
     private void gotoReport(int order) {

@@ -96,7 +96,7 @@
             android:text="@string/feedback"/>
 
         <TextView
-            android:id="@+id/button_exit"
+            android:id="@+id/exit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
