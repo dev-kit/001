@@ -169,8 +169,10 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
             s.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapter, View v, int pos, long id) {
                     cursor.moveToPosition(pos);
+                    if (pos != 0) {
+                        ((RadioButton)findViewById(R.id.order)).setChecked(false);
+                    }
                     ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
-                    ((RadioButton)findViewById(R.id.order)).setChecked(false);
                 }
 
                 public void onNothingSelected(AdapterView<?> arg0) {
