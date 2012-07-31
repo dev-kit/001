@@ -31,7 +31,7 @@ public class CheckerActivity extends Activity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.checker_activity);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.login_activity_title);
+                R.layout.checker_activity_title);
         mInflater = LayoutInflater.from(this);
         initUi();
         initListAdapter();
