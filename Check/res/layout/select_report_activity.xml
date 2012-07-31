@@ -107,7 +107,7 @@
             android:layout_marginRight="14dp"
             android:background="#88ffffff"
             android:clickable="false"
-            android:src="@drawable/start"
+            android:src="@drawable/ic_start"
             android:text="@string/start" />
 
         <RadioButton

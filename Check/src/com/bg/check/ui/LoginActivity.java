@@ -32,9 +32,9 @@ public class LoginActivity extends Activity {
     private EditText mEditPassword;
     private EditText mEditRole;
     private EditText mEditName;
-    private TextView mButtonLogin;
-    private TextView mButtonExit;
-    private TextView mButtonSetting;
+    private TextView mLogin;
+    private TextView mExit;
+    private TextView mSetting;
     private Resources mResources;
 
     @Override
@@ -53,9 +53,9 @@ public class LoginActivity extends Activity {
         mEditPassword = (EditText) findViewById(R.id.edit_password);
         mEditRole = (EditText) findViewById(R.id.edit_role);
         mEditName = (EditText) findViewById(R.id.edit_name);
-        mButtonLogin = (TextView) findViewById(R.id.button_login);
-        mButtonExit = (TextView) findViewById(R.id.button_exit);
-        mButtonSetting = (TextView) findViewById(R.id.button_setting);
+        mLogin = (TextView) findViewById(R.id.login);
+        mExit = (TextView) findViewById(R.id.exit);
+        mSetting = (TextView) findViewById(R.id.setting);
 
         mEditUsercode.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
@@ -84,19 +84,19 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mButtonLogin.setOnClickListener(new OnClickListener() {
+        mLogin.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 login();
             }
         });
 
-        mButtonExit.setOnClickListener(new OnClickListener() {
+        mExit.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
         });
 
-        mButtonSetting.setOnClickListener(new OnClickListener() {
+        mSetting.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 gotoSetting();
             }
@@ -109,6 +109,7 @@ public class LoginActivity extends Activity {
         case DIALOG_QUERY_PROGRESS:
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setMessage(mResources.getString(R.string.message_query));
+            dialog.setCancelable(false);
             return dialog;
         case DIALOG_USER_NOT_FOUND:
             AlertDialog.Builder builder = new Builder(this);
@@ -166,13 +167,13 @@ public class LoginActivity extends Activity {
     private void clearUserInformation() {
         mEditName.setText(null);
         mEditRole.setText(null);
-        mButtonLogin.setEnabled(false);
+        mLogin.setEnabled(false);
     }
 
     private void setUserInformation(User user) {
         mEditName.setText(user.mName);
         mEditRole.setText(user.mRole);
-        mButtonLogin.setEnabled(true);
+        mLogin.setEnabled(true);
     }
 
     private void gotoSetting() {

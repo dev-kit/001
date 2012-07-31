@@ -8,8 +8,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:gravity="center_horizontal">
         <TextView
             android:id="@+id/label_user_code"
@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/edit_text_bg"
+            android:background="@drawable/edit_text_bg_selector"
             android:inputType="text" />
     </LinearLayout>
 
@@ -36,8 +36,8 @@
         android:orientation="horizontal"
         android:layout_below="@id/line1"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:gravity="center_horizontal">
         <TextView
             android:id="@+id/label_password"
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/edit_text_bg"
+            android:background="@drawable/edit_text_bg_selector"
             android:inputType="textPassword" />
     </LinearLayout>
 
@@ -64,8 +64,8 @@
         android:orientation="horizontal"
         android:layout_below="@id/line2"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:gravity="center_horizontal">
         <TextView
             android:id="@+id/label_role"
@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/edit_text_bg"
+            android:background="@drawable/edit_text_bg_selector"
             android:enabled="false"
             android:inputType="none" />
     </LinearLayout>
@@ -92,8 +92,8 @@
         android:orientation="horizontal"
         android:layout_below="@id/line3"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:gravity="center_horizontal">
         <TextView
             android:id="@+id/label_name"
@@ -109,7 +109,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/edit_text_bg"
+            android:background="@drawable/edit_text_bg_selector"
             android:enabled="false"
             android:inputType="none" />
     </LinearLayout>
@@ -118,42 +118,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/login_toolbar_bg"
+        android:background="@drawable/toolbar_bg"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/button_login"
+            android:id="@+id/login"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/button_login"
+            android:padding="5dp"
+            android:text="@string/login"
             android:gravity="center"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:enabled="false"
             android:drawableTop="@drawable/ic_login"
-            android:textColor="#fff"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:focusable="true"
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/button_exit"
+            android:id="@+id/exit"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/button_exit"
+            android:padding="5dp"
+            android:text="@string/exit"
             android:gravity="center"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:drawableTop="@drawable/ic_exit"
-            android:textColor="#fff"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:focusable="true"
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/button_setting"
+            android:id="@+id/setting"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/button_setting"
+            android:padding="5dp"
+            android:text="@string/setting"
             android:gravity="center"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:drawableTop="@drawable/ic_settings"
-            android:textColor="#fff"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:focusable="true"
             android:layout_weight="1"/>
     </LinearLayout>
 </RelativeLayout>

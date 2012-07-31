@@ -54,18 +54,17 @@
     <string name="login_password">密码</string>
     <string name="login_role">岗位</string>
     <string name="login_name">姓名</string>
-    <string name="button_login">登录</string>
-    <string name="button_exit">退出</string>
-    <string name="button_setting">设置</string>
+    <string name="login">登录</string>
+    <string name="exit">退出</string>
+    <string name="setting">设置</string>
     <string name="message_query">查询中…</string>
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
     <string name="ok">确定</string>
 
     <!-- For Checker screen -->
-    <string name="checker_title">外勤系统：货检作业</string>
-    <string name="button_start">开始</string>
-    <string name="button_voice">语音</string>
-    <string name="button_return">回执</string>
+    <string name="checker_title">外勤系统:货检作业</string>
+    <string name="voice">语音</string>
+    <string name="feedback">回执</string>
     <string name="train_order">车次</string>
     <string name="track">股道</string>
     <string name="position">位置</string>

@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:text="@string/product_check"/>
 
         <TextView
@@ -21,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:text="测试"/>
 
         <TextView
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:text="000"/>
 
         <TextView
@@ -35,42 +38,68 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:text="16:30"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar"
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/label_bar"
+        android:background="@drawable/toolbar_bg"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/button_start"
+        <TextView
+            android:id="@+id/start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_start"/>
+            android:drawableTop="@drawable/ic_go"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:padding="5dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/start"/>
 
-        <Button
-            android:id="@+id/button_voice"
+        <TextView
+            android:id="@+id/voice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_voice"/>
+            android:drawableTop="@drawable/ic_voice"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:padding="5dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/voice"/>
 
-        <Button
-            android:id="@+id/button_return"
+        <TextView
+            android:id="@+id/feedback"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_return"/>
+            android:drawableTop="@drawable/ic_feedback"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:padding="5dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/feedback"/>
 
-        <Button
+        <TextView
             android:id="@+id/button_exit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_exit"/>
+            android:drawableTop="@drawable/ic_exit"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:padding="5dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/exit"/>
     </LinearLayout>
 
     <include
@@ -89,5 +118,5 @@
         android:cacheColorHint="@android:color/transparent"
         android:fillViewport="true"
         android:layout_below="@id/header"
-        android:layout_above="@id/button_bar"/>
+        android:layout_above="@id/tool_bar"/>
 </RelativeLayout>

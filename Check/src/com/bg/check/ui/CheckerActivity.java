@@ -7,10 +7,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ public class CheckerActivity extends Activity {
     private ListView mList;
     private CursorAdapter mAdapter;
     private LayoutInflater mInflater;
-    private Button mButtonStart;
+    private TextView mStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +37,9 @@ public class CheckerActivity extends Activity {
     }
 
     private void initUi() {
-        mButtonStart = (Button) findViewById(R.id.button_start);
+        mStart = (TextView) findViewById(R.id.start);
 
-        mButtonStart.setOnClickListener(new OnClickListener() {
+        mStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 int id = 1;
