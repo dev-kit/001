@@ -1,238 +1,244 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/toolbar_bg" >
-
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/title"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="?android:attr/textColorPrimaryInverse" />
+            android:background="@drawable/toolbar_bg" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:gravity="center"
-            android:text="@string/content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="?android:attr/textColorPrimaryInverse" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="?android:attr/textColorPrimaryInverse" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="?android:attr/textColorPrimaryInverse" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/sw"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/sw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:text="@string/ch"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/ch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/cz"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/cz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/fz"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/fz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/dz"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/dz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/pm"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/jsl"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/jsl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="right"
+                android:text="@string/zdnr"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/importance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="right"
+                android:text="@string/sfcz"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/operate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <include layout="@layout/divider_vertical"/>
     </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/sw"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/sw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="10dp"
-            android:text="@string/ch"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/ch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/cz"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/cz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/fz"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/fz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/dz"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/dz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/pm"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/jsl"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/jsl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="right"
-            android:text="@string/zdnr"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/importance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="right"
-            android:text="@string/sfcz"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/operate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <include layout="@layout/divider_vertical"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="124dp"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/toolbar_bg" >
 
         <TextView
@@ -242,7 +248,7 @@
             android:padding="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:drawableTop="@drawable/navigation_previous_item"
+            android:drawableTop="@drawable/ic_previous"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@drawable/clicker_bg_selector"
             android:textColor="@android:color/white"
@@ -255,7 +261,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:gravity="center"
-            android:drawableTop="@drawable/navigation_next_item"
+            android:drawableTop="@drawable/ic_next"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@drawable/clicker_bg_selector"
             android:textColor="@android:color/white"
@@ -285,7 +291,7 @@
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@drawable/clicker_bg_selector"
-            android:drawableTop="@drawable/content_undo" />
+            android:drawableTop="@drawable/ic_back" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

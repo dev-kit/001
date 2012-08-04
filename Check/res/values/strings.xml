@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="welcome_speech">欢迎使用外勤作业系统</string>
     <string name="app_name">外勤作业系统</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
@@ -15,6 +16,8 @@
     <string name="reverse_order">反</string>
     <string name="in_order">顺:</string>
     <string name="start">开始</string>
+    <string name="empty">没有内容</string>
+
     <!-- For report screen -->
     <string name="sw">顺位：</string>
     <string name="ch">车号：</string>
@@ -29,6 +32,7 @@
     <string name="content">内容</string>
     <string name="up">上</string>
     <string name="tts">语音播报</string>
+    <string name="stop_tts">停止播报</string>
     <string name="down">下</string>
     <string name="retrun">返回</string>
 
@@ -64,11 +68,13 @@
     <!-- For Checker screen -->
     <string name="checker_title">外勤系统:货检作业</string>
     <string name="voice">语音</string>
+    <string name="voice_stop">停止</string>
     <string name="feedback">回执</string>
     <string name="train_order">车次</string>
     <string name="track">股道</string>
     <string name="position">位置</string>
     <string name="notification">通知</string>
     <string name="product_check">货检</string>
+    <string name="report_index">第%s条记录</string>
 
 </resources>

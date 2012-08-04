@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bg.check.R;
 import com.bg.check.database.DatabaseUtils;
 import com.bg.check.datatype.User;
+import com.bg.check.engine.SpeechEngine;
 
 public class LoginActivity extends Activity {
 
@@ -104,6 +105,11 @@ public class LoginActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
+
+    @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_QUERY_PROGRESS:
@@ -182,6 +188,7 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
+        // TODO do login action
         final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
         startActivity(intent);
         finish();

@@ -3,12 +3,13 @@ package com.bg.check.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,8 +17,10 @@ import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.database.Databasehelper;
+import com.bg.check.engine.SpeechEngine;
+import com.bg.check.engine.SpeechEngine.SpeechListener;
 
-public class ReportActivity extends Activity implements OnClickListener {
+public class ReportActivity extends Activity implements OnClickListener, SpeechListener {
 
     public static final String ORDER = "order";
 
@@ -29,6 +32,30 @@ public class ReportActivity extends Activity implements OnClickListener {
 
     private Cursor mCursor;
 
+    private TextView mTts;
+
+    private String mLabelSw;
+    private String mLabelCh;
+    private String mLabelCz;
+    private String mLabelFz;
+    private String mLabelDz;
+    private String mLabelPm;
+    private String mLabelJsl;
+    private String mLabelImportance;
+    private String mLabelOperate;
+    private String mEmpty;
+    private String mStopTts;
+
+    private String mSw;
+    private String mCh;
+    private String mCz;
+    private String mFz;
+    private String mDz;
+    private String mPm;
+    private String mJsl;
+    private String mImportance;
+    private String mOperate;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +66,31 @@ public class ReportActivity extends Activity implements OnClickListener {
 
         initFromIntent();
 
+        initString();
+
         findViewById(R.id.up).setOnClickListener(this);
         findViewById(R.id.down).setOnClickListener(this);
         findViewById(R.id.ret).setOnClickListener(this);
-        findViewById(R.id.tts).setOnClickListener(this);
+        mTts = (TextView) findViewById(R.id.tts);
+        mTts.setOnClickListener(this);
         // kick off a query
         new AsyncQueryReportTask().execute(null);
 
+    }
+
+    private void initString() {
+        final Resources res = getResources();
+        mLabelSw = res.getString(R.string.sw);
+        mLabelCh = res.getString(R.string.ch);
+        mLabelCz = res.getString(R.string.cz);
+        mLabelFz = res.getString(R.string.fz);
+        mLabelDz = res.getString(R.string.dz);
+        mLabelPm = res.getString(R.string.pm);
+        mLabelJsl = res.getString(R.string.jsl);
+        mLabelImportance = res.getString(R.string.zdnr);
+        mLabelOperate = res.getString(R.string.sfcz);
+        mEmpty = res.getString(R.string.empty);
+        mStopTts = res.getString(R.string.stop_tts);
     }
 
     private void initFromIntent() {
@@ -99,21 +144,31 @@ public class ReportActivity extends Activity implements OnClickListener {
         TextView jsl = (TextView)ReportActivity.this.findViewById(R.id.jsl);
         TextView operate = (TextView)ReportActivity.this.findViewById(R.id.operate);
 
-        sw.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH)));
-        ch.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CH)));
-        cz.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CZ)));
-        fz.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_FZM)));
-        dz.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_DZM)));
-        pm.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_PM)));
-        jsl.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_JSL)));
-        // importance.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT)));
-        operate.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH)));
+        mSw = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH));
+        mCh = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CH));
+        mCz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CZ));
+        mFz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_FZM));
+        mDz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_DZM));
+        mPm = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_PM));
+        mJsl = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_JSL));
+//        mImportance = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT));
+        mOperate = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH));
+        sw.setText(mSw);
+        ch.setText(mCh);
+        cz.setText(mCz);
+        fz.setText(mFz);
+        dz.setText(mDz);
+        pm.setText(mPm);
+        jsl.setText(mJsl);
+        // importance.setText(mImportance);
+        operate.setText(mOperate);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.up:
+                stopSpeech();
                 switch (mOrder) {
                     case 1:
                         if (mTranId > 0) {
@@ -142,6 +197,7 @@ public class ReportActivity extends Activity implements OnClickListener {
                 }
                 break;
             case R.id.down:
+                stopSpeech();
                 switch (mOrder) {
                     case 1:
                     case 3:
@@ -164,11 +220,93 @@ public class ReportActivity extends Activity implements OnClickListener {
                 }
                 break;
             case R.id.tts:
+                if (mStopTts.equals(mTts.getText().toString())) {
+                    stopSpeech();
+                    mTts.setText(R.string.tts);
+                } else {
+                    mTts.setText(mStopTts);
+                    startSpeech();
+                }
                 break;
             case R.id.ret:
                 finish();
                 break;
         }
+    }
 
+    @Override
+    protected void onPause() {
+        stopSpeech();
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
+
+    private void startSpeech() {
+        SpeechEngine.getInstance(getApplicationContext()).speakSeries(this);
+    }
+
+    private void stopSpeech() {
+        SpeechEngine.getInstance(getApplicationContext()).stopSpeak();
+    }
+
+    @Override
+    public String onPrepareSpeech() {
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(mLabelSw);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mSw) ? mEmpty : mSw);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelCh);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mCh) ? mEmpty : mCh);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelCz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mCz) ? mEmpty : mCz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelFz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mFz) ? mEmpty : mFz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelDz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mDz) ? mEmpty : mDz);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelPm);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mPm) ? mEmpty : mPm);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelJsl);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mJsl) ? mEmpty : mJsl);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelImportance);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mImportance) ? mEmpty : mImportance);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(mLabelOperate);
+        builder.append(SpeechEngine.COMMA);
+        builder.append(TextUtils.isEmpty(mOperate) ? mEmpty : mOperate);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean hasNextSpeech() {
+        return false;
+    }
+
+    @Override
+    public void onSeriesSpeechComplete() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTts.setText(R.string.tts);
+            }
+        });
     }
 }
