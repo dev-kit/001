@@ -203,7 +203,7 @@ public class CheckerActivity extends Activity implements OnClickListener, Speech
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    mList.setSelection(mCurrentIndex);
+                    mList.setSelection(mCurrentIndex - 1);
                 }
             });
 
