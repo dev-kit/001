@@ -16,7 +16,7 @@
     <string name="reverse_order">反</string>
     <string name="in_order">顺:</string>
     <string name="start">开始</string>
-    <string name="empty">没有内容</string>
+    <string name="empty">无内容</string>
 
     <!-- For report screen -->
     <string name="sw">顺位：</string>
