@@ -3,7 +3,7 @@ package com.bg.check.engine;
 
 import com.bg.check.engine.utils.LogUtils;
 
-public abstract class WorkTask {
+public abstract class BaseTask {
     private boolean mIsCanceled;
 
     private String mTaskName;
@@ -11,10 +11,10 @@ public abstract class WorkTask {
     private TaskCallback mCallback;
 
     public static interface TaskCallback {
-        public void onCallBack();
+        public void onCallBack(Object result);
     }
 
-    public abstract void run();
+    public abstract Object run();
 
     public void setTaskName(String name) {
         mTaskName = name;
@@ -25,11 +25,11 @@ public abstract class WorkTask {
         mCallback = callback;
     }
 
-    public void onCallback() {
+    public void onCallback(Object result) {
         LogUtils.logD("onCallback");
         TaskCallback callback = mCallback;
         if (callback != null) {
-            callback.onCallBack();
+            callback.onCallBack(result);
         }
     }
 

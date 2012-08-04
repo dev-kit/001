@@ -30,9 +30,9 @@ public final class DatabaseUtils {
                 selection, new String[] { usercode }, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             final User user = new User();
-            user.mName = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_NAME));
-            user.mCode = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_DM));
-            user.mRole = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_ROLE));
+            user.mUserName = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_NAME));
+            user.mUserDM = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_DM));
+            user.mUserRole = cursor.getString(cursor.getColumnIndexOrThrow(Databasehelper.USER_ROLE));
             return user;
         }
 

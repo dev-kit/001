@@ -3,8 +3,8 @@ package com.bg.check.test;
 import android.test.InstrumentationTestCase;
 
 import com.bg.check.engine.TaskEngine;
-import com.bg.check.engine.WorkTask;
-import com.bg.check.engine.WorkTask.TaskCallback;
+import com.bg.check.engine.BaseTask;
+import com.bg.check.engine.BaseTask.TaskCallback;
 
 public class TaskEngineTest extends InstrumentationTestCase {
 
@@ -23,7 +23,7 @@ public class TaskEngineTest extends InstrumentationTestCase {
 
     public void testAppendTask() {
         final String testString = "1234";
-        WorkTask task = new WorkTask() {
+        BaseTask task = new BaseTask() {
             @Override
             public void run() {
                 setTaskName(testString);
@@ -38,7 +38,7 @@ public class TaskEngineTest extends InstrumentationTestCase {
         }
         assertEquals(testString, task.getTaskName());
 
-        final WorkTask task2 = new WorkTask() {
+        final BaseTask task2 = new BaseTask() {
             @Override
             public void run() {
             }
@@ -66,7 +66,7 @@ public class TaskEngineTest extends InstrumentationTestCase {
         int tasksNumber = 100;
         while (tasksNumber-- > 0) {
             final int count = tasksNumber;
-            WorkTask task = new WorkTask() {
+            BaseTask task = new BaseTask() {
                 @Override
                 public void run() {
                     sb.append(String.valueOf(count));
@@ -89,7 +89,7 @@ public class TaskEngineTest extends InstrumentationTestCase {
     }
 
     public void testCancelTask() {
-        final WorkTask task2 = new WorkTask() {
+        final BaseTask task2 = new BaseTask() {
             @Override
             public void run() {
                 setTaskName("test");
@@ -126,7 +126,7 @@ public class TaskEngineTest extends InstrumentationTestCase {
         int tasksNumber = 100;
         while (tasksNumber-- > 0) {
             final int count = tasksNumber;
-            WorkTask task = new WorkTask() {
+            BaseTask task = new BaseTask() {
                 @Override
                 public void run() {
                     try {

@@ -8,7 +8,7 @@ import com.bg.check.engine.utils.LogUtils;
 public class TaskEngine {
     private static final int SLEEP_TIME_MS = 1000;
 
-    private ConcurrentLinkedQueue<WorkTask> mTaskQueue = new ConcurrentLinkedQueue<WorkTask>();
+    private ConcurrentLinkedQueue<BaseTask> mTaskQueue = new ConcurrentLinkedQueue<BaseTask>();
 
     private static TaskEngine sTaskEngineInstance = new TaskEngine();
 
@@ -35,7 +35,7 @@ public class TaskEngine {
                     if (canceled) {
                         return;
                     }
-                    WorkTask task = mTaskQueue.poll();
+                    BaseTask task = mTaskQueue.poll();
                     if (task == null) {
                         try {
                             Thread.sleep(SLEEP_TIME_MS);
@@ -51,8 +51,9 @@ public class TaskEngine {
                         return;
                     }
 
+                    Object result = null;
                     if (!task.isCanceled()) {
-                        task.run();
+                        result = task.run();
                         LogUtils.logD("task.run()" + task.toString());
                     }
 
@@ -61,7 +62,7 @@ public class TaskEngine {
                     }
 
                     if (!task.isCanceled()) {
-                        task.onCallback();
+                        task.onCallback(result);
                     }
 
                 }
@@ -83,7 +84,7 @@ public class TaskEngine {
     // run();
     // }
 
-    public void appendTask(WorkTask task) {
+    public void appendTask(BaseTask task) {
         LogUtils.logD("TaskEngine.appendTask" + task);
         if (task == null) {
             return;
@@ -91,7 +92,7 @@ public class TaskEngine {
         mTaskQueue.add(task);
     }
 
-    public void cancelTask(WorkTask task) {
+    public void cancelTask(BaseTask task) {
         LogUtils.logD("TaskEngine.cancelTask" + task);
         if (task == null) {
             return;

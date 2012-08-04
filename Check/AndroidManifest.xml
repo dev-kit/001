@@ -35,4 +35,6 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

@@ -157,9 +157,9 @@ public class LoginActivity extends Activity {
 
         public void testPass() {
             final User user = new User();
-            user.mCode = "test";
-            user.mName = "李白";
-            user.mRole = "测试者";
+            user.mUserDM = "test";
+            user.mUserName = "李白";
+            user.mUserRole = "测试者";
             onPostExecute(user);
         }
     }
@@ -171,8 +171,8 @@ public class LoginActivity extends Activity {
     }
 
     private void setUserInformation(User user) {
-        mEditName.setText(user.mName);
-        mEditRole.setText(user.mRole);
+        mEditName.setText(user.mUserName);
+        mEditRole.setText(user.mUserRole);
         mLogin.setEnabled(true);
     }
 

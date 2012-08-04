@@ -16,4 +16,5 @@
         <uses-library android:name="android.test.runner" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
