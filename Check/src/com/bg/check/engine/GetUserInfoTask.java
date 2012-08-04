@@ -7,8 +7,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import com.bg.check.data.User;
-import com.bg.check.engine.utils.LogUtils;
+import com.bg.check.datatype.User;
 import com.bg.check.webservice.SCWebService;
 
 public class GetUserInfoTask extends BaseTask {
@@ -25,7 +24,7 @@ public class GetUserInfoTask extends BaseTask {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 
-//        envelope.addMapping(SCWebService.SC_NAME_SPACE, "User", User.class);
+        // envelope.addMapping(SCWebService.SC_NAME_SPACE, "User", User.class);
 
         envelope.bodyOut = rpc;
         // 设置是否调用的是dotNet开发的WebService
@@ -43,7 +42,7 @@ public class GetUserInfoTask extends BaseTask {
         }
 
         // 获取返回的数据
-//        SoapObject object = (SoapObject)envelope.bodyIn;
+        // SoapObject object = (SoapObject)envelope.bodyIn;
         SoapObject result;
         User user = null;
         try {
