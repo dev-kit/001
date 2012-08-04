@@ -11,6 +11,10 @@ import com.bg.check.datatype.User;
 import com.bg.check.webservice.SCWebService;
 
 public class GetUserInfoTask extends BaseTask {
+    private String mUserDM;
+    public GetUserInfoTask(String dm) {
+        mUserDM = dm;
+    }
 
     @Override
     public Object run() {
@@ -20,7 +24,7 @@ public class GetUserInfoTask extends BaseTask {
 
         // UserInfo u = new UserInfo();
         // u.setProperty(1, "ycf");
-        rpc.addProperty("User_dm", "ycf");
+        rpc.addProperty("User_dm", mUserDM);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 
