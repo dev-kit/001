@@ -5,9 +5,6 @@ import java.util.Locale;
 import java.util.Random;
 
 import com.bg.check.database.Databasehelper;
-import com.bg.check.engine.GetUserInfoTask;
-import com.bg.check.engine.TaskEngine;
-import com.bg.check.webservice.SCWebService;
 
 import android.app.Application;
 import android.speech.tts.TextToSpeech;
@@ -25,7 +22,6 @@ public class Welcome extends Application implements OnInitListener {
         super.onCreate();
         Databasehelper.init(getApplicationContext());
 
-        TaskEngine.getInstance().appendTask(new GetUserInfoTask());
         mTts = new TextToSpeech(this, this);
     }
 

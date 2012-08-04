@@ -100,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_exit"
+            android:drawableTop="@drawable/ic_back"
             android:background="@drawable/clicker_bg_selector"
             android:textColor="@android:color/white"
             android:padding="5dp"
@@ -125,6 +125,7 @@
         android:background="@android:color/white"
         android:cacheColorHint="@android:color/transparent"
         android:fillViewport="true"
+        android:focusableInTouchMode="true"
         android:layout_below="@id/header"
         android:layout_above="@id/tool_bar"/>
 </RelativeLayout>

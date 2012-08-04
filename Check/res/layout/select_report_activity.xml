@@ -84,8 +84,6 @@
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_alignParentBottom="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -95,6 +93,8 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
@@ -106,6 +106,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
@@ -116,6 +118,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/in_order"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -124,6 +128,8 @@
             android:id="@+id/spinner"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -131,11 +137,13 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:clickable="false"
             android:focusable="true"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@drawable/clicker_bg_selector"
             android:src="@drawable/ic_go"/>
     </LinearLayout>
 

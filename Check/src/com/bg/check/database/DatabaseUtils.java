@@ -16,11 +16,11 @@ public final class DatabaseUtils {
     };
 
     private final static String[] TASK_CONTENT = {
-        Databasehelper.TASK_CONTENT_CONTENT_ID + " AS _id ",
-        Databasehelper.TASK_CONTENT_CH,
-        Databasehelper.TASK_CONTENT_CZ,
-        Databasehelper.TASK_CONTENT_DZM,
-        Databasehelper.TASK_CONTENT_FZM
+        Databasehelper.TASK_ID + " AS _id ",
+        Databasehelper.TASK_CC,
+        Databasehelper.TASK_GDM,
+        Databasehelper.TASK_JCWZ,
+        Databasehelper.TASK_JLSJ
     };
 
     public final static User getUser(String usercode) {
@@ -41,6 +41,6 @@ public final class DatabaseUtils {
 
     public final static Cursor queryTask() {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
-        return db.query(Databasehelper.TABLE_SC_TASK_CONTENT, TASK_CONTENT, null, null, null, null, null);
+        return db.query(Databasehelper.TABLE_SC_TASK, TASK_CONTENT, null, null, null, null, null);
     }
 }
