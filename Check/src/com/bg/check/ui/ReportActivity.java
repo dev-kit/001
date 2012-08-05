@@ -16,7 +16,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.bg.check.R;
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.Database;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 
@@ -96,7 +96,7 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
     private void initFromIntent() {
         Intent intent = getIntent();
         mOrder = intent.getIntExtra(ORDER, -1);
-        mTranId = intent.getIntExtra(Databasehelper.TASK_CONTENT_SWH, -1);
+        mTranId = intent.getIntExtra(Database.TASK_CONTENT_SWH, -1);
         mStartTranID = mTranId;
     }
 
@@ -104,8 +104,8 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
 
         @Override
         protected Cursor doInBackground(Void... params) {
-            SQLiteDatabase db = Databasehelper.getInstance().getReadableDatabase();
-            Cursor c = db.query(Databasehelper.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
+            SQLiteDatabase db = Database.getInstance().getReadableDatabase();
+            Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
             return c;
         }
 
@@ -144,15 +144,15 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
         TextView jsl = (TextView)ReportActivity.this.findViewById(R.id.jsl);
         TextView operate = (TextView)ReportActivity.this.findViewById(R.id.operate);
 
-        mSw = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH));
-        mCh = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CH));
-        mCz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CZ));
-        mFz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_FZM));
-        mDz = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_DZM));
-        mPm = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_PM));
-        mJsl = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_JSL));
+        mSw = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_SWH));
+        mCh = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_CH));
+        mCz = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_CZ));
+        mFz = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_FZM));
+        mDz = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_DZM));
+        mPm = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_PM));
+        mJsl = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_JSL));
 //        mImportance = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT));
-        mOperate = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH));
+        mOperate = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_SWH));
         sw.setText(mSw);
         ch.setText(mCh);
         cz.setText(mCz);

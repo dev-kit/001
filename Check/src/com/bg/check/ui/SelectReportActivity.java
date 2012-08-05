@@ -32,7 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bg.check.R;
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.Database;
 
 public class SelectReportActivity extends ListActivity implements OnCheckedChangeListener,
         OnClickListener {
@@ -77,9 +77,9 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
                 TextView ch = (TextView)view.findViewById(R.id.ch);
                 TextView js = (TextView)view.findViewById(R.id.js);
                 // TextView time = (TextView)view.findViewById(R.id.time);
-                sw.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_SWH)));
-                ch.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_CH)));
-                js.setText(cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT_JSL)));
+                sw.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_SWH)));
+                ch.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_CH)));
+                js.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_JSL)));
 
             }
         };
@@ -132,7 +132,7 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
                 intent.putExtra(ReportActivity.ORDER, 2);
             } else {
                 intent.putExtra(ReportActivity.ORDER, 3);
-                intent.putExtra(Databasehelper.TASK_CONTENT_SWH, c.getPosition());
+                intent.putExtra(Database.TASK_CONTENT_SWH, c.getPosition());
             }
             startActivity(intent);
         }
@@ -142,8 +142,8 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
 
         @Override
         protected Cursor doInBackground(Void... params) {
-            SQLiteDatabase db = Databasehelper.getInstance().getReadableDatabase();
-            Cursor c = db.query(Databasehelper.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
+            SQLiteDatabase db = Database.getInstance().getReadableDatabase();
+            Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
             return c;
         }
 
@@ -160,7 +160,7 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
             // display = (TextView)findViewById(R.id.display);
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(SelectReportActivity.this,
                     R.layout.spinner, cursor, new String[] {
-                        Databasehelper.TASK_CONTENT_SWH
+                        Database.TASK_CONTENT_SWH
                     }, new int[] {
                         android.R.id.text1
                     });

@@ -11,7 +11,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.Database;
 
 public class User implements KvmSerializable {
     public String mUserName;
@@ -169,20 +169,20 @@ public class User implements KvmSerializable {
     }
 
     public void updateDB() {
-        SQLiteDatabase db = Databasehelper.getInstance().getWritableDatabase();
-        String where = Databasehelper.USER_DM + "=" + mUserDM;
+        SQLiteDatabase db = Database.getInstance().getWritableDatabase();
+        String where = Database.USER_DM + "=" + mUserDM;
         ContentValues values = new ContentValues();
-        values.put(Databasehelper.USER_DM, mUserDM);
-        values.put(Databasehelper.USER_MOBILE, mUserMobile);
-        values.put(Databasehelper.USER_NAME, mUserName);
-        values.put(Databasehelper.USER_ONLINE, mUserOnline);
-        values.put(Databasehelper.USER_ROLE, mUserRole);
-        values.put(Databasehelper.USER_ZMLM, mUserZMLM);
-        Cursor c = db.query(Databasehelper.TABLE_SC_USER, null, where, null, null, null, null);
+        values.put(Database.USER_DM, mUserDM);
+        values.put(Database.USER_MOBILE, mUserMobile);
+        values.put(Database.USER_NAME, mUserName);
+        values.put(Database.USER_ONLINE, mUserOnline);
+        values.put(Database.USER_ROLE, mUserRole);
+        values.put(Database.USER_ZMLM, mUserZMLM);
+        Cursor c = db.query(Database.TABLE_SC_USER, null, where, null, null, null, null);
         if (c != null && c.getCount() > 0) {
-            db.update(Databasehelper.TABLE_SC_USER, values, null, null);
+            db.update(Database.TABLE_SC_USER, values, null, null);
         } else {
-            db.insert(Databasehelper.TABLE_SC_USER, null, values);
+            db.insert(Database.TABLE_SC_USER, null, values);
         }
 
     }

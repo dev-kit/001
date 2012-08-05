@@ -18,13 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bg.check.R;
-import com.bg.check.database.DatabaseUtils;
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.DatabaseHandler;
+import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
 
-public class CheckerActivity extends Activity implements OnClickListener, SpeechListener {
+public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener, SpeechListener {
 
     private ListView mList;
     private CursorAdapter mAdapter;
@@ -99,7 +100,7 @@ public class CheckerActivity extends Activity implements OnClickListener, Speech
     private void initListAdapter() {
         mList = (ListView) findViewById(R.id.list);
         mList.setItemsCanFocus(false);
-        Cursor cursor = DatabaseUtils.queryTask();
+        final Cursor cursor = DatabaseHandler.queryTask();
         mAdapter = new ReportAdapter(this, cursor);
         mList.setAdapter(mAdapter);
     }
@@ -120,10 +121,10 @@ public class CheckerActivity extends Activity implements OnClickListener, Speech
 
         public ReportAdapter(Context context, Cursor c) {
             super(context, c);
-            mColumnIndexOrder = c.getColumnIndexOrThrow(Databasehelper.TASK_CC);
-            mColumnIndexTrack = c.getColumnIndexOrThrow(Databasehelper.TASK_GDM);
-            mColumnIndexPosition = c.getColumnIndexOrThrow(Databasehelper.TASK_JCWZ);
-            mColumnIndexNotification = c.getColumnIndexOrThrow(Databasehelper.TASK_JLSJ);
+            mColumnIndexOrder = c.getColumnIndexOrThrow(Database.TASK_CC);
+            mColumnIndexTrack = c.getColumnIndexOrThrow(Database.TASK_GDM);
+            mColumnIndexPosition = c.getColumnIndexOrThrow(Database.TASK_JCWZ);
+            mColumnIndexNotification = c.getColumnIndexOrThrow(Database.TASK_JLSJ);
         }
 
         @Override
@@ -243,5 +244,11 @@ public class CheckerActivity extends Activity implements OnClickListener, Speech
                 mVoice.setText(R.string.voice);
             }
         });
+    }
+
+    @Override
+    public void onUpdate() {
+        final Cursor cursor = DatabaseHandler.queryTask();
+        mAdapter.changeCursor(cursor);
     }
 }
