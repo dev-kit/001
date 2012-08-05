@@ -29,7 +29,7 @@ public class Welcome extends Application {
         CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
 //        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "马爱东", "SXT"));
 //        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349, 1));
-//        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", ""));
+        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", new String[]{"243"}));
 //        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
 //        TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
 //        TaskEngine.getInstance().appendTask(new GetServerTimeTask());

@@ -65,7 +65,7 @@ public class TaskContent {
             if (childs instanceof SoapObject) {
                 loopSoap((SoapObject)childs);
             } else {
-                LogUtils.logD(result.toString());
+//                LogUtils.logD(result.toString());
                 addTasks(result);
                 return;
             }

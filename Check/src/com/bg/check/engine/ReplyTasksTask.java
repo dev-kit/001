@@ -2,6 +2,7 @@
 package com.bg.check.engine;
 
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
@@ -13,7 +14,7 @@ public class ReplyTasksTask extends BaseTask {
 
     private String[] mMessageIds;
 
-    private ReplyTasksTask(String dm, String[] messageIds) {
+    public ReplyTasksTask(String dm, String[] messageIds) {
         mUserDM = dm;
         mMessageIds = messageIds;
     }
@@ -26,7 +27,11 @@ public class ReplyTasksTask extends BaseTask {
         SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE, SCWebService.SC_METHOD_REPLY_TASKS);
 
         rpc.addProperty("User_dm", mUserDM);
-        rpc.addProperty("messageids", mMessageIds);
+        SoapObject soap = new SoapObject(SCWebService.SC_NAME_SPACE, SCWebService.SC_METHOD_REPLY_TASKS);
+        for (String id : mMessageIds) {
+            soap.addProperty("string", id);
+        }
+        rpc.addProperty("messageids", soap);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 

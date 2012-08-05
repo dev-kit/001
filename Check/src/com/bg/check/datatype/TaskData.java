@@ -69,7 +69,7 @@ public class TaskData {
             if (childs instanceof SoapObject) {
                 loopSoapObject((SoapObject)childs, tasks);
             } else {
-                LogUtils.logD(result.toString());
+                // LogUtils.logD(result.toString());
                 TaskData task = new TaskData();
                 task.addTasks(result);
                 tasks.add(task);
@@ -77,27 +77,6 @@ public class TaskData {
             }
         }
     }
-
-    // public TaskData(SoapObject soap) {
-    // SoapObject result = (SoapObject)soap.getProperty(0);
-    // // result = (SoapObject)result.getProperty(0);
-    // // result = (SoapObject)result.getProperty(0);
-    // loopSoap(result);
-    //
-    // }
-
-    // private void loopSoap(SoapObject result) {
-    // for (int i = 0; i < result.getPropertyCount(); i++) {
-    // Object childs = (Object)result.getProperty(i);
-    // if (childs instanceof SoapObject) {
-    // loopSoap((SoapObject)childs);
-    // } else {
-    // LogUtils.logD(childs.toString());
-    // addTasks(result);
-    // return;
-    // }
-    // }
-    // }
 
     private void addTasks(SoapObject soap) {
         mTaskMessageID = Long.parseLong(soap.getPropertySafelyAsString(Database.TASK_MESSAGEID));
