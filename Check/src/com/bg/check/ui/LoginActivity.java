@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bg.check.R;
-import com.bg.check.database.DatabaseUtils;
+import com.bg.check.database.DatabaseHandler;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.SpeechEngine;
 
@@ -144,7 +144,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected User doInBackground(String... usercode) {
-            return DatabaseUtils.getUser(usercode[0]);
+            return DatabaseHandler.getUser(usercode[0]);
         }
 
         @Override

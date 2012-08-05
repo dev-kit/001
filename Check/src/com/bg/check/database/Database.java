@@ -1,11 +1,10 @@
-
 package com.bg.check.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class Databasehelper extends SQLiteOpenHelper {
+public class Database extends SQLiteOpenHelper {
     public static final String TASK_CONTENT_USERDM = "USERDM";
 
     private static final String TASK_CONTENTZXSJ = "ZXSJ";
@@ -112,9 +111,9 @@ public class Databasehelper extends SQLiteOpenHelper {
 
     public static final String TABLE_SC_TASK_CONTENT = "sc_task_content";
 
-    private static Databasehelper sInstance = null;
+    private static Database sInstance = null;
 
-    public Databasehelper(Context context) {
+    public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -194,7 +193,7 @@ public class Databasehelper extends SQLiteOpenHelper {
      * Return a singleton helper for the database. You should involve init() when application 
      * is launched firstly.
      */
-    public static Databasehelper getInstance() {
+    public static Database getInstance() {
         if (sInstance == null) {
             throw new IllegalStateException();
         }
@@ -206,7 +205,7 @@ public class Databasehelper extends SQLiteOpenHelper {
             throw new IllegalArgumentException();
         }
         if (sInstance == null) {
-            sInstance = new Databasehelper(context);
+            sInstance = new Database(context);
         }
     }
 
@@ -214,3 +213,4 @@ public class Databasehelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 }
+

@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.Database;
 import com.bg.check.engine.utils.LogUtils;
 
 public class TaskContent {
@@ -56,96 +56,95 @@ public class TaskContent {
     public String mTaskContentLJZYSX;
 
     public TaskContent(SoapObject soap) {
-        mTaskContentPK = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PK);
+        mTaskContentPK = soap.getPropertySafelyAsString(Database.TASK_CONTENT_PK);
 
-        mTaskContentSWH = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_SWH);
+        mTaskContentSWH = soap.getPropertySafelyAsString(Database.TASK_CONTENT_SWH);
 
-        mTaskContentCH = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_CH);
+        mTaskContentCH = soap.getPropertySafelyAsString(Database.TASK_CONTENT_CH);
 
-        mTaskContentCZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_CZ);
+        mTaskContentCZ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_CZ);
 
-        mTaskContentYZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_YZ);
+        mTaskContentYZ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_YZ);
 
-        mTaskContentZMLM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_ZMLM);
+        mTaskContentZMLM = soap.getPropertySafelyAsString(Database.TASK_CONTENT_ZMLM);
 
-        mTaskContentZAIZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_ZAIZ);
+        mTaskContentZAIZ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_ZAIZ);
 
-        mTaskContentDZM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_DZM);
+        mTaskContentDZM = soap.getPropertySafelyAsString(Database.TASK_CONTENT_DZM);
 
-        mTaskContentPM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PM);
+        mTaskContentPM = soap.getPropertySafelyAsString(Database.TASK_CONTENT_PM);
 
-        mTaskContentSHR = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_SHR);
+        mTaskContentSHR = soap.getPropertySafelyAsString(Database.TASK_CONTENT_SHR);
 
-        mTaskContentFZM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_FZM);
+        mTaskContentFZM = soap.getPropertySafelyAsString(Database.TASK_CONTENT_FZM);
 
-        mTaskContentPB = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PB);
+        mTaskContentPB = soap.getPropertySafelyAsString(Database.TASK_CONTENT_PB);
 
-        mTaskContentJSL = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_JSL);
+        mTaskContentJSL = soap.getPropertySafelyAsString(Database.TASK_CONTENT_JSL);
 
-        mTaskContentQBID = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_QBID);
+        mTaskContentQBID = soap.getPropertySafelyAsString(Database.TASK_CONTENT_QBID);
 
-        mTaskContentHJ_ZSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJ_ZSJ);
+        mTaskContentHJ_ZSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJ_ZSJ);
 
-        mTaskContentHJ_YSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJ_YSJ);
+        mTaskContentHJ_YSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJ_YSJ);
 
-        mTaskContentLSSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_LSSJ);
+        mTaskContentLSSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_LSSJ);
 
-        mTaskContentHJZYSX = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJZYSX);
+        mTaskContentHJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJZYSX);
 
-        mTaskContentLJZYSX = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_LJZYSX);
+        mTaskContentLJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_LJZYSX);
     }
 
     public void updateDB() {
-        SQLiteDatabase db = Databasehelper.getInstance().getWritableDatabase();
-        String where = Databasehelper.TASK_CONTENT_CONTENT_ID + "=" + mContentID;
+        SQLiteDatabase db = Database.getInstance().getWritableDatabase();
+        String where = Database.TASK_CONTENT_CONTENT_ID + "=" + mContentID;
         ContentValues values = new ContentValues();
-        values.put(Databasehelper.TASK_CONTENTID, mContentID);
-        values.put(Databasehelper.TASK_MESSAGEID, mMessageID);
-        values.put(Databasehelper.TASK_CONTENT_USERDM, mUserDM);
-        values.put(Databasehelper.TASK_CONTENT_PK, mTaskContentPK);
+        values.put(Database.TASK_CONTENTID, mContentID);
+        values.put(Database.TASK_MESSAGEID, mMessageID);
+        values.put(Database.TASK_CONTENT_USERDM, mUserDM);
+        values.put(Database.TASK_CONTENT_PK, mTaskContentPK);
+        values.put(Database.TASK_CONTENT_SWH, mTaskContentSWH);
 
-        values.put(Databasehelper.TASK_CONTENT_SWH, mTaskContentSWH);
+        values.put(Database.TASK_CONTENT_CH, mTaskContentCH);
 
-        values.put(Databasehelper.TASK_CONTENT_CH, mTaskContentCH);
+        values.put(Database.TASK_CONTENT_CZ, mTaskContentCZ);
 
-        values.put(Databasehelper.TASK_CONTENT_CZ, mTaskContentCZ);
+        values.put(Database.TASK_CONTENT_YZ, mTaskContentYZ);
 
-        values.put(Databasehelper.TASK_CONTENT_YZ, mTaskContentYZ);
+        values.put(Database.TASK_CONTENT_ZMLM, mTaskContentZMLM);
 
-        values.put(Databasehelper.TASK_CONTENT_ZMLM, mTaskContentZMLM);
+        values.put(Database.TASK_CONTENT_ZAIZ, mTaskContentZAIZ);
 
-        values.put(Databasehelper.TASK_CONTENT_ZAIZ, mTaskContentZAIZ);
+        values.put(Database.TASK_CONTENT_DZM, mTaskContentDZM);
 
-        values.put(Databasehelper.TASK_CONTENT_DZM, mTaskContentDZM);
+        values.put(Database.TASK_CONTENT_PM, mTaskContentPM);
 
-        values.put(Databasehelper.TASK_CONTENT_PM, mTaskContentPM);
+        values.put(Database.TASK_CONTENT_SHR, mTaskContentSHR);
 
-        values.put(Databasehelper.TASK_CONTENT_SHR, mTaskContentSHR);
+        values.put(Database.TASK_CONTENT_FZM, mTaskContentFZM);
 
-        values.put(Databasehelper.TASK_CONTENT_FZM, mTaskContentFZM);
+        values.put(Database.TASK_CONTENT_PB, mTaskContentPB);
 
-        values.put(Databasehelper.TASK_CONTENT_PB, mTaskContentPB);
+        values.put(Database.TASK_CONTENT_JSL, mTaskContentJSL);
 
-        values.put(Databasehelper.TASK_CONTENT_JSL, mTaskContentJSL);
+        values.put(Database.TASK_CONTENT_QBID, mTaskContentQBID);
 
-        values.put(Databasehelper.TASK_CONTENT_QBID, mTaskContentQBID);
+        values.put(Database.TASK_CONTENT_HJ_ZSJ, mTaskContentHJ_ZSJ);
 
-        values.put(Databasehelper.TASK_CONTENT_HJ_ZSJ, mTaskContentHJ_ZSJ);
+        values.put(Database.TASK_CONTENT_HJ_YSJ, mTaskContentHJ_YSJ);
 
-        values.put(Databasehelper.TASK_CONTENT_HJ_YSJ, mTaskContentHJ_YSJ);
+        values.put(Database.TASK_CONTENT_LSSJ, mTaskContentLSSJ);
 
-        values.put(Databasehelper.TASK_CONTENT_LSSJ, mTaskContentLSSJ);
+        values.put(Database.TASK_CONTENT_HJZYSX, mTaskContentHJZYSX);
 
-        values.put(Databasehelper.TASK_CONTENT_HJZYSX, mTaskContentHJZYSX);
+        values.put(Database.TASK_CONTENT_LJZYSX, mTaskContentLJZYSX);
 
-        values.put(Databasehelper.TASK_CONTENT_LJZYSX, mTaskContentLJZYSX);
-
-        Cursor c = db.query(Databasehelper.TABLE_SC_TASK_CONTENT, null, where, null, null, null,
+        Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null,
                 null);
         if (c != null && c.getCount() > 0) {
             LogUtils.logD("Duplicated tasks " + this);
         } else {
-            db.insert(Databasehelper.TABLE_SC_TASK_CONTENT, null, values);
+            db.insert(Database.TABLE_SC_TASK_CONTENT, null, values);
         }
     }
 

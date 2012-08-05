@@ -2,7 +2,7 @@ package com.bg.check;
 
 import android.app.Application;
 
-import com.bg.check.database.Databasehelper;
+import com.bg.check.database.Database;
 import com.bg.check.engine.GetDetailsTask;
 import com.bg.check.engine.GetServerTimeTask;
 import com.bg.check.engine.GetTasksTask;
@@ -19,7 +19,7 @@ public class Welcome extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Databasehelper.init(getApplicationContext());
+        Database.init(getApplicationContext());
         sayHello();
 
         // For test
