@@ -36,22 +36,22 @@ public class User implements KvmSerializable {
     }
 
     public User(SoapObject soap) {
-        mUserDM = soap.getPropertyAsString("User_dm");
-        mUserName = soap.getPropertyAsString("User_name");
+        mUserDM = soap.getPropertySafelyAsString("User_dm");
+        mUserName = soap.getPropertySafelyAsString("User_name");
 
-        mPassword = soap.getPropertyAsString("User_password");
+        mPassword = soap.getPropertySafelyAsString("User_password");
 
-        mUserGWM = soap.getPropertyAsString("User_gwm");
+        mUserGWM = soap.getPropertySafelyAsString("User_gwm");
 
-        mUserRole = soap.getPropertyAsString("User_role");
+        mUserRole = soap.getPropertySafelyAsString("User_role");
 
-        mUserOnline = soap.getPropertyAsString("User_online");
+        mUserOnline = soap.getPropertySafelyAsString("User_online");
 
-        mUserSession = soap.getPropertyAsString("User_session");
+        mUserSession = soap.getPropertySafelyAsString("User_session");
 
-        mUserMobile = soap.getPropertyAsString("User_mobile");
+        mUserMobile = soap.getPropertySafelyAsString("User_mobile");
 
-        mUserZMLM = soap.getPropertyAsString("User_zmlm");
+        mUserZMLM = soap.getPropertySafelyAsString("User_zmlm");
     }
 
     @Override
@@ -170,7 +170,7 @@ public class User implements KvmSerializable {
 
     public void updateDB() {
         SQLiteDatabase db = Databasehelper.getInstance().getWritableDatabase();
-        String where = Databasehelper.USER_DM + "=" + mUserDM;
+        String where = Databasehelper.USER_DM + "='" + mUserDM + "'";
         ContentValues values = new ContentValues();
         values.put(Databasehelper.USER_DM, mUserDM);
         values.put(Databasehelper.USER_MOBILE, mUserMobile);

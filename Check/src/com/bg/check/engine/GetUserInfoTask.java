@@ -43,6 +43,7 @@ public class GetUserInfoTask extends BaseTask {
                     envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
         // 获取返回的数据
@@ -53,6 +54,7 @@ public class GetUserInfoTask extends BaseTask {
             if (envelope.getResponse() != null) {
                 result = (SoapObject)envelope.getResponse();
                 user = new User(result);
+                user.mUserDM = mUserDM;
                 user.updateDB();
             }
         } catch (SoapFault e) {

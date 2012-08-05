@@ -15,6 +15,8 @@ public class TaskContent {
 
     public long mContentID;
 
+    public String mUserDM;
+
     public String mTaskContentPK;
 
     public String mTaskContentSWH;
@@ -54,43 +56,43 @@ public class TaskContent {
     public String mTaskContentLJZYSX;
 
     public TaskContent(SoapObject soap) {
-        mTaskContentPK = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_PK);
+        mTaskContentPK = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PK);
 
-        mTaskContentSWH = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_SWH);
+        mTaskContentSWH = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_SWH);
 
-        mTaskContentCH = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_CH);
+        mTaskContentCH = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_CH);
 
-        mTaskContentCZ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_CZ);
+        mTaskContentCZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_CZ);
 
-        mTaskContentYZ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_YZ);
+        mTaskContentYZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_YZ);
 
-        mTaskContentZMLM = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_ZMLM);
+        mTaskContentZMLM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_ZMLM);
 
-        mTaskContentZAIZ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_ZAIZ);
+        mTaskContentZAIZ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_ZAIZ);
 
-        mTaskContentDZM = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_DZM);
+        mTaskContentDZM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_DZM);
 
-        mTaskContentPM = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_PM);
+        mTaskContentPM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PM);
 
-        mTaskContentSHR = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_SHR);
+        mTaskContentSHR = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_SHR);
 
-        mTaskContentFZM = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_FZM);
+        mTaskContentFZM = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_FZM);
 
-        mTaskContentPB = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_PB);
+        mTaskContentPB = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_PB);
 
-        mTaskContentJSL = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_JSL);
+        mTaskContentJSL = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_JSL);
 
-        mTaskContentQBID = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_QBID);
+        mTaskContentQBID = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_QBID);
 
-        mTaskContentHJ_ZSJ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_HJ_ZSJ);
+        mTaskContentHJ_ZSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJ_ZSJ);
 
-        mTaskContentHJ_YSJ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_HJ_YSJ);
+        mTaskContentHJ_YSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJ_YSJ);
 
-        mTaskContentLSSJ = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_LSSJ);
+        mTaskContentLSSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_LSSJ);
 
-        mTaskContentHJZYSX = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_HJZYSX);
+        mTaskContentHJZYSX = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_HJZYSX);
 
-        mTaskContentLJZYSX = soap.getPropertyAsString(Databasehelper.TASK_CONTENT_LJZYSX);
+        mTaskContentLJZYSX = soap.getPropertySafelyAsString(Databasehelper.TASK_CONTENT_LJZYSX);
     }
 
     public void updateDB() {
@@ -99,6 +101,7 @@ public class TaskContent {
         ContentValues values = new ContentValues();
         values.put(Databasehelper.TASK_CONTENTID, mContentID);
         values.put(Databasehelper.TASK_MESSAGEID, mMessageID);
+        values.put(Databasehelper.TASK_CONTENT_USERDM, mUserDM);
         values.put(Databasehelper.TASK_CONTENT_PK, mTaskContentPK);
 
         values.put(Databasehelper.TASK_CONTENT_SWH, mTaskContentSWH);

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Databasehelper extends SQLiteOpenHelper {
-    private static final String TASK_CONTENT_USERDM = "USERDM";
+    public static final String TASK_CONTENT_USERDM = "USERDM";
 
     private static final String TASK_CONTENTZXSJ = "ZXSJ";
 
@@ -141,7 +141,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     private void createTaskTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
-                TASK_ID + " NUMBER(10) not null," +
+                TASK_ID + " INTEGER not null," +
                 XLTASK_ID  + " NUMBER(10)," +
                 TASK_CONTENTID + " NUMBER(20)," +
                 TASK_CC   + "   VARCHAR2(30) not null," +

@@ -25,10 +25,10 @@ public class Welcome extends Application {
         // For test
 //        TaskEngine.getInstance().appendTask(new GetUserInfoTask("mad"));
 //        TaskEngine.getInstance().appendTask(new LoginTask("mad", "", ""));
-//        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "", ""));
-//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", "", 0));
-////        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", ""));
-////        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
+        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "Âí°®¶«", "SXT"));
+//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", -1, 0));
+//        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", ""));
+//        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
 //        TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
 //        TaskEngine.getInstance().appendTask(new GetServerTimeTask());
     }

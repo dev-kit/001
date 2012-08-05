@@ -13,11 +13,11 @@ public class GetDetailsTask extends BaseTask {
 
     private String mUserDM;
 
-    private String mContentID;
+    private long mContentID;
 
     private int mTaskLX;
 
-    public GetDetailsTask(String userDM, String contentID, int taskLX) {
+    public GetDetailsTask(String userDM, long contentID, int taskLX) {
         mUserDM = userDM;
         mContentID = contentID;
         mTaskLX = taskLX;
@@ -50,6 +50,9 @@ public class GetDetailsTask extends BaseTask {
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         TaskContent taskContent = new TaskContent(object);
+        taskContent.mUserDM = mUserDM;
+        taskContent.mContentID = mContentID;
+        taskContent.updateDB();
         return taskContent;
     }
 

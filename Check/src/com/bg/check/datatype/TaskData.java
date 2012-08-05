@@ -57,27 +57,53 @@ public class TaskData {
     public String mTaskLYFX;
 
     public TaskData(SoapObject soap) {
-        mTaskMessageID = (Long)soap.getProperty(Databasehelper.TASK_MESSAGEID);
-        mTaskID = (Long)soap.getProperty(Databasehelper.TASK_ID);
-        mTask_ContentID = (Long)soap.getProperty(Databasehelper.TASK_CONTENTID);
-        mTaskCZBZ = (Integer)soap.getProperty(Databasehelper.TASK_CZBZ);
-        mTaskCC = soap.getPropertyAsString(Databasehelper.TASK_CC);
-        mTaskGDM = soap.getPropertyAsString(Databasehelper.TASK_GDM);
-        mTaskZYR = soap.getPropertyAsString(Databasehelper.TASK_ZYR);
-        mTaskSCHM = soap.getPropertyAsString(Databasehelper.TASK_SCHM);
-        mTaskLX = (Integer)soap.getProperty(Databasehelper.TASK_LX);
-        mTaskZMLM = soap.getPropertyAsString(Databasehelper.TASK_ZMLM);
-        mTaskJLSJ = soap.getPropertyAsString(Databasehelper.TASK_JLSJ);
-        mTaskJCWZ = soap.getPropertyAsString(Databasehelper.TASK_JCWZ);
-        mTaskQSXH = (Integer)soap.getProperty(Databasehelper.TASK_QSXH);
-        mTaskZZXH = (Integer)soap.getProperty(Databasehelper.TASK_ZZXH);
-        mTaskLYFX = soap.getPropertyAsString(Databasehelper.TASK_LYFX);
+        SoapObject result = (SoapObject)soap.getProperty(0);
+        // result = (SoapObject)result.getProperty(0);
+        // result = (SoapObject)result.getProperty(0);
+        loopSoap(result);
+
+    }
+
+    private void loopSoap(SoapObject result) {
+        SoapObject nextSoapObject;
+        for (int i = 0; i < result.getPropertyCount(); i++) {
+            Object childs = (Object)result.getProperty(i);
+            if (childs instanceof SoapObject) {
+                loopSoap((SoapObject)childs);
+            } else {
+                LogUtils.logD(childs.toString());
+                addTasks(result);
+                return;
+            }
+        }
+    }
+
+    private void addTasks(SoapObject soap) {
+        mTaskMessageID = Long.parseLong(soap
+                .getPropertySafelyAsString(Databasehelper.TASK_MESSAGEID));
+        mTaskID = Long.parseLong(soap.getPropertySafely(Databasehelper.TASK_ID).toString());
+        mTask_ContentID = Long.parseLong(soap.getPropertySafely(Databasehelper.TASK_CONTENTID)
+                .toString());
+        mTaskCZBZ = Integer.parseInt(soap.getPropertySafely(Databasehelper.TASK_CZBZ).toString());
+        mTaskCC = soap.getPropertySafelyAsString(Databasehelper.TASK_CC);
+        mTaskGDM = soap.getPropertySafelyAsString(Databasehelper.TASK_GDM);
+        mTaskZYR = soap.getPropertySafelyAsString(Databasehelper.TASK_ZYR);
+        mTaskSCHM = soap.getPropertySafelyAsString(Databasehelper.TASK_SCHM);
+        mTaskLX = Integer.parseInt(soap.getPropertySafely(Databasehelper.TASK_LX).toString());
+        mTaskZMLM = soap.getPropertySafelyAsString(Databasehelper.TASK_ZMLM);
+        mTaskJLSJ = soap.getPropertySafelyAsString(Databasehelper.TASK_JLSJ);
+        mTaskJCWZ = soap.getPropertySafelyAsString(Databasehelper.TASK_JCWZ);
+        mTaskQSXH = Integer.parseInt(soap.getPropertySafely(Databasehelper.TASK_QSXH).toString());
+        mTaskZZXH = Integer.parseInt(soap.getPropertySafely(Databasehelper.TASK_ZZXH).toString());
+        mTaskLYFX = soap.getPropertySafelyAsString(Databasehelper.TASK_LYFX);
+        updateDB();
     }
 
     public void updateDB() {
         SQLiteDatabase db = Databasehelper.getInstance().getWritableDatabase();
         String where = Databasehelper.TASK_ID + "=" + mTaskID;
         ContentValues values = new ContentValues();
+        values.put(Databasehelper.TASK_ID, mTaskID);
         values.put(Databasehelper.TASK_LYFX, mTaskLYFX);
 
         values.put(Databasehelper.TASK_JLSJ, mTaskJLSJ);

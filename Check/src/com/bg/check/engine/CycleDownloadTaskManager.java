@@ -65,7 +65,7 @@ public class CycleDownloadTaskManager {
                 } else {
                     mIsTaskCompleted = true;
                     // TODO: get tasks detail
-                    final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM, "", -1);
+                    final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM, -1, -1);
                     TaskEngine.getInstance().appendTask(getDetailsTask);
                 }
             }
