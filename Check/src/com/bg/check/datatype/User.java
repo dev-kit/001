@@ -30,7 +30,7 @@ public class User implements KvmSerializable {
 
     private String mUserMobile;
 
-    private String mUserZMLM;
+    public String mUserZMLM;
 
     public User() {
     }

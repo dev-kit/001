@@ -6,6 +6,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.os.PowerManager;
+
 import com.bg.check.webservice.SCWebService;
 
 public class LoginTask extends BaseTask {
@@ -46,7 +48,11 @@ public class LoginTask extends BaseTask {
             e.printStackTrace();
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        return Integer.parseInt(object.getProperty(0).toString());
+        int result = Integer.parseInt(object.getProperty(0).toString());
+        if (result > 0) {
+            CycleDownloadTaskManager.getInstance().run(mUserDM, "", "");
+        }
+        return result;
     }
 
 }

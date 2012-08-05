@@ -16,6 +16,8 @@ public class TaskEngine {
 
     private static int sID;
 
+    private static boolean sRun;
+
     private TaskEngine() {
         run();
     }
@@ -26,7 +28,12 @@ public class TaskEngine {
     }
 
     private void run() {
-        LogUtils.logD("TaskEngine.init");
+        if (sRun) {
+            LogUtils.logE("TaskEngine has been running!");
+            return;
+        }
+        sRun = true;
+        LogUtils.logD("TaskEngine.run, ID" + sID);
         new Thread(new Runnable() {
 
             @Override
@@ -67,7 +74,7 @@ public class TaskEngine {
 
                 }
             }
-        }, "TaskEngine" + sID).start();
+        }, "TaskEngine" + sID++).start();
 
     }
 
