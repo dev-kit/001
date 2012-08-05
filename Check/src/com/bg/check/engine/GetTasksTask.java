@@ -1,6 +1,9 @@
 
 package com.bg.check.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -28,7 +31,8 @@ public class GetTasksTask extends BaseTask {
     @Override
     public Object run() {
 
-        SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE, SCWebService.SC_METHOD_GET_TASKS);
+        SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE,
+                SCWebService.SC_METHOD_GET_TASKS);
 
         rpc.addProperty("User_dm", mUserDM);
         rpc.addProperty("User_name", mUserName);
@@ -47,10 +51,10 @@ public class GetTasksTask extends BaseTask {
             e.printStackTrace();
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        TaskData task = new TaskData(object);
-        task.updateDB();
+        List<TaskData> tasks = new ArrayList<TaskData>();
+        TaskData.parseTask(object, tasks);
 
-        return task;
+        return tasks;
     }
 
 }

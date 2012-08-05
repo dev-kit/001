@@ -3,6 +3,7 @@ package com.bg.check;
 import android.app.Application;
 
 import com.bg.check.database.Database;
+import com.bg.check.engine.CycleDownloadTaskManager;
 import com.bg.check.engine.GetDetailsTask;
 import com.bg.check.engine.GetServerTimeTask;
 import com.bg.check.engine.GetTasksTask;
@@ -25,8 +26,9 @@ public class Welcome extends Application {
         // For test
 //        TaskEngine.getInstance().appendTask(new GetUserInfoTask("mad"));
 //        TaskEngine.getInstance().appendTask(new LoginTask("mad", "", ""));
-        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "马爱东", "SXT"));
-//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", -1, 0));
+        CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
+//        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "马爱东", "SXT"));
+//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349, 1));
 //        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", ""));
 //        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
 //        TaskEngine.getInstance().appendTask(new LogoutTask("mad"));

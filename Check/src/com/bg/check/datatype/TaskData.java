@@ -1,13 +1,15 @@
 
 package com.bg.check.datatype;
 
+import java.util.List;
+
 import org.ksoap2.serialization.SoapObject;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
 import com.bg.check.engine.utils.LogUtils;
 
 public class TaskData {
@@ -18,7 +20,7 @@ public class TaskData {
     public long mTaskID;
 
     // <TASK_CONTENTID />
-    public long mTask_ContentID;
+    public long mTaskContentID;
 
     // <TASK_CZBZ />
     public int mTaskCZBZ;
@@ -56,34 +58,51 @@ public class TaskData {
     // <TASK_LYFX />
     public String mTaskLYFX;
 
-    public TaskData(SoapObject soap) {
+    public static void parseTask(SoapObject soap, List<TaskData> tasks) {
         SoapObject result = (SoapObject)soap.getProperty(0);
-        // result = (SoapObject)result.getProperty(0);
-        // result = (SoapObject)result.getProperty(0);
-        loopSoap(result);
-
+        loopSoapObject(result, tasks);
     }
 
-    private void loopSoap(SoapObject result) {
-        SoapObject nextSoapObject;
+    private static void loopSoapObject(SoapObject result, List<TaskData> tasks) {
         for (int i = 0; i < result.getPropertyCount(); i++) {
             Object childs = (Object)result.getProperty(i);
             if (childs instanceof SoapObject) {
-                loopSoap((SoapObject)childs);
+                loopSoapObject((SoapObject)childs, tasks);
             } else {
-                LogUtils.logD(childs.toString());
-                addTasks(result);
+                LogUtils.logD(result.toString());
+                TaskData task = new TaskData();
+                task.addTasks(result);
+                tasks.add(task);
                 return;
             }
         }
     }
 
+    // public TaskData(SoapObject soap) {
+    // SoapObject result = (SoapObject)soap.getProperty(0);
+    // // result = (SoapObject)result.getProperty(0);
+    // // result = (SoapObject)result.getProperty(0);
+    // loopSoap(result);
+    //
+    // }
+
+    // private void loopSoap(SoapObject result) {
+    // for (int i = 0; i < result.getPropertyCount(); i++) {
+    // Object childs = (Object)result.getProperty(i);
+    // if (childs instanceof SoapObject) {
+    // loopSoap((SoapObject)childs);
+    // } else {
+    // LogUtils.logD(childs.toString());
+    // addTasks(result);
+    // return;
+    // }
+    // }
+    // }
+
     private void addTasks(SoapObject soap) {
-        mTaskMessageID = Long.parseLong(soap
-                .getPropertySafelyAsString(Database.TASK_MESSAGEID));
+        mTaskMessageID = Long.parseLong(soap.getPropertySafelyAsString(Database.TASK_MESSAGEID));
         mTaskID = Long.parseLong(soap.getPropertySafely(Database.TASK_ID).toString());
-        mTask_ContentID = Long.parseLong(soap.getPropertySafely(Database.TASK_CONTENTID)
-                .toString());
+        mTaskContentID = Long.parseLong(soap.getPropertySafely(Database.TASK_CONTENTID).toString());
         mTaskCZBZ = Integer.parseInt(soap.getPropertySafely(Database.TASK_CZBZ).toString());
         mTaskCC = soap.getPropertySafelyAsString(Database.TASK_CC);
         mTaskGDM = soap.getPropertySafelyAsString(Database.TASK_GDM);
@@ -100,7 +119,6 @@ public class TaskData {
     }
 
     public void updateDB() {
-        SQLiteDatabase db = Database.getInstance().getWritableDatabase();
         String where = Database.TASK_ID + "=" + mTaskID;
         ContentValues values = new ContentValues();
         values.put(Database.TASK_ID, mTaskID);
@@ -130,17 +148,18 @@ public class TaskData {
 
         values.put(Database.TASK_CC, mTaskCC);
 
-        values.put(Database.TASK_CONTENTID, mTask_ContentID);
-        Cursor c = db.query(Database.TABLE_SC_TASK, null, where, null, null, null, null);
+        values.put(Database.TASK_CONTENTID, mTaskContentID);
+        Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, null, where, null, null, null,
+                null);
         if (c != null && c.getCount() > 0) {
             LogUtils.logD("Duplicated tasks " + this);
         } else {
-            db.insert(Database.TABLE_SC_TASK, null, values);
+            DatabaseHandler.insert(Database.TABLE_SC_TASK, values);
         }
     }
 
     public String toString() {
-        return mTaskMessageID + " " + mTaskID + " " + mTask_ContentID + " " + mTaskCZBZ + " "
+        return mTaskMessageID + " " + mTaskID + " " + mTaskContentID + " " + mTaskCZBZ + " "
                 + mTaskCC + " " + mTaskGDM + " " + mTaskZYR + " " + mTaskSCHM + " " + mTaskLX + " "
                 + mTaskZMLM + " " + mTaskJLSJ + " " + mTaskJCWZ + " " + mTaskQSXH + " " + mTaskZZXH
                 + " " + mTaskLYFX;

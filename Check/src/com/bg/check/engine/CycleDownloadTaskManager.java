@@ -1,6 +1,9 @@
 
 package com.bg.check.engine;
 
+import java.util.List;
+
+import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.utils.LogUtils;
 
@@ -64,9 +67,14 @@ public class CycleDownloadTaskManager {
                     TaskEngine.getInstance().appendTask(getTasksTask);
                 } else {
                     mIsTaskCompleted = true;
-                    // TODO: get tasks detail
-                    final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM, -1, -1);
-                    TaskEngine.getInstance().appendTask(getDetailsTask);
+                    @SuppressWarnings("unchecked")
+                    List<TaskData> tasks = (List<TaskData>)result;
+                    for (TaskData task : tasks) {
+                        final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM,
+                                task.mTaskContentID, task.mTaskLX);
+                        TaskEngine.getInstance().appendTask(getDetailsTask);
+                        // TODO: How about failed? setCallback
+                    }
                 }
             }
         };

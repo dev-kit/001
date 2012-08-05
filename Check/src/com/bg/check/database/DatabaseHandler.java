@@ -48,7 +48,6 @@ public final class DatabaseHandler {
         }
     }
 
-    final SQLiteDatabase db = mDatabase.getWritableDatabase();
     public final static User getUser(String usercode) {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
         final String selection = Database.USER_DM + "=?";

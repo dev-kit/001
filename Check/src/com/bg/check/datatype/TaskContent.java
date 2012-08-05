@@ -5,9 +5,9 @@ import org.ksoap2.serialization.SoapObject;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
 import com.bg.check.engine.utils.LogUtils;
 
 public class TaskContent {
@@ -56,6 +56,23 @@ public class TaskContent {
     public String mTaskContentLJZYSX;
 
     public TaskContent(SoapObject soap) {
+        loopSoap(soap);
+    }
+
+    private void loopSoap(SoapObject result) {
+        for (int i = 0; i < result.getPropertyCount(); i++) {
+            Object childs = (Object)result.getProperty(i);
+            if (childs instanceof SoapObject) {
+                loopSoap((SoapObject)childs);
+            } else {
+                LogUtils.logD(result.toString());
+                addTasks(result);
+                return;
+            }
+        }
+    }
+
+    private void addTasks(SoapObject soap) {
         mTaskContentPK = soap.getPropertySafelyAsString(Database.TASK_CONTENT_PK);
 
         mTaskContentSWH = soap.getPropertySafelyAsString(Database.TASK_CONTENT_SWH);
@@ -93,13 +110,13 @@ public class TaskContent {
         mTaskContentHJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJZYSX);
 
         mTaskContentLJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_LJZYSX);
+        updateDB();
     }
 
     public void updateDB() {
-        SQLiteDatabase db = Database.getInstance().getWritableDatabase();
         String where = Database.TASK_CONTENT_CONTENT_ID + "=" + mContentID;
         ContentValues values = new ContentValues();
-        values.put(Database.TASK_CONTENTID, mContentID);
+        values.put(Database.TASK_CONTENT_CONTENT_ID, mContentID);
         values.put(Database.TASK_MESSAGEID, mMessageID);
         values.put(Database.TASK_CONTENT_USERDM, mUserDM);
         values.put(Database.TASK_CONTENT_PK, mTaskContentPK);
@@ -139,12 +156,12 @@ public class TaskContent {
 
         values.put(Database.TASK_CONTENT_LJZYSX, mTaskContentLJZYSX);
 
-        Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null,
-                null);
+        Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
+                null, null);
         if (c != null && c.getCount() > 0) {
             LogUtils.logD("Duplicated tasks " + this);
         } else {
-            db.insert(Database.TABLE_SC_TASK_CONTENT, null, values);
+            DatabaseHandler.insert(Database.TABLE_SC_TASK_CONTENT, values);
         }
     }
 

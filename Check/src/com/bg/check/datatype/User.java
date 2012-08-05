@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
 
 public class User implements KvmSerializable {
     public String mUserName;
@@ -169,7 +170,6 @@ public class User implements KvmSerializable {
     }
 
     public void updateDB() {
-        SQLiteDatabase db = Database.getInstance().getWritableDatabase();
         String where = Database.USER_DM + "='" + mUserDM + "'";
 
         ContentValues values = new ContentValues();
@@ -179,11 +179,11 @@ public class User implements KvmSerializable {
         values.put(Database.USER_ONLINE, mUserOnline);
         values.put(Database.USER_ROLE, mUserRole);
         values.put(Database.USER_ZMLM, mUserZMLM);
-        Cursor c = db.query(Database.TABLE_SC_USER, null, where, null, null, null, null);
+        Cursor c = DatabaseHandler.query(Database.TABLE_SC_USER, null, where, null, null, null, null);
         if (c != null && c.getCount() > 0) {
-            db.update(Database.TABLE_SC_USER, values, null, null);
+            DatabaseHandler.update(Database.TABLE_SC_USER, values, null, null);
         } else {
-            db.insert(Database.TABLE_SC_USER, null, values);
+            DatabaseHandler.insert(Database.TABLE_SC_USER, values);
         }
 
     }
