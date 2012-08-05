@@ -1,7 +1,6 @@
 
 package com.bg.check.engine;
 
-import com.bg.check.datatype.User;
 import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.utils.LogUtils;
 
@@ -29,7 +28,7 @@ public class CycleDownloadTaskManager {
     public void run(final String userDM, final String userName, final String userZMLM) {
         if (sRun) {
             LogUtils.logW("CycleDownloadTaskManager has been running, cancel it");
-            sWorkThread.interrupt();
+            stop();
         }
         sRun = true;
         LogUtils.logD("CycleDownloadTaskManager.run, ID" + sID);
@@ -75,4 +74,9 @@ public class CycleDownloadTaskManager {
         TaskEngine.getInstance().appendTask(getTasksTask);
     }
 
+    public void stop() {
+        if (sWorkThread != null) {
+            sWorkThread.interrupt();
+        }
+    }
 }

@@ -180,9 +180,9 @@ public class User implements KvmSerializable {
         values.put(Databasehelper.USER_ZMLM, mUserZMLM);
         Cursor c = db.query(Databasehelper.TABLE_SC_USER, null, where, null, null, null, null);
         if (c != null && c.getCount() > 0) {
-            db.insert(Databasehelper.TABLE_SC_USER, null, values);
-        } else {
             db.update(Databasehelper.TABLE_SC_USER, values, null, null);
+        } else {
+            db.insert(Databasehelper.TABLE_SC_USER, null, values);
         }
 
     }

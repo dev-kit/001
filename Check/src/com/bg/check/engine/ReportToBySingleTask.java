@@ -6,14 +6,16 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import com.bg.check.datatype.Report;
 import com.bg.check.webservice.SCWebService;
 
+// If ReportToBySingleTask failed, it will report automatically
 public class ReportToBySingleTask extends BaseTask {
     private String mUserDM;
 
-    private String mReport;
+    private Report mReport;
 
-    private ReportToBySingleTask(String dm, String report) {
+    public ReportToBySingleTask(String dm, Report report) {
         mUserDM = dm;
         mReport = report;
     }
@@ -43,7 +45,12 @@ public class ReportToBySingleTask extends BaseTask {
             e.printStackTrace();
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        return Integer.parseInt(object.getProperty(0).toString());
+        int result = Integer.parseInt(object.getProperty(0).toString());
+        if (result != 1) {
+            // Report it automatically if failed
+            TaskEngine.getInstance().appendTask(this);
+        }
+        return result;
     }
 
 }

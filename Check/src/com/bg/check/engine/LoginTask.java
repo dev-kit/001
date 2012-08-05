@@ -17,7 +17,7 @@ public class LoginTask extends BaseTask {
 
     private String mMobile;
 
-    private LoginTask(String dm, String password, String mobile) {
+    public LoginTask(String dm, String password, String mobile) {
         mUserDM = dm;
         mPassword = password;
         mMobile = mobile;
@@ -49,7 +49,7 @@ public class LoginTask extends BaseTask {
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         int result = Integer.parseInt(object.getProperty(0).toString());
-        if (result > 0) {
+        if (result == 1) {
             CycleDownloadTaskManager.getInstance().run(mUserDM, "", "");
         }
         return result;

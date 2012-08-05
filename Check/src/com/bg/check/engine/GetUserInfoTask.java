@@ -53,6 +53,7 @@ public class GetUserInfoTask extends BaseTask {
             if (envelope.getResponse() != null) {
                 result = (SoapObject)envelope.getResponse();
                 user = new User(result);
+                user.updateDB();
             }
         } catch (SoapFault e) {
             // TODO Auto-generated catch block

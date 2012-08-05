@@ -11,7 +11,7 @@ import com.bg.check.webservice.SCWebService;
 public class LogoutTask extends BaseTask {
     private String mUserDM;
 
-    private LogoutTask(String dm) {
+    public LogoutTask(String dm) {
         mUserDM = dm;
     }
 
@@ -37,7 +37,11 @@ public class LogoutTask extends BaseTask {
             e.printStackTrace();
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        return Integer.parseInt(object.getProperty(0).toString());
+        int result = Integer.parseInt(object.getProperty(0).toString());
+        if (result == 1) {
+            CycleDownloadTaskManager.getInstance().stop();
+        }
+        return result;
     }
 
 }

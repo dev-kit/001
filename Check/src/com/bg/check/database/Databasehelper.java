@@ -164,10 +164,10 @@ public class Databasehelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK_CONTENT + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
                 TASK_CONTENT_FLAG_UP + " TEXT," +
-                TASK_MESSAGEID + " TEXT," +
+                TASK_MESSAGEID + " INTEGER," +
                 TASK_CONTENTZXSJ + " TEXT," +
                 TASK_CONTENT_USERDM + " TEXT," +
-                TASK_CONTENT_CONTENT_ID + "  TEXT, " +
+                TASK_CONTENT_CONTENT_ID + "  INTEGER, " +
                 TASK_CONTENT_PK + "  TEXT, " +
                 TASK_CONTENT_SWH + "  TEXT," +
                 TASK_CONTENT_CH + "  TEXT, " +

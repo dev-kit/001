@@ -32,6 +32,6 @@ public class GetServerTimeTask extends BaseTask {
             e.printStackTrace();
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        return Integer.parseInt(object.getProperty(0).toString());
+        return object.getProperty(0).toString();
     }
 }
