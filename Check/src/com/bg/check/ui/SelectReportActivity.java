@@ -58,8 +58,8 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
         findViewById(R.id.start).setOnClickListener(this);
 
         // kick off a query
-        int messageID = getIntent().getIntExtra("messageID", -1);
-        new AsyncQueryReportTask().execute(messageID);
+        int contentID = getIntent().getIntExtra("ContentID", -1);
+        new AsyncQueryReportTask().execute(contentID);
     }
 
     private void initListAdapter() {
@@ -142,10 +142,10 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
     private class AsyncQueryReportTask extends AsyncTask<Integer, Void, Cursor> {
 
         @Override
-        protected Cursor doInBackground(Integer... messageID) {
+        protected Cursor doInBackground(Integer... contentID) {
             String where = null;
-            if (messageID != null && messageID[0] > 0) {
-                where = Database.TASK_MESSAGEID + "=" + messageID[0];
+            if (contentID != null && contentID[0] >= 0) {
+                where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0];
             }
             SQLiteDatabase db = Database.getInstance().getReadableDatabase();
             Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null, null);
