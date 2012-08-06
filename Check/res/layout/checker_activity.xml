@@ -125,6 +125,7 @@
         android:background="@android:color/white"
         android:cacheColorHint="@android:color/transparent"
         android:fillViewport="true"
+        android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_below="@id/header"
         android:layout_above="@id/tool_bar"/>

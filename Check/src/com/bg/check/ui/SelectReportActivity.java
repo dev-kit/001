@@ -1,9 +1,6 @@
 
 package com.bg.check.ui;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
@@ -26,15 +23,15 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 
-public class SelectReportActivity extends ListActivity implements OnCheckedChangeListener,
+public class SelectReportActivity extends ListActivity implements DatabaseObserver, OnCheckedChangeListener,
         OnClickListener {
 
     private AsyncQueryHandler mQueryHandler;
@@ -184,5 +181,11 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
                 }
             });
         }
+    }
+
+    @Override
+    public void onUpdate() {
+        final int contentID = getIntent().getIntExtra("ContentID", -1);
+        new AsyncQueryReportTask().execute(contentID);
     }
 }

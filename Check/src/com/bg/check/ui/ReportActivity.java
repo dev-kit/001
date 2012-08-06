@@ -17,10 +17,12 @@ import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
+import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 
-public class ReportActivity extends Activity implements OnClickListener, SpeechListener {
+public class ReportActivity extends Activity implements DatabaseObserver, OnClickListener, SpeechListener {
 
     public static final String ORDER = "order";
 
@@ -74,8 +76,7 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
         mTts = (TextView) findViewById(R.id.tts);
         mTts.setOnClickListener(this);
         // kick off a query
-        new AsyncQueryReportTask().execute(null);
-
+        new AsyncQueryReportTask().execute();
     }
 
     private void initString() {
@@ -104,9 +105,7 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
 
         @Override
         protected Cursor doInBackground(Void... params) {
-            SQLiteDatabase db = Database.getInstance().getReadableDatabase();
-            Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
-            return c;
+            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
         }
 
         @Override
@@ -308,5 +307,10 @@ public class ReportActivity extends Activity implements OnClickListener, SpeechL
                 mTts.setText(R.string.tts);
             }
         });
+    }
+
+    @Override
+    public void onUpdate() {
+        new AsyncQueryReportTask().execute();
     }
 }

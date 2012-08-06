@@ -6,20 +6,20 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bg.check.R;
-import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
@@ -37,6 +37,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private String[] mHeaders;
     private String mReportIndex;
     private boolean mStopSpeak = true;
+    private int mContentId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +92,27 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         super.onPause();
     }
 
-    private void gotoReport(int order) {
+    private void gotoSelectReport() {
         final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
-        intent.putExtra(ReportActivity.ORDER, order);
+        if (mContentId == -1) {
+            mContentId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
+        }
+        intent.putExtra("ContentID", mContentId);
         startActivity(intent);
     }
 
     private void initListAdapter() {
         mList = (ListView) findViewById(R.id.list);
-        mList.setItemsCanFocus(false);
+        mList.setSelectionAfterHeaderView();
+        mList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> dapterView, View view, int position, long id) {
+                view.requestFocusFromTouch();
+                mCurrentIndex = position;
+                mContentId = Integer.valueOf(((String[]) mAdapter.getItem(position))[0]);
+            }
+        });
+
         final Cursor cursor = DatabaseHandler.queryTask();
         mAdapter = new ReportAdapter(this, cursor);
         mList.setAdapter(mAdapter);
@@ -107,6 +120,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private class ReportAdapter extends CursorAdapter {
 
+        private final int mColumnIndexContentId;
         private final int mColumnIndexOrder;
         private final int mColumnIndexTrack;
         private final int mColumnIndexPosition;
@@ -121,6 +135,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         public ReportAdapter(Context context, Cursor c) {
             super(context, c);
+            mColumnIndexContentId = c.getColumnIndexOrThrow(Database.TASK_CONTENTID);
             mColumnIndexOrder = c.getColumnIndexOrThrow(Database.TASK_CC);
             mColumnIndexTrack = c.getColumnIndexOrThrow(Database.TASK_GDM);
             mColumnIndexPosition = c.getColumnIndexOrThrow(Database.TASK_JCWZ);
@@ -153,11 +168,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         public Object getItem(int position) {
             Cursor cursor = getCursor();
             if (cursor != null && cursor.moveToPosition(position)) {
-                String[] row = new String[4];
-                row[0] = cursor.getString(mColumnIndexOrder);
-                row[1] = cursor.getString(mColumnIndexTrack);
-                row[2] = cursor.getString(mColumnIndexPosition);
-                row[3] = cursor.getString(mColumnIndexNotification);
+                String[] row = new String[5];
+                row[0] = cursor.getString(mColumnIndexContentId);
+                row[1] = cursor.getString(mColumnIndexOrder);
+                row[2] = cursor.getString(mColumnIndexTrack);
+                row[3] = cursor.getString(mColumnIndexPosition);
+                row[4] = cursor.getString(mColumnIndexNotification);
                 return row;
             }
             return null;
@@ -180,7 +196,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         switch (id) {
         case R.id.start:
-            gotoReport(1);
+            gotoSelectReport();
             break;
         case R.id.exit:
             gotoLogin();
@@ -188,6 +204,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         case R.id.voice:
             if (mStopSpeak) {
                 mVoice.setText(R.string.voice_stop);
+                mList.requestFocus();
+                mList.requestFocusFromTouch();
                 startSpeech();
             } else {
                 stopSpeech();
@@ -204,7 +222,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mList.setSelection(mCurrentIndex - 1);
+                    mList.setSelectionFromTop(mCurrentIndex - 1, 100);
+                    final View item = mList.getSelectedView();
+                    if (item != null) {
+                        mList.requestFocus();
+                        mList.requestFocusFromTouch();
+                        item.requestFocus();
+                        item.requestFocusFromTouch();
+                    }
                 }
             });
 
