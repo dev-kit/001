@@ -135,7 +135,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         public ReportAdapter(Context context, Cursor c) {
             super(context, c);
-            mColumnIndexContentId = c.getColumnIndexOrThrow(Database.TASK_CONTENTID);
+            mColumnIndexContentId = c.getColumnIndexOrThrow("_id");
             mColumnIndexOrder = c.getColumnIndexOrThrow(Database.TASK_CC);
             mColumnIndexTrack = c.getColumnIndexOrThrow(Database.TASK_GDM);
             mColumnIndexPosition = c.getColumnIndexOrThrow(Database.TASK_JCWZ);
@@ -237,8 +237,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             StringBuilder builder = new StringBuilder();
             builder.append(String.format(mReportIndex, mCurrentIndex));
             builder.append(SpeechEngine.COMMA);
-            for(int i = 0; i < row.length; i++) {
-                builder.append(mHeaders[i]);
+            for(int i = 1; i < row.length; i++) {
+                builder.append(mHeaders[i - 1]);
                 builder.append(SpeechEngine.COMMA);
                 builder.append("\"" + row[i] + "\"");
                 builder.append(SpeechEngine.COMMA);
