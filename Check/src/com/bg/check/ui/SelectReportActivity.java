@@ -55,7 +55,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         findViewById(R.id.start).setOnClickListener(this);
 
         // kick off a query
-        int contentID = getIntent().getIntExtra("MessageID", -1);
+        int contentID = getIntent().getIntExtra("ContentID", -1);
         new AsyncQueryReportTask().execute(contentID);
     }
 

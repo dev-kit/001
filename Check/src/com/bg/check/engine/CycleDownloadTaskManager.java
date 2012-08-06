@@ -71,7 +71,7 @@ public class CycleDownloadTaskManager {
                     List<TaskData> tasks = (List<TaskData>)result;
                     for (TaskData task : tasks) {
                         final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM,
-                                task.mTaskContentID, task.mTaskLX);
+                                task.mTaskContentID, task.mTaskLX, task.mTaskMessageID);
                         TaskEngine.getInstance().appendTask(getDetailsTask);
                         // TODO: How about failed? setCallback
                     }

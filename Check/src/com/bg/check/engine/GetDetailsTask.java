@@ -17,10 +17,13 @@ public class GetDetailsTask extends BaseTask {
 
     private int mTaskLX;
 
-    public GetDetailsTask(String userDM, long contentID, int taskLX) {
+    private long mMessageID;
+
+    public GetDetailsTask(String userDM, long contentID, int taskLX, long messageID) {
         mUserDM = userDM;
         mContentID = contentID;
         mTaskLX = taskLX;
+        mMessageID = messageID;
     }
 
     /**
@@ -43,17 +46,15 @@ public class GetDetailsTask extends BaseTask {
 
         HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
         try {
-            transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GETDETAILS,
-                    envelope);
+            transport
+                    .call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GETDETAILS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        TaskContent taskContent = new TaskContent(object);
-        taskContent.mUserDM = mUserDM;
-        taskContent.mContentID = mContentID;
-        taskContent.updateDB();
+        TaskContent taskContent = new TaskContent(object, mUserDM, mContentID, mMessageID);
+        // taskContent.updateDB();
         return taskContent;
     }
 

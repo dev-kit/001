@@ -97,7 +97,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         if (mMessageId == -1) {
             mMessageId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
         }
-        intent.putExtra("MessageID", mMessageId);
+        intent.putExtra("ContentID", mMessageId);
         startActivity(intent);
     }
 

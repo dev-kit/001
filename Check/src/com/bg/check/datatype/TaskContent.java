@@ -55,24 +55,27 @@ public class TaskContent {
 
     public String mTaskContentLJZYSX;
 
-    public TaskContent(SoapObject soap) {
-        loopSoap(soap);
+    public TaskContent(SoapObject soap, String userDM, long contentID, long messageID) {
+        loopSoap(soap, userDM, contentID, messageID);
     }
 
-    private void loopSoap(SoapObject result) {
+    private void loopSoap(SoapObject result, String userDM, long contentID, long messageID) {
         for (int i = 0; i < result.getPropertyCount(); i++) {
             Object childs = (Object)result.getProperty(i);
             if (childs instanceof SoapObject) {
-                loopSoap((SoapObject)childs);
+                loopSoap((SoapObject)childs, userDM, contentID, messageID);
             } else {
-//                LogUtils.logD(result.toString());
-                addTasks(result);
+                // LogUtils.logD(result.toString());
+                addTasks(result, userDM, contentID, messageID);
                 return;
             }
         }
     }
 
-    private void addTasks(SoapObject soap) {
+    private void addTasks(SoapObject soap, String userDM, long contentID, long messageID) {
+        mMessageID = messageID;
+        mContentID = contentID;
+        mUserDM = userDM;
         mTaskContentPK = soap.getPropertySafelyAsString(Database.TASK_CONTENT_PK);
 
         mTaskContentSWH = soap.getPropertySafelyAsString(Database.TASK_CONTENT_SWH);
@@ -165,7 +168,7 @@ public class TaskContent {
         Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
                 null, null);
         if (c != null && c.getCount() > 0) {
-//            LogUtils.logD("Duplicated tasks " + this);
+            // LogUtils.logD("Duplicated tasks " + this);
             LogUtils.logD("TaskContent : Duplicated tasks ");
         } else {
             DatabaseHandler.insert(Database.TABLE_SC_TASK_CONTENT, values);
