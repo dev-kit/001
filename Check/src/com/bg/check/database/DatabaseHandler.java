@@ -21,7 +21,7 @@ public final class DatabaseHandler {
     };
 
     private final static String[] TASK_CONTENT = {
-        Database.TASK_CONTENTID + " AS _id ",
+        Database.TASK_MESSAGEID + " AS _id ",
         Database.TASK_CC,
         Database.TASK_GDM,
         Database.TASK_JCWZ,
