@@ -131,7 +131,8 @@ public class TaskData {
         Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, null, where, null, null, null,
                 null);
         if (c != null && c.getCount() > 0) {
-            LogUtils.logD("Duplicated tasks " + this);
+//            LogUtils.logD("Duplicated tasks " + this);
+            LogUtils.logD("TaskData: Duplicated tasks ");
         } else {
             DatabaseHandler.insert(Database.TABLE_SC_TASK, values);
         }
