@@ -44,6 +44,7 @@ public class ReplyTasksTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_REPLY_TASKS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         return Integer.parseInt(object.getProperty(0).toString());

@@ -46,6 +46,7 @@ public class LoginTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_LOGIN, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         int result = Integer.parseInt(object.getProperty(0).toString());

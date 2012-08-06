@@ -60,6 +60,7 @@ public class GetUserInfoTask extends BaseTask {
         } catch (SoapFault e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
         return user;
 

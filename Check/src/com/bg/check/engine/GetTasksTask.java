@@ -49,6 +49,7 @@ public class GetTasksTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_TASKS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         List<TaskData> tasks = new ArrayList<TaskData>();
