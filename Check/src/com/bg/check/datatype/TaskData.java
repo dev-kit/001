@@ -90,6 +90,9 @@ public class TaskData {
         mTaskLX = Integer.parseInt(soap.getPropertySafely(Database.TASK_LX).toString());
         mTaskZMLM = soap.getPropertySafelyAsString(Database.TASK_ZMLM);
         mTaskJLSJ = soap.getPropertySafelyAsString(Database.TASK_JLSJ);
+        if (mTaskJLSJ != null && mTaskJLSJ.length() > 19) {
+            mTaskJLSJ = mTaskJLSJ.replace('T', ' ').substring(0, 19);
+        }
         mTaskJCWZ = soap.getPropertySafelyAsString(Database.TASK_JCWZ);
         mTaskQSXH = Integer.parseInt(soap.getPropertySafely(Database.TASK_QSXH).toString());
         mTaskZZXH = Integer.parseInt(soap.getPropertySafely(Database.TASK_ZZXH).toString());
@@ -131,7 +134,7 @@ public class TaskData {
         Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, null, where, null, null, null,
                 null);
         if (c != null && c.getCount() > 0) {
-//            LogUtils.logD("Duplicated tasks " + this);
+            // LogUtils.logD("Duplicated tasks " + this);
             LogUtils.logD("TaskData: Duplicated tasks ");
         } else {
             DatabaseHandler.insert(Database.TABLE_SC_TASK, values);
