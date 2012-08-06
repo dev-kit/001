@@ -102,8 +102,14 @@ public class TaskContent {
         mTaskContentQBID = soap.getPropertySafelyAsString(Database.TASK_CONTENT_QBID);
 
         mTaskContentHJ_ZSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJ_ZSJ);
+        if (mTaskContentHJ_ZSJ != null && mTaskContentHJ_ZSJ.length() > 19) {
+            mTaskContentHJ_ZSJ = mTaskContentHJ_ZSJ.replace('T', ' ').substring(0, 19);
+        }
 
         mTaskContentHJ_YSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJ_YSJ);
+        if (mTaskContentHJ_YSJ != null && mTaskContentHJ_YSJ.length() > 19) {
+            mTaskContentHJ_YSJ = mTaskContentHJ_YSJ.replace('T', ' ').substring(0, 19);
+        }
 
         mTaskContentLSSJ = soap.getPropertySafelyAsString(Database.TASK_CONTENT_LSSJ);
 

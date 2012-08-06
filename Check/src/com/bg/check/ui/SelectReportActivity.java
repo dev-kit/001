@@ -76,11 +76,11 @@ public class SelectReportActivity extends ListActivity implements OnCheckedChang
                 TextView sw = (TextView)view.findViewById(R.id.sw);
                 TextView ch = (TextView)view.findViewById(R.id.ch);
                 TextView js = (TextView)view.findViewById(R.id.js);
-                // TextView time = (TextView)view.findViewById(R.id.time);
+                TextView time = (TextView)view.findViewById(R.id.time);
                 sw.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_SWH)));
                 ch.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_CH)));
                 js.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_JSL)));
-
+                time.setText(cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_HJ_ZSJ)));
             }
         };
         setListAdapter(mCursorAdapter);

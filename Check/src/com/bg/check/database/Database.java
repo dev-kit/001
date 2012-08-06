@@ -177,7 +177,7 @@ public class Database extends SQLiteOpenHelper {
                 TASK_CONTENT_DZM + "  TEXT," +
                 TASK_CONTENT_PM + "  TEXT, " +
                 TASK_CONTENT_SHR + "  TEXT," +
-                TASK_CONTENT_FZM + "  TEXT," +
+                TASK_CONTENT_FZM + "  TEXT NOT NULL," +
                 TASK_CONTENT_PB + "  TEXT, " +
                 TASK_CONTENT_JSL + "  TEXT," +
                 TASK_CONTENT_QBID + "  TEXT,   " +
