@@ -8,6 +8,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import android.os.PowerManager;
 
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class LoginTask extends BaseTask {
@@ -50,7 +51,10 @@ public class LoginTask extends BaseTask {
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         int result = Integer.parseInt(object.getProperty(0).toString());
-        if (result == 1) {
+        if (result == -6) {
+            LogUtils.logE("User " + mUserDM +" re-login:" + result);
+        }
+        if (result == 1 || result == -6) {
             CycleDownloadTaskManager.getInstance().run(mUserDM, "", "");
         }
         return result;

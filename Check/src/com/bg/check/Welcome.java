@@ -3,6 +3,7 @@ package com.bg.check;
 import android.app.Application;
 
 import com.bg.check.database.Database;
+import com.bg.check.datatype.Report;
 import com.bg.check.engine.CycleDownloadTaskManager;
 import com.bg.check.engine.GetDetailsTask;
 import com.bg.check.engine.GetServerTimeTask;
@@ -25,11 +26,16 @@ public class Welcome extends Application {
 
         // For test
 //        TaskEngine.getInstance().appendTask(new GetUserInfoTask("mad"));
-//        TaskEngine.getInstance().appendTask(new LoginTask("mad", "", ""));
+//        TaskEngine.getInstance().appendTask(new LoginTask("mad", "1", ""));
         CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
 //        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "马爱东", "SXT"));
-//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349, 1));
-        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", new String[]{"243"}));
+//        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349, 1, 0));
+//        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", new String[]{"262"}));
+//        Report r = new Report();
+//        r.mReport_contentid = "499349";
+//        r.mMessage_id = "0";
+//        r.mReport_czbz ="SXT";
+//        r.mReport_lx = "" ;
 //        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
 //        TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
 //        TaskEngine.getInstance().appendTask(new GetServerTimeTask());
