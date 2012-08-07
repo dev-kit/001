@@ -37,7 +37,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private String[] mHeaders;
     private String mReportIndex;
     private boolean mStopSpeak = true;
-    private int mMessageId = -1;
+    private int mContentId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +94,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private void gotoSelectReport() {
         final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
-        if (mMessageId == -1) {
-            mMessageId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
+        if (mContentId == -1) {
+            mContentId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
         }
-        intent.putExtra("ContentID", mMessageId);
+        intent.putExtra("ContentID", mContentId);
         startActivity(intent);
     }
 
@@ -109,7 +109,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void onItemClick(AdapterView<?> dapterView, View view, int position, long id) {
                 view.requestFocusFromTouch();
                 mCurrentIndex = position;
-                mMessageId = Integer.valueOf(((String[]) mAdapter.getItem(position))[0]);
+                mContentId = Integer.valueOf(((String[]) mAdapter.getItem(position))[0]);
             }
         });
 
@@ -120,7 +120,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private class ReportAdapter extends CursorAdapter {
 
-        private final int mColumnIndexMessageId;
+        private final int mColumnIndexConetntId;
         private final int mColumnIndexOrder;
         private final int mColumnIndexTrack;
         private final int mColumnIndexPosition;
@@ -135,7 +135,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         public ReportAdapter(Context context, Cursor c) {
             super(context, c);
-            mColumnIndexMessageId = c.getColumnIndexOrThrow("_id");
+            mColumnIndexConetntId = c.getColumnIndexOrThrow(Database.TASK_CONTENTID);
             mColumnIndexOrder = c.getColumnIndexOrThrow(Database.TASK_CC);
             mColumnIndexTrack = c.getColumnIndexOrThrow(Database.TASK_GDM);
             mColumnIndexPosition = c.getColumnIndexOrThrow(Database.TASK_JCWZ);
@@ -169,7 +169,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             Cursor cursor = getCursor();
             if (cursor != null && cursor.moveToPosition(position)) {
                 String[] row = new String[5];
-                row[0] = cursor.getString(mColumnIndexMessageId);
+                row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
                 row[2] = cursor.getString(mColumnIndexTrack);
                 row[3] = cursor.getString(mColumnIndexPosition);

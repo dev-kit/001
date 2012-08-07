@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.database.Database;
+import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 
 public class SelectReportActivity extends ListActivity implements DatabaseObserver, OnCheckedChangeListener,
@@ -144,9 +145,8 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             if (contentID != null && contentID[0] >= 0) {
                 where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0];
             }
-            SQLiteDatabase db = Database.getInstance().getReadableDatabase();
-            Cursor c = db.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null, null);
-            return c;
+
+            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null, null);
         }
 
         @Override
