@@ -76,5 +76,5 @@
     <string name="notification">通知</string>
     <string name="product_check">货检</string>
     <string name="report_index">第%s条记录</string>
-
+    <string name="toast_no_content_id">此记录为整单</string>
 </resources>
