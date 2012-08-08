@@ -14,7 +14,7 @@ import com.bg.check.engine.LogoutTask;
 import com.bg.check.engine.ReplyTasksTask;
 import com.bg.check.engine.ReportToBySingleTask;
 import com.bg.check.engine.SpeechEngine;
-import com.bg.check.engine.TaskEngine;
+import com.bg.check.engine.GeneralTaskEngine;
 
 public class Welcome extends Application {
 
@@ -31,12 +31,13 @@ public class Welcome extends Application {
 //        TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "Âí°®¶«", "SXT"));
 //        TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349, 1, 0));
 //        TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", new String[]{"262"}));
-//        Report r = new Report();
-//        r.mReport_contentid = "499349";
-//        r.mMessage_id = "0";
-//        r.mReport_czbz ="SXT";
-//        r.mReport_lx = "" ;
-//        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", ""));
+        Report r = new Report();
+        r.mReport_contentid = "499349";
+        r.mMessage_id = "268";
+        r.mReport_czbz ="SXT";
+        r.mReport_lx = "1" ;
+        r.mTask_id="247";
+//        TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
 //        TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
 //        TaskEngine.getInstance().appendTask(new GetServerTimeTask());
     }

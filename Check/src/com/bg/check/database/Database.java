@@ -53,6 +53,13 @@ public class Database extends SQLiteOpenHelper {
 
     public static final String TASK_CONTENT_PK = "PK";
 
+    // 0: default
+    // 1: to reply
+    // 2: reply success
+    // 3: to report
+    // 4: report success
+    public static final String TASK_CONTENT_STATUS = "status";
+
     public static final String TASK_LYFX = "TASK_LYFX";
 
     public static final String TASK_JLSJ = "TASK_JLSJ";
@@ -62,6 +69,22 @@ public class Database extends SQLiteOpenHelper {
     public static final String TASK_QSXH = "TASK_QSXH";
 
     public static final String TASK_JCWZ = "TASK_JCWZ";
+
+    public static final int TASK_STATUS_DEFAULT = 0;
+
+    public static final int TASK_STATUS_TO_REPLY = TASK_STATUS_DEFAULT + 1;
+
+    public static final int TASK_STATUS_REPLY_SUCCESS = TASK_STATUS_DEFAULT + 2;
+
+    public static final int TASK_STATUS_TO_REPORT = TASK_STATUS_DEFAULT + 3;
+
+    public static final int TASK_STATUS_REPORT_SUCCESS = TASK_STATUS_DEFAULT + 4;
+    // 0: default
+    // 1: to reply
+    // 2: reply success
+    // 3: to report
+    // 4: report success
+    public static final String TASK_STATUS = "status";
 
     public static final String TASK_MESSAGEID = "TASK_MESSAGEID";
 
@@ -156,7 +179,8 @@ public class Database extends SQLiteOpenHelper {
                 TASK_QSXH  + " NUMBER(3)," +
                 TASK_ZZXH   + " NUMBER(3)," +
                 TASK_JLSJ   + " DATE," +
-                TASK_LYFX   + " VARCHAR2(10));");
+                TASK_LYFX   + " VARCHAR2(10)," +
+                TASK_STATUS + " INTEGER default 0 " + ");");
     }
 
     private void createTaskContentTable(SQLiteDatabase db) {
@@ -185,7 +209,8 @@ public class Database extends SQLiteOpenHelper {
                 TASK_CONTENT_HJ_YSJ + "  TEXT, " +
                 TASK_CONTENT_LSSJ + "  TEXT,   " +
                 TASK_CONTENT_HJZYSX + "  TEXT, " +
-                TASK_CONTENT_LJZYSX + "  TEXT" +
+                TASK_CONTENT_LJZYSX + "  TEXT," +
+                TASK_CONTENT_STATUS + " INTEGER default 0 " +
                 ");");
     }
 

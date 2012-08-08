@@ -64,7 +64,7 @@ public class CycleDownloadTaskManager {
             @Override
             public void onCallBack(Object result) {
                 if (result == null) {
-                    TaskEngine.getInstance().appendTask(getTasksTask);
+                    GeneralTaskEngine.getInstance().appendTask(getTasksTask);
                 } else {
                     mIsTaskCompleted = true;
                     @SuppressWarnings("unchecked")
@@ -72,14 +72,14 @@ public class CycleDownloadTaskManager {
                     for (TaskData task : tasks) {
                         final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM,
                                 task.mTaskContentID, task.mTaskLX, task.mTaskMessageID);
-                        TaskEngine.getInstance().appendTask(getDetailsTask);
+                        GeneralTaskEngine.getInstance().appendTask(getDetailsTask);
                         // TODO: How about failed? setCallback
                     }
                 }
             }
         };
         getTasksTask.setCallback(getTasksCallback);
-        TaskEngine.getInstance().appendTask(getTasksTask);
+        GeneralTaskEngine.getInstance().appendTask(getTasksTask);
     }
 
     public void stop() {

@@ -5,12 +5,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.bg.check.engine.utils.LogUtils;
 
-public class TaskEngine {
+// FIXME: Duplicated Class to GerneralTaskEngine
+public class ReportTaskEngine {
     private static final int SLEEP_TIME_MS = 1000;
 
     private ConcurrentLinkedQueue<BaseTask> mTaskQueue = new ConcurrentLinkedQueue<BaseTask>();
 
-    private static TaskEngine sTaskEngineInstance = new TaskEngine();
+    private static ReportTaskEngine sTaskEngineInstance = new ReportTaskEngine();
 
     private boolean canceled;
 
@@ -18,11 +19,11 @@ public class TaskEngine {
 
     private static boolean sRun;
 
-    private TaskEngine() {
+    private ReportTaskEngine() {
         run();
     }
 
-    public static TaskEngine getInstance() {
+    public static ReportTaskEngine getInstance() {
         LogUtils.logD("TaskEngine.getInstance");
         return sTaskEngineInstance;
     }

@@ -4,7 +4,7 @@ package com.bg.check.webservice;
 public class SCWebService {
     public static final String SC_NAME_SPACE = "http://tempuri.org/";
 
-    public static final String SC_END_POINT = "http://210.75.98.58/LzbService/SCService.asmx";
+    public static final String SC_END_POINT = "http://210.75.98.59/LzbService/SCService.asmx";
 
     public static final String SC_METHOD_LOGIN = "Login";
 

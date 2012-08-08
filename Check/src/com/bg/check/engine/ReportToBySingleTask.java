@@ -30,7 +30,7 @@ public class ReportToBySingleTask extends BaseTask {
 
         rpc.addProperty("User_dm", mUserDM);
         SoapObject soap = new SoapObject(SCWebService.SC_NAME_SPACE,
-                SCWebService.SC_METHOD_REPLY_TASKS);
+                SCWebService.SC_METHOD_REPORT_TO_BY_SINGLE);
         soap.addProperty("Report_id", mReport.mReport_id);
         soap.addProperty("Message_id", mReport.mMessage_id);
         soap.addProperty("Task_id", mReport.mTask_id);
@@ -65,7 +65,7 @@ public class ReportToBySingleTask extends BaseTask {
         int result = Integer.parseInt(object.getProperty(0).toString());
         if (result != 1) {
             // Report it automatically if failed
-            TaskEngine.getInstance().appendTask(this);
+            GeneralTaskEngine.getInstance().appendTask(this);
         }
         return result;
     }
