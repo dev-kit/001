@@ -31,13 +31,14 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 
-public class SelectReportActivity extends ListActivity implements DatabaseObserver, OnCheckedChangeListener,
-        OnClickListener {
+public class SelectReportActivity extends ListActivity implements DatabaseObserver,
+        OnCheckedChangeListener, OnClickListener {
 
     private AsyncQueryHandler mQueryHandler;
 
     private CursorAdapter mCursorAdapter;
 
+    private int mContentID;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +56,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         findViewById(R.id.start).setOnClickListener(this);
 
         // kick off a query
-        int contentID = getIntent().getIntExtra("ContentID", -1);
-        new AsyncQueryReportTask().execute(contentID);
+        mContentID = getIntent().getIntExtra("ContentID", -1);
     }
 
     private void initListAdapter() {
@@ -123,6 +123,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                 return;
             }
             Intent intent = new Intent(this, ReportActivity.class);
+            intent.putExtra("ContentID", mContentID);
 
             if (((RadioButton)findViewById(R.id.order)).isChecked()) {
                 intent.putExtra(ReportActivity.ORDER, 1);
@@ -142,10 +143,12 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         protected Cursor doInBackground(Integer... contentID) {
             String where = null;
             if (contentID != null && contentID[0] >= 0) {
-                where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0];
+                where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0] + " and "
+                        + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT;
             }
 
-            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null, null, null);
+            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
+                    null, null);
         }
 
         @Override
@@ -184,7 +187,19 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
 
     @Override
     public void onUpdate() {
-        final int contentID = getIntent().getIntExtra("ContentID", -1);
-        new AsyncQueryReportTask().execute(contentID);
+        new AsyncQueryReportTask().execute(mContentID);
+    }
+
+    @Override
+    protected void onResume() {
+        DatabaseHandler.addDatabaseObserver(this);
+        new AsyncQueryReportTask().execute(mContentID);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        DatabaseHandler.removeDatabaseObserver(this);
+        super.onPause();
     }
 }

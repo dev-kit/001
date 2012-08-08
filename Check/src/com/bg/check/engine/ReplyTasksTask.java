@@ -46,8 +46,16 @@ public class ReplyTasksTask extends BaseTask {
             e.printStackTrace();
             return null;
         }
-        SoapObject object = (SoapObject)envelope.bodyIn;
-        return Integer.parseInt(object.getProperty(0).toString());
+        int result = 0;
+        if (envelope.bodyIn instanceof SoapObject) {
+            SoapObject object = (SoapObject)envelope.bodyIn;
+            result = Integer.parseInt(object.getProperty(0).toString());
+            if (result != 1) {
+                // Report it automatically if failed
+                ReportTaskEngine.getInstance().appendTask(this);
+            }
+        }
+        return result;
     }
 
 }

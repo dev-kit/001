@@ -16,13 +16,18 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.bg.check.R;
+import com.bg.check.Welcome;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
+import com.bg.check.datatype.TaskContent;
+import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
+import com.bg.check.engine.utils.TaskHelper;
 
-public class ReportActivity extends Activity implements DatabaseObserver, OnClickListener, SpeechListener {
+public class ReportActivity extends Activity implements DatabaseObserver, OnClickListener,
+        SpeechListener {
 
     public static final String ORDER = "order";
 
@@ -37,34 +42,53 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     private TextView mTts;
 
     private String mLabelSw;
+
     private String mLabelCh;
+
     private String mLabelCz;
+
     private String mLabelFz;
+
     private String mLabelDz;
+
     private String mLabelPm;
+
     private String mLabelJsl;
+
     private String mLabelImportance;
+
     private String mLabelOperate;
+
     private String mEmpty;
+
     private String mStopTts;
 
     private String mSw;
+
     private String mCh;
+
     private String mCz;
+
     private String mFz;
+
     private String mDz;
+
     private String mPm;
+
     private String mJsl;
+
     private String mImportance;
+
     private String mOperate;
+
+    private TaskContent mTaskContent = new TaskContent();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.report_activity);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.report_activity_title);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.report_activity_title);
 
         initFromIntent();
 
@@ -73,10 +97,11 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         findViewById(R.id.up).setOnClickListener(this);
         findViewById(R.id.down).setOnClickListener(this);
         findViewById(R.id.ret).setOnClickListener(this);
-        mTts = (TextView) findViewById(R.id.tts);
+        mTts = (TextView)findViewById(R.id.tts);
         mTts.setOnClickListener(this);
         // kick off a query
-        new AsyncQueryReportTask().execute();
+        int contentID = getIntent().getIntExtra("ContentID", -1);
+        new AsyncQueryReportTask().execute(contentID);
     }
 
     private void initString() {
@@ -101,11 +126,14 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         mStartTranID = mTranId;
     }
 
-    private class AsyncQueryReportTask extends AsyncTask<Void, Void, Cursor> {
+    private class AsyncQueryReportTask extends AsyncTask<Integer, Void, Cursor> {
 
         @Override
-        protected Cursor doInBackground(Void... params) {
-            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, null, null, null, null, null);
+        protected Cursor doInBackground(Integer... contentID) {
+            String where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0] + " and "
+                    + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT;
+            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
+                    null, null);
         }
 
         @Override
@@ -150,7 +178,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         mDz = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_DZM));
         mPm = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_PM));
         mJsl = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_JSL));
-//        mImportance = cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT));
+        // mImportance =
+        // cursor.getString(cursor.getColumnIndex(Databasehelper.TASK_CONTENT));
         mOperate = cursor.getString(cursor.getColumnIndex(Database.TASK_CONTENT_SWH));
         sw.setText(mSw);
         ch.setText(mCh);
@@ -167,6 +196,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.up:
+                TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+                        mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
                 stopSpeech();
                 switch (mOrder) {
                     case 1:
@@ -196,6 +227,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 }
                 break;
             case R.id.down:
+                TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+                        mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
                 stopSpeech();
                 switch (mOrder) {
                     case 1:

@@ -61,11 +61,14 @@ public class ReportToBySingleTask extends BaseTask {
             e.printStackTrace();
             return null;
         }
-        SoapObject object = (SoapObject)envelope.bodyIn;
-        int result = Integer.parseInt(object.getProperty(0).toString());
-        if (result != 1) {
-            // Report it automatically if failed
-            GeneralTaskEngine.getInstance().appendTask(this);
+        int result = 0;
+        if (envelope.bodyIn instanceof SoapObject) {
+            SoapObject object = (SoapObject)envelope.bodyIn;
+            result = Integer.parseInt(object.getProperty(0).toString());
+            if (result != 1) {
+                // Report it automatically if failed
+                ReportTaskEngine.getInstance().appendTask(this);
+            }
         }
         return result;
     }

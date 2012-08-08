@@ -55,6 +55,9 @@ public class TaskContent {
 
     public String mTaskContentLJZYSX;
 
+    public TaskContent() {
+    }
+
     public TaskContent(SoapObject soap, String userDM, long contentID, long messageID) {
         loopSoap(soap, userDM, contentID, messageID);
     }
