@@ -209,7 +209,6 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     protected void onPause() {
         DatabaseHandler.removeDatabaseObserver(this);
-        mSpeechEngine.unregisterSpeechListener();
         super.onPause();
     }
 

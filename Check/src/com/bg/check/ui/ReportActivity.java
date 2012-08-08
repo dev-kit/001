@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -83,6 +84,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
     private TaskContent mTaskContent = new TaskContent();
 
+    private SpeechEngine mSpeechEngine;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +102,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         findViewById(R.id.ret).setOnClickListener(this);
         mTts = (TextView)findViewById(R.id.tts);
         mTts.setOnClickListener(this);
+        mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
         // kick off a query
         int contentID = getIntent().getIntExtra("ContentID", -1);
         new AsyncQueryReportTask().execute(contentID);
@@ -190,67 +194,73 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         jsl.setText(mJsl);
         // importance.setText(mImportance);
         operate.setText(mOperate);
+        startSpeech();
+    }
+
+    private void handleUp() {
+        TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+                mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
+        switch (mOrder) {
+            case 1:
+                if (mTranId > 0) {
+                    mTranId--;
+                    mCursor.moveToPosition(mTranId);
+                    render(mCursor);
+                }
+                break;
+            case 2:
+                if (mTranId < mCursor.getCount() - 1) {
+                    mTranId++;
+                    mCursor.moveToNext();
+                    render(mCursor);
+                }
+                break;
+            case 3:
+                if (mTranId > mStartTranID) {
+                    mTranId--;
+                    mCursor.moveToPosition(mTranId);
+                    render(mCursor);
+                }
+                break;
+            default:
+                Log.e("::::", "order is not correct!");
+
+        }
+    }
+
+    private void handleDown() {
+        TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+                mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
+        stopSpeech();
+        switch (mOrder) {
+            case 1:
+            case 3:
+                if (mTranId < mCursor.getCount() - 1) {
+                    mTranId++;
+                    mCursor.moveToNext();
+                    render(mCursor);
+                }
+                break;
+            case 2:
+                if (mTranId > 0) {
+                    mTranId--;
+                    mCursor.moveToPosition(mTranId);
+                    render(mCursor);
+                }
+                break;
+            default:
+                Log.e("::::", "order is not correct!");
+
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.up:
-                TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
-                        mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
-                stopSpeech();
-                switch (mOrder) {
-                    case 1:
-                        if (mTranId > 0) {
-                            mTranId--;
-                            mCursor.moveToPosition(mTranId);
-                            render(mCursor);
-                        }
-                        break;
-                    case 2:
-                        if (mTranId < mCursor.getCount() - 1) {
-                            mTranId++;
-                            mCursor.moveToNext();
-                            render(mCursor);
-                        }
-                        break;
-                    case 3:
-                        if (mTranId > mStartTranID) {
-                            mTranId--;
-                            mCursor.moveToPosition(mTranId);
-                            render(mCursor);
-                        }
-                        break;
-                    default:
-                        Log.e("::::", "order is not correct!");
-
-                }
-                break;
+                handleUp();
             case R.id.down:
-                TaskHelper.reportTasks(((Welcome)getApplication()).getCurrentUser(), mTaskContent,
-                        mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
-                stopSpeech();
-                switch (mOrder) {
-                    case 1:
-                    case 3:
-                        if (mTranId < mCursor.getCount() - 1) {
-                            mTranId++;
-                            mCursor.moveToNext();
-                            render(mCursor);
-                        }
-                        break;
-                    case 2:
-                        if (mTranId > 0) {
-                            mTranId--;
-                            mCursor.moveToPosition(mTranId);
-                            render(mCursor);
-                        }
-                        break;
-                    default:
-                        Log.e("::::", "order is not correct!");
-
-                }
-                break;
+                handleDown();
             case R.id.tts:
                 if (mStopTts.equals(mTts.getText().toString())) {
                     stopSpeech();
@@ -267,12 +277,13 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     @Override
     protected void onPause() {
         stopSpeech();
+        mSpeechEngine.unregisterSpeechListener();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        startSpeech();
+        mSpeechEngine.registerSpeechListener(this);
         super.onResume();
     }
 
@@ -283,12 +294,12 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
     private void startSpeech() {
         mTts.setText(mStopTts);
-        SpeechEngine.getInstance(getApplicationContext()).speakSeries();
+        mSpeechEngine.speakSeries();
     }
 
     private void stopSpeech() {
         mTts.setText(R.string.tts);
-        SpeechEngine.getInstance(getApplicationContext()).stopSpeak();
+        mSpeechEngine.stopSpeak();
     }
 
     @Override
@@ -352,4 +363,24 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     public void onUpdate() {
         new AsyncQueryReportTask().execute();
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        case CheckerKeyEvent.KEYCODE_REPLAY:
+            stopSpeech();
+            startSpeech();
+            return true;
+        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+            handleDown();
+            return true;
+        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+            handleUp();
+            return true;
+        default:
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
