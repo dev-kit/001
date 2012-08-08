@@ -158,7 +158,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 final String prompt = mResources.getString(R.string.toast_no_content_id);
                 Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
                 mSpeechEngine.speak(prompt);
-//                return;
+                return;
             }
 
             intent.putExtra("ContentID", mContentId);
@@ -378,4 +378,5 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
         });
     }
+
 }

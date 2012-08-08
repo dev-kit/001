@@ -254,9 +254,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
             case R.id.tts:
                 if (mStopTts.equals(mTts.getText().toString())) {
                     stopSpeech();
-                    mTts.setText(R.string.tts);
                 } else {
-                    mTts.setText(mStopTts);
                     startSpeech();
                 }
                 break;
@@ -273,15 +271,23 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     @Override
+    protected void onResume() {
+        startSpeech();
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         // Do nothing
     }
 
     private void startSpeech() {
+        mTts.setText(mStopTts);
         SpeechEngine.getInstance(getApplicationContext()).speakSeries();
     }
 
     private void stopSpeech() {
+        mTts.setText(R.string.tts);
         SpeechEngine.getInstance(getApplicationContext()).stopSpeak();
     }
 

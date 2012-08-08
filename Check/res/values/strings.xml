@@ -17,6 +17,8 @@
     <string name="in_order">顺:</string>
     <string name="start">开始</string>
     <string name="empty">无内容</string>
+    <string name="speech_positive">正序工作方式</string>
+    <string name="speech_negative">反序工作方式</string>
 
     <!-- For report screen -->
     <string name="sw">顺位：</string>

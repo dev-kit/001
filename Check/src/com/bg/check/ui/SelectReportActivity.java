@@ -32,16 +32,17 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.engine.SpeechEngine;
-import com.bg.check.engine.SpeechEngine.SpeechListener;
 
 public class SelectReportActivity extends ListActivity implements DatabaseObserver,
-        OnCheckedChangeListener, OnClickListener, SpeechListener {
+        OnCheckedChangeListener, OnClickListener {
 
     private AsyncQueryHandler mQueryHandler;
 
     private CursorAdapter mCursorAdapter;
 
     private SpeechEngine mSpeechEngine;
+    private RadioButton mRadioOrderPositive;
+    private RadioButton mRadioOrderNegative;
 
     private int mContentID;
     @Override
@@ -56,8 +57,10 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         // setFullscreen();
         initListAdapter();
 
-        ((RadioButton)findViewById(R.id.order)).setOnCheckedChangeListener(this);
-        ((RadioButton)findViewById(R.id.reverse_order)).setOnCheckedChangeListener(this);
+        mRadioOrderPositive = ((RadioButton) findViewById(R.id.order));
+        mRadioOrderPositive.setOnCheckedChangeListener(this);
+        mRadioOrderNegative = ((RadioButton) findViewById(R.id.reverse_order));
+        mRadioOrderNegative.setOnCheckedChangeListener(this);
         findViewById(R.id.start).setOnClickListener(this);
 
         mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
@@ -124,7 +127,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     public void onClick(View v) {
         if (v.getId() == R.id.start) {
             Cursor c = mCursorAdapter.getCursor();
-            if (c.getCount() <= 0) {
+            if (c == null || !c.moveToFirst()) {
                 Log.e(":::::::", "onClick");
                 return;
             }
@@ -199,7 +202,6 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     protected void onResume() {
         DatabaseHandler.addDatabaseObserver(this);
-        mSpeechEngine.registerSpeechListener(this);
         new AsyncQueryReportTask().execute(mContentID);
         super.onResume();
     }
@@ -215,33 +217,18 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
         case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-
+            mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
+            mRadioOrderNegative.setChecked(true);
+            mRadioOrderPositive.setChecked(false);
             return true;
         case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-
+            mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
+            mRadioOrderNegative.setChecked(false);
+            mRadioOrderPositive.setChecked(true);
             return true;
         default:
         }
 
         return super.onKeyDown(keyCode, event);
     }
-
-    @Override
-    public String onPrepareSpeech() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean hasNextSpeech() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void onSpeechComplete() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
