@@ -409,8 +409,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // mVoice.setVisibility(View.VISIBLE);
-                // mVoiceStop.setVisibility(View.GONE);
+                mVoice.setVisibility(View.VISIBLE);
+                mVoiceStop.setVisibility(View.GONE);
             }
         });
     }
