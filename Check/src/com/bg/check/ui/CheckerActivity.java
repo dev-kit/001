@@ -20,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bg.check.R;
+import com.bg.check.Welcome;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
+import com.bg.check.datatype.User;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
+import com.bg.check.engine.utils.TaskHelper;
 
 public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener, SpeechListener {
 
@@ -33,6 +36,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private CursorAdapter mAdapter;
     private LayoutInflater mInflater;
     private TextView mStart;
+    private TextView mFeedback;
     private TextView mExit;
     private TextView mVoice;
     private TextView mVoiceStop;
@@ -81,11 +85,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
     private void initUi() {
         mStart = (TextView) findViewById(R.id.start);
+        mFeedback = (TextView) findViewById(R.id.feedback);
         mExit = (TextView) findViewById(R.id.exit);
         mVoice = (TextView) findViewById(R.id.voice);
         mVoiceStop = (TextView) findViewById(R.id.voice_stop);
 
         mStart.setOnClickListener(this);
+        mFeedback.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mVoice.setOnClickListener(this);
         mVoiceStop.setOnClickListener(this);
@@ -144,7 +150,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private void gotoSelectReport() {
         if (mAdapter != null && mAdapter.getCount() > 0) {
             final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
-            if (mContentId == -1) {
+            if (mContentId == -1 && mAdapter.getCount() > 0) {
                 mContentId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
             }
 
@@ -275,8 +281,17 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         switch (id) {
         case R.id.start:
+            Cursor c = mAdapter.getCursor();
+            int messageID = 0;
+            if (c != null) {
+                c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+            }
+            User user = ((Welcome)getApplication()).getCurrentUser();
+            TaskHelper.replyTasks(user.mUserDM, messageID);
             gotoSelectReport();
             break;
+        case R.id.feedback:
+            
         case R.id.exit:
             gotoLogin();
             break;
@@ -356,6 +371,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     @Override
     public void onUpdate() {
         final Cursor cursor = DatabaseHandler.queryTask();
-        mAdapter.changeCursor(cursor);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.changeCursor(cursor);
+            }
+        });
     }
 }

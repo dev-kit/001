@@ -26,7 +26,8 @@ public final class DatabaseHandler {
         Database.TASK_CC,
         Database.TASK_GDM,
         Database.TASK_JCWZ,
-        Database.TASK_JLSJ
+        Database.TASK_JLSJ,
+        Database.TASK_MESSAGEID
     };
 
     public interface DatabaseObserver {

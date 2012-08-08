@@ -27,7 +27,7 @@ public class TaskHelper {
     // });
     // GeneralTaskEngine.getInstance().appendTask(task);
     // }
-    public static void replyTasks(String dm, String messageIds) {
+    public static void replyTasks(String dm, int messageIds) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
         String where = Database.TASK_MESSAGEID + "=" + messageIds;
@@ -37,7 +37,7 @@ public class TaskHelper {
                 null);
         if (c != null && c.getCount() <= 0) {
             ReportTaskEngine.getInstance().appendTask(new ReplyTasksTask(dm, new String[] {
-                messageIds
+                String.valueOf(messageIds)
             }));
         }
     }
@@ -49,11 +49,26 @@ public class TaskHelper {
         DatabaseHandler.update(Database.TABLE_SC_TASK_CONTENT, values, where, null);
 
         Report r = new Report();
-//        r.mReport_contentid = String.valueOf(task.mTaskContentID);
-//        r.mMessage_id = String.valueOf(task.mTaskMessageID);
-//        r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
-//        r.mReport_lx = String.valueOf(task.mTaskLX);
-//        r.mTask_id = String.valueOf(task.mTaskID);
+        // r.mReport_contentid = String.valueOf(task.mTaskContentID);
+        // r.mMessage_id = String.valueOf(task.mTaskMessageID);
+        // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
+        // r.mReport_lx = String.valueOf(task.mTaskLX);
+        // r.mTask_id = String.valueOf(task.mTaskID);
+        ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
+    }
+
+    public static void reportTasks11(User user, TaskContent taskcontent, long id) {
+        ContentValues values = new ContentValues();
+        values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
+        String where = Database.COLUMN_ID + "=" + id;
+        DatabaseHandler.update(Database.TABLE_SC_TASK_CONTENT, values, where, null);
+
+        Report r = new Report();
+        // r.mReport_contentid = String.valueOf(task.mTaskContentID);
+        // r.mMessage_id = String.valueOf(task.mTaskMessageID);
+        // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
+        // r.mReport_lx = String.valueOf(task.mTaskLX);
+        // r.mTask_id = String.valueOf(task.mTaskID);
         ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
     }
 }
