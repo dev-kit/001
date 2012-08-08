@@ -281,7 +281,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         switch (id) {
         case R.id.start:
-            Cursor c = mAdapter.getCursor();
+            final Cursor c = mAdapter.getCursor();
             int messageID = 0;
             if (c != null) {
                 c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
@@ -362,8 +362,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                mVoice.setVisibility(View.VISIBLE);
-//                mVoiceStop.setVisibility(View.GONE);
+                mVoice.setVisibility(View.VISIBLE);
+                mVoiceStop.setVisibility(View.GONE);
             }
         });
     }
