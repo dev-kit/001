@@ -21,13 +21,14 @@ public final class DatabaseHandler {
     };
 
     private final static String[] TASK_CONTENT = {
-        Database.TASK_ID + " AS _id ",
+        Database.TASK_ID,
         Database.TASK_CONTENTID,
         Database.TASK_CC,
         Database.TASK_GDM,
         Database.TASK_JCWZ,
         Database.TASK_JLSJ,
-        Database.TASK_MESSAGEID
+        Database.TASK_MESSAGEID,
+        Database.COLUMN_ID
     };
 
     public interface DatabaseObserver {
@@ -68,7 +69,8 @@ public final class DatabaseHandler {
 
     public static final Cursor queryTask() {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
-        return db.query(Database.TABLE_SC_TASK, TASK_CONTENT, null, null, null, null, null);
+        String where = Database.TASK_STATUS + "<=" +  Database.TASK_STATUS_TO_REPORT;
+        return db.query(Database.TABLE_SC_TASK, TASK_CONTENT, where, null, null, null, null);
     }
 
     public static Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {

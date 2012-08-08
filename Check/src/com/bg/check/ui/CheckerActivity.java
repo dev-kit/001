@@ -1,3 +1,4 @@
+
 package com.bg.check.ui;
 
 import android.app.Activity;
@@ -24,28 +25,44 @@ import com.bg.check.Welcome;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
+import com.bg.check.datatype.TaskContent;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.engine.utils.TaskHelper;
 
-public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener, SpeechListener {
+public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener,
+        SpeechListener {
 
     private ListView mList;
+
     private CursorAdapter mAdapter;
+
     private LayoutInflater mInflater;
+
     private TextView mStart;
+
     private TextView mFeedback;
+
     private TextView mExit;
+
     private TextView mVoice;
+
     private TextView mVoiceStop;
+
     private int mCurrentIndex;
+
     private String[] mHeaders;
+
     private String mReportIndex;
+
     private int mContentId = -1;
+
     private Resources mResources;
+
     private SpeechEngine mSpeechEngine;
+
     private boolean mSpeechStop;
 
     @Override
@@ -67,8 +84,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private void init() {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.checker_activity);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.checker_activity_title);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.checker_activity_title);
         mInflater = LayoutInflater.from(this);
         mResources = getResources();
         mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
@@ -83,12 +99,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mHeaders[3] = res.getString(R.string.notification);
         mReportIndex = res.getString(R.string.report_index);
     }
+
     private void initUi() {
-        mStart = (TextView) findViewById(R.id.start);
-        mFeedback = (TextView) findViewById(R.id.feedback);
-        mExit = (TextView) findViewById(R.id.exit);
-        mVoice = (TextView) findViewById(R.id.voice);
-        mVoiceStop = (TextView) findViewById(R.id.voice_stop);
+        mStart = (TextView)findViewById(R.id.start);
+        mFeedback = (TextView)findViewById(R.id.feedback);
+        mExit = (TextView)findViewById(R.id.exit);
+        mVoice = (TextView)findViewById(R.id.voice);
+        mVoiceStop = (TextView)findViewById(R.id.voice_stop);
 
         mStart.setOnClickListener(this);
         mFeedback.setOnClickListener(this);
@@ -119,29 +136,29 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case CheckerKeyEvent.KEYCODE_OK:
-            stopSpeech();
-            startCurrentTaskSpeech();
-            return true;
-        case CheckerKeyEvent.KEYCODE_REPLAY:
-            stopSpeech();
-            startCurrentTaskSpeech();
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-            if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
-                moveFocus(++mCurrentIndex);
+            case CheckerKeyEvent.KEYCODE_OK:
                 stopSpeech();
                 startCurrentTaskSpeech();
-            }
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-            if (mCurrentIndex > 0) {
-                moveFocus(--mCurrentIndex);
+                return true;
+            case CheckerKeyEvent.KEYCODE_REPLAY:
                 stopSpeech();
                 startCurrentTaskSpeech();
-            }
-            return true;
-        default:
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
+                    moveFocus(++mCurrentIndex);
+                    stopSpeech();
+                    startCurrentTaskSpeech();
+                }
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                if (mCurrentIndex > 0) {
+                    moveFocus(--mCurrentIndex);
+                    stopSpeech();
+                    startCurrentTaskSpeech();
+                }
+                return true;
+            default:
         }
 
         return super.onKeyDown(keyCode, event);
@@ -151,7 +168,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         if (mAdapter != null && mAdapter.getCount() > 0) {
             final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
             if (mContentId == -1 && mAdapter.getCount() > 0) {
-                mContentId = Integer.valueOf(((String[]) mAdapter.getItem(0))[0]);
+                mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
             }
 
             if (mContentId == 0) {
@@ -167,14 +184,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private void initListAdapter() {
-        mList = (ListView) findViewById(R.id.list);
+        mList = (ListView)findViewById(R.id.list);
         mList.setSelectionAfterHeaderView();
         mList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> dapterView, View view, int position, long id) {
                 view.requestFocusFromTouch();
                 mCurrentIndex = position;
-                mContentId = Integer.valueOf(((String[]) mAdapter.getItem(position))[0]);
+                mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
             }
         });
 
@@ -186,15 +203,22 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private class ReportAdapter extends CursorAdapter {
 
         private final int mColumnIndexConetntId;
+
         private final int mColumnIndexOrder;
+
         private final int mColumnIndexTrack;
+
         private final int mColumnIndexPosition;
+
         private final int mColumnIndexNotification;
 
         private class ViewHolder {
             TextView mOrder;
+
             TextView mTrack;
+
             TextView mPosition;
+
             TextView mNotification;
         }
 
@@ -209,13 +233,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ViewHolder holder = (ViewHolder) view.getTag();
+            ViewHolder holder = (ViewHolder)view.getTag();
             if (holder == null) {
                 holder = new ViewHolder();
-                holder.mOrder = (TextView) view.findViewById(R.id.train_order);
-                holder.mTrack = (TextView) view.findViewById(R.id.track);
-                holder.mPosition = (TextView) view.findViewById(R.id.position);
-                holder.mNotification = (TextView) view.findViewById(R.id.notification);
+                holder.mOrder = (TextView)view.findViewById(R.id.train_order);
+                holder.mTrack = (TextView)view.findViewById(R.id.track);
+                holder.mPosition = (TextView)view.findViewById(R.id.position);
+                holder.mNotification = (TextView)view.findViewById(R.id.notification);
             }
 
             holder.mOrder.setText(cursor.getString(mColumnIndexOrder));
@@ -280,29 +304,52 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         final int id = v.getId();
 
         switch (id) {
-        case R.id.start:
-            Cursor c = mAdapter.getCursor();
-            int messageID = 0;
-            if (c != null) {
-                c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+            case R.id.start: {
+                Cursor c = mAdapter.getCursor();
+                String title = mStart.getText().toString();
+                if (title.equals(getString(R.string.complete)) && c != null) {
+                    TaskHelper.reportTasksForSingleTask(
+                            ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
+                            c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
+                    mStart.setText(R.string.start);
+                    return;
+                }
+
+                int messageID = 0;
+                if (c != null) {
+                    messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+                }
+                User user = ((Welcome)getApplication()).getCurrentUser();
+                TaskHelper.replyTasks(user.mUserDM, messageID);
+
+                gotoSelectReport();
+
+                if (mContentId <= 0) {
+                    mStart.setText(R.string.complete);
+                }
             }
-            User user = ((Welcome)getApplication()).getCurrentUser();
-            TaskHelper.replyTasks(user.mUserDM, messageID);
-            gotoSelectReport();
-            break;
-        case R.id.feedback:
-            
-        case R.id.exit:
-            gotoLogin();
-            break;
-        case R.id.voice:
-            startSeriesSpeech();
-            break;
-        case R.id.voice_stop:
-            stopSpeech();
-            break;
-        default:
-            LogUtils.logW("unknown id = " + id);
+                break;
+            case R.id.feedback: {
+                Cursor c = mAdapter.getCursor();
+                int messageID = 0;
+                if (c != null) {
+                    messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+                }
+                User user = ((Welcome)getApplication()).getCurrentUser();
+                TaskHelper.replyTasks(user.mUserDM, messageID);
+                break;
+            }
+            case R.id.exit:
+                gotoLogin();
+                break;
+            case R.id.voice:
+                startSeriesSpeech();
+                break;
+            case R.id.voice_stop:
+                stopSpeech();
+                break;
+            default:
+                LogUtils.logW("unknown id = " + id);
         }
     }
 
@@ -319,11 +366,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private String getCurrentTaskString() {
         if (mCurrentIndex < mAdapter.getCount()) {
-            String[] row = (String[]) mAdapter.getItem(mCurrentIndex);
+            String[] row = (String[])mAdapter.getItem(mCurrentIndex);
             StringBuilder builder = new StringBuilder();
             builder.append(String.format(mReportIndex, mCurrentIndex + 1));
             builder.append(SpeechEngine.COMMA);
-            for(int i = 1; i < row.length; i++) {
+            for (int i = 1; i < row.length; i++) {
                 builder.append(mHeaders[i - 1]);
                 builder.append(SpeechEngine.COMMA);
                 builder.append("\"" + row[i] + "\"");
@@ -358,12 +405,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public synchronized void onSpeechComplete() {
-//        mCurrentIndex = 0;
+        // mCurrentIndex = 0;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                mVoice.setVisibility(View.VISIBLE);
-//                mVoiceStop.setVisibility(View.GONE);
+                // mVoice.setVisibility(View.VISIBLE);
+                // mVoiceStop.setVisibility(View.GONE);
             }
         });
     }

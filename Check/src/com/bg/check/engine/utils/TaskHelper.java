@@ -10,6 +10,7 @@ import com.bg.check.datatype.Report;
 import com.bg.check.datatype.TaskContent;
 import com.bg.check.datatype.TaskData;
 import com.bg.check.datatype.User;
+import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.ReplyTasksTask;
 import com.bg.check.engine.ReportTaskEngine;
 import com.bg.check.engine.ReportToBySingleTask;
@@ -27,22 +28,30 @@ public class TaskHelper {
     // });
     // GeneralTaskEngine.getInstance().appendTask(task);
     // }
-    public static void replyTasks(String dm, int messageIds) {
+    public static void replyTasks(String dm, final int messageIds) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
         String where = Database.TASK_MESSAGEID + "=" + messageIds;
         DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
-        Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, null, where, null, null, null,
-                null);
-        if (c != null && c.getCount() <= 0) {
-            ReportTaskEngine.getInstance().appendTask(new ReplyTasksTask(dm, new String[] {
-                String.valueOf(messageIds)
-            }));
-        }
+        ReplyTasksTask task = new ReplyTasksTask(dm, new String[] {
+            String.valueOf(messageIds)
+        });
+        task.setCallback(new TaskCallback() {
+
+            @Override
+            public void onCallBack(Object result) {
+                ContentValues values = new ContentValues();
+                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
+                String where = Database.TASK_MESSAGEID + "=" + messageIds;
+                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+
+            }
+        });
+        ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    public static void reportTasks(User user, TaskContent taskcontent, long id) {
+    public static void reportTasks(User user, TaskContent taskcontent, final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
         String where = Database.COLUMN_ID + "=" + id;
@@ -54,14 +63,25 @@ public class TaskHelper {
         // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
         // r.mReport_lx = String.valueOf(task.mTaskLX);
         // r.mTask_id = String.valueOf(task.mTaskID);
-        ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
+        ReportToBySingleTask task = new ReportToBySingleTask(user.mUserDM, r);
+        task.setCallback(new TaskCallback() {
+
+            @Override
+            public void onCallBack(Object result) {
+                ContentValues values = new ContentValues();
+                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
+                String where = Database.COLUMN_ID + "=" + id;
+                DatabaseHandler.update(Database.TABLE_SC_TASK_CONTENT, values, where, null);
+            }
+        });
+        ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    public static void reportTasks11(User user, TaskContent taskcontent, long id) {
+    public static void reportTasksForSingleTask(User user, TaskContent taskcontent, final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
         String where = Database.COLUMN_ID + "=" + id;
-        DatabaseHandler.update(Database.TABLE_SC_TASK_CONTENT, values, where, null);
+        DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
         Report r = new Report();
         // r.mReport_contentid = String.valueOf(task.mTaskContentID);
@@ -69,6 +89,17 @@ public class TaskHelper {
         // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
         // r.mReport_lx = String.valueOf(task.mTaskLX);
         // r.mTask_id = String.valueOf(task.mTaskID);
-        ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
+        ReportToBySingleTask task = new ReportToBySingleTask(user.mUserDM, r);
+//        task.setCallback(new TaskCallback() {
+//
+//            @Override
+//            public void onCallBack(Object result) {
+//                ContentValues values = new ContentValues();
+//                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
+//                String where = Database.COLUMN_ID + "=" + id;
+//                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+//            }
+//        });
+        ReportTaskEngine.getInstance().appendTask(task);
     }
 }

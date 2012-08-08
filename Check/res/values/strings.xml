@@ -70,6 +70,7 @@
 
     <!-- For Checker screen -->
     <string name="checker_title">外勤系统:货检作业</string>
+    <string name="complete">完成</string>
     <string name="voice">语音</string>
     <string name="voice_stop">停止</string>
     <string name="feedback">回执</string>
