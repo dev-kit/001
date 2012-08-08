@@ -23,7 +23,7 @@ public class GeneralTaskEngine {
     }
 
     public static GeneralTaskEngine getInstance() {
-        LogUtils.logD("TaskEngine.getInstance");
+        LogUtils.logD("GeneralTaskEngine.getInstance");
         return sTaskEngineInstance;
     }
 
@@ -33,7 +33,7 @@ public class GeneralTaskEngine {
             return;
         }
         sRun = true;
-        LogUtils.logD("TaskEngine.run, ID" + sID);
+        LogUtils.logD("GeneralTaskEngine.run, ID" + sID);
         new Thread(new Runnable() {
 
             @Override
@@ -74,7 +74,7 @@ public class GeneralTaskEngine {
 
                 }
             }
-        }, "TaskEngine" + sID++).start();
+        }, "GeneralTaskEngine" + sID++).start();
 
     }
 
@@ -83,7 +83,7 @@ public class GeneralTaskEngine {
     }
 
     // public void restart() {
-    // LogUtils.logD("TaskEngine.restart");
+    // LogUtils.logD("GeneralTaskEngine.restart");
     // canceled = true;
     // sID++;
     // sTaskQueue.clear();
@@ -92,7 +92,7 @@ public class GeneralTaskEngine {
     // }
 
     public void appendTask(BaseTask task) {
-        LogUtils.logD("TaskEngine.appendTask" + task);
+        LogUtils.logD("GeneralTaskEngine.appendTask" + task);
         if (task == null) {
             return;
         }
@@ -100,7 +100,7 @@ public class GeneralTaskEngine {
     }
 
     public void cancelTask(BaseTask task) {
-        LogUtils.logD("TaskEngine.cancelTask" + task);
+        LogUtils.logD("GeneralTaskEngine.cancelTask" + task);
         if (task == null) {
             return;
         }

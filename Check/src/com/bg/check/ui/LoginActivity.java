@@ -1,3 +1,4 @@
+
 package com.bg.check.ui;
 
 import android.app.Activity;
@@ -19,23 +20,38 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bg.check.R;
+import com.bg.check.Welcome;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.datatype.User;
+import com.bg.check.engine.CycleDownloadTaskManager;
+import com.bg.check.engine.GetUserInfoTask;
+import com.bg.check.engine.LoginTask;
 import com.bg.check.engine.SpeechEngine;
 
 public class LoginActivity extends Activity {
 
     private static final int DIALOG_QUERY_PROGRESS = 1;
+
     private static final int DIALOG_USER_NOT_FOUND = 2;
 
+    private static final int DIALOG_LOGIN_PROGRESS = 3;
+
     private EditText mEditUsercode;
+
     private String mUsercode;
+
     private EditText mEditPassword;
+
     private EditText mEditRole;
+
     private EditText mEditName;
+
     private TextView mLogin;
+
     private TextView mExit;
+
     private TextView mSetting;
+
     private Resources mResources;
 
     @Override
@@ -43,26 +59,25 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.login_activity);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.login_activity_title);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.login_activity_title);
         mResources = getResources();
         initUi();
     }
 
     private void initUi() {
-        mEditUsercode = (EditText) findViewById(R.id.edit_user_code);
-        mEditPassword = (EditText) findViewById(R.id.edit_password);
-        mEditRole = (EditText) findViewById(R.id.edit_role);
-        mEditName = (EditText) findViewById(R.id.edit_name);
-        mLogin = (TextView) findViewById(R.id.login);
-        mExit = (TextView) findViewById(R.id.exit);
-        mSetting = (TextView) findViewById(R.id.setting);
+        mEditUsercode = (EditText)findViewById(R.id.edit_user_code);
+        mEditPassword = (EditText)findViewById(R.id.edit_password);
+        mEditRole = (EditText)findViewById(R.id.edit_role);
+        mEditName = (EditText)findViewById(R.id.edit_name);
+        mLogin = (TextView)findViewById(R.id.login);
+        mExit = (TextView)findViewById(R.id.exit);
+        mSetting = (TextView)findViewById(R.id.setting);
 
         mEditUsercode.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     final String usercode = mEditUsercode.getText().toString().trim();
-                    //############ For test
+                    // ############ For test
                     if ("test".equals(usercode) || (usercode != null && usercode.length() == 1)) {
                         mEditUsercode.postDelayed(new Runnable() {
                             public void run() {
@@ -72,7 +87,7 @@ public class LoginActivity extends Activity {
                         showDialog(DIALOG_QUERY_PROGRESS);
                         return;
                     }
-                    //#############
+                    // #############
                     if (!TextUtils.isEmpty(usercode)) {
                         if (!usercode.equals(mUsercode)) {
                             mUsercode = usercode;
@@ -112,20 +127,28 @@ public class LoginActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_QUERY_PROGRESS:
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setMessage(mResources.getString(R.string.message_query));
-            dialog.setCancelable(false);
-            return dialog;
-        case DIALOG_USER_NOT_FOUND:
-            AlertDialog.Builder builder = new Builder(this);
-            builder.setMessage(R.string.error_message_no_user_found)
-            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            return builder.create();
+            case DIALOG_QUERY_PROGRESS: {
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(mResources.getString(R.string.message_query));
+                dialog.setCancelable(false);
+                return dialog;
+            }
+            case DIALOG_USER_NOT_FOUND: {
+                AlertDialog.Builder builder = new Builder(this);
+                builder.setMessage(R.string.error_message_no_user_found).setNegativeButton(
+                        R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                return builder.create();
+            }
+            case DIALOG_LOGIN_PROGRESS: {
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(mResources.getString(R.string.message_login));
+                dialog.setCancelable(false);
+                return dialog;
+            }
         }
 
         return super.onCreateDialog(id);
@@ -144,7 +167,8 @@ public class LoginActivity extends Activity {
 
         @Override
         protected User doInBackground(String... usercode) {
-            return DatabaseHandler.getUser(usercode[0]);
+            // TODO: It' bad to new task like this
+            return (User)new GetUserInfoTask(usercode[0]).run();
         }
 
         @Override
@@ -170,6 +194,39 @@ public class LoginActivity extends Activity {
         }
     }
 
+    private class LoginLoader extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            showDialog(DIALOG_LOGIN_PROGRESS);
+        }
+
+        @Override
+        protected Integer doInBackground(Void... para) {
+            User user = ((Welcome)getApplication()).getCurrentUser();
+            user.mPassword = mEditPassword.getText().toString();
+            return (Integer)new LoginTask(user.mUserDM, user.mPassword, user.mUserMobile).run();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == 1 || result == -6) {
+                final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                clearUserInformation();
+                mEditUsercode.requestFocus();
+                mEditUsercode.selectAll();
+                showDialog(DIALOG_USER_NOT_FOUND);
+            }
+
+            if (!LoginActivity.this.isFinishing()) {
+                dismissDialog(DIALOG_LOGIN_PROGRESS);
+            }
+        }
+    }
+
     private void clearUserInformation() {
         mEditName.setText(null);
         mEditRole.setText(null);
@@ -188,9 +245,15 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
+
+        if (mEditRole.getText().toString().trim().equals("²âÊÔÕß")) {
+            CycleDownloadTaskManager.getInstance().run("mad", "Âí°®¶«", "SXT");
+            final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            new LoginLoader().execute();
+        }
         // TODO do login action
-        final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

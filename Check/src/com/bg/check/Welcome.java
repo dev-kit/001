@@ -34,19 +34,19 @@ public class Welcome extends Application {
         // For test
         // TaskEngine.getInstance().appendTask(new GetUserInfoTask("mad"));
         // TaskEngine.getInstance().appendTask(new LoginTask("mad", "1", ""));
-        CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
+//        CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
         // TaskEngine.getInstance().appendTask(new GetTasksTask("mad", "马爱东",
         // "SXT"));
         // TaskEngine.getInstance().appendTask(new GetDetailsTask("mad", 499349,
         // 1, 0));
         // TaskEngine.getInstance().appendTask(new ReplyTasksTask("mad", new
         // String[]{"262"}));
-        Report r = new Report();
-        r.mReport_contentid = "499349";
-        r.mMessage_id = "268";
-        r.mReport_czbz = "SXT";
-        r.mReport_lx = "1";
-        r.mTask_id = "247";
+//        Report r = new Report();
+//        r.mReport_contentid = "499349";
+//        r.mMessage_id = "268";
+//        r.mReport_czbz = "SXT";
+//        r.mReport_lx = "1";
+//        r.mTask_id = "247";
         // TaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad",
         // r));
         // TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
@@ -61,5 +61,9 @@ public class Welcome extends Application {
 
     public User getCurrentUser() {
         return mUser;
+    }
+
+    public void setCurrentUser(User user) {
+        mUser = user;
     }
 }

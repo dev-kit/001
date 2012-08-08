@@ -24,7 +24,7 @@ public class ReportTaskEngine {
     }
 
     public static ReportTaskEngine getInstance() {
-        LogUtils.logD("TaskEngine.getInstance");
+        LogUtils.logD("ReportTaskEngine.getInstance");
         return sTaskEngineInstance;
     }
 
@@ -34,7 +34,7 @@ public class ReportTaskEngine {
             return;
         }
         sRun = true;
-        LogUtils.logD("TaskEngine.run, ID" + sID);
+        LogUtils.logD("ReportTaskEngine.run, ID" + sID);
         new Thread(new Runnable() {
 
             @Override
@@ -75,7 +75,7 @@ public class ReportTaskEngine {
 
                 }
             }
-        }, "TaskEngine" + sID++).start();
+        }, "ReportTaskEngine" + sID++).start();
 
     }
 
@@ -84,7 +84,7 @@ public class ReportTaskEngine {
     }
 
     // public void restart() {
-    // LogUtils.logD("TaskEngine.restart");
+    // LogUtils.logD("ReportTaskEngine.restart");
     // canceled = true;
     // sID++;
     // sTaskQueue.clear();
@@ -93,7 +93,7 @@ public class ReportTaskEngine {
     // }
 
     public void appendTask(BaseTask task) {
-        LogUtils.logD("TaskEngine.appendTask" + task);
+        LogUtils.logD("ReportTaskEngine.appendTask" + task);
         if (task == null) {
             return;
         }
@@ -101,7 +101,7 @@ public class ReportTaskEngine {
     }
 
     public void cancelTask(BaseTask task) {
-        LogUtils.logD("TaskEngine.cancelTask" + task);
+        LogUtils.logD("ReportTaskEngine.cancelTask" + task);
         if (task == null) {
             return;
         }

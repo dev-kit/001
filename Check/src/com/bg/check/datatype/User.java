@@ -21,7 +21,7 @@ public class User implements KvmSerializable {
 
     public String mUserRole;
 
-    private String mPassword;
+    public String mPassword;
 
     private String mUserGWM;
 
@@ -29,7 +29,7 @@ public class User implements KvmSerializable {
 
     private String mUserSession;
 
-    private String mUserMobile;
+    public String mUserMobile;
 
     public String mUserZMLM;
 
