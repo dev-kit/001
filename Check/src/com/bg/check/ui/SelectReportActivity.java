@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -30,13 +31,17 @@ import com.bg.check.R;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
+import com.bg.check.engine.SpeechEngine;
+import com.bg.check.engine.SpeechEngine.SpeechListener;
 
 public class SelectReportActivity extends ListActivity implements DatabaseObserver,
-        OnCheckedChangeListener, OnClickListener {
+        OnCheckedChangeListener, OnClickListener, SpeechListener {
 
     private AsyncQueryHandler mQueryHandler;
 
     private CursorAdapter mCursorAdapter;
+
+    private SpeechEngine mSpeechEngine;
 
     private int mContentID;
     @Override
@@ -55,6 +60,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         ((RadioButton)findViewById(R.id.reverse_order)).setOnCheckedChangeListener(this);
         findViewById(R.id.start).setOnClickListener(this);
 
+        mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
         // kick off a query
         mContentID = getIntent().getIntExtra("ContentID", -1);
     }
@@ -193,6 +199,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     protected void onResume() {
         DatabaseHandler.addDatabaseObserver(this);
+        mSpeechEngine.registerSpeechListener(this);
         new AsyncQueryReportTask().execute(mContentID);
         super.onResume();
     }
@@ -200,6 +207,41 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     protected void onPause() {
         DatabaseHandler.removeDatabaseObserver(this);
+        mSpeechEngine.unregisterSpeechListener();
         super.onPause();
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+
+            return true;
+        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+
+            return true;
+        default:
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public String onPrepareSpeech() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean hasNextSpeech() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void onSpeechComplete() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

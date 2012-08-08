@@ -278,7 +278,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void startSpeech() {
-        SpeechEngine.getInstance(getApplicationContext()).speakSeries(this);
+        SpeechEngine.getInstance(getApplicationContext()).speakSeries();
     }
 
     private void stopSpeech() {
@@ -333,7 +333,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     @Override
-    public void onSeriesSpeechComplete() {
+    public void onSpeechComplete() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -2,6 +2,8 @@ package com.bg.check.engine;
 
 import java.util.Locale;
 
+import javax.net.ssl.HandshakeCompletedListener;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -35,6 +37,14 @@ public class SpeechEngine implements OnInitListener {
         mHandler = new SpeechHandler(mThread.getLooper());
     }
 
+    public void registerSpeechListener(SpeechListener listener) {
+        mSpeechListener = listener;
+    }
+
+    public void unregisterSpeechListener() {
+        mSpeechListener = null;
+    }
+
     public synchronized static final SpeechEngine getInstance(Context context) {
         if (mSpeechEngine == null) {
             mSpeechEngine = new SpeechEngine(context);
@@ -50,7 +60,7 @@ public class SpeechEngine implements OnInitListener {
     public interface SpeechListener {
         public String onPrepareSpeech();
         public boolean hasNextSpeech();
-        public void onSeriesSpeechComplete();
+        public void onSpeechComplete();
     }
 
     private final class SpeechHandler extends Handler {
@@ -66,12 +76,18 @@ public class SpeechEngine implements OnInitListener {
                 return;
             }
 
+            final SpeechListener listener = mSpeechListener;
+
             switch (msg.what) {
             case MESSAGE_SPEAK:
                 speakInternal(msg.obj.toString());
+                waitingForPreviousSpeakingFinish();
+                if (listener != null) {
+                    listener.onSpeechComplete();
+                }
+
                 return;
             case MESSAGE_SPEAK_SERIES:
-                final SpeechListener listener = mSpeechListener;
                 if (listener != null) {
                      do {
                         final String words = listener.onPrepareSpeech();
@@ -79,7 +95,7 @@ public class SpeechEngine implements OnInitListener {
                         waitingForPreviousSpeakingFinish();
                     } while(listener.hasNextSpeech());
 
-                    listener.onSeriesSpeechComplete();
+                     listener.onSpeechComplete();
                 }
 
                 return;
@@ -114,8 +130,7 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
-    public void speakSeries(SpeechListener listener) {
-        mSpeechListener = listener;
+    public void speakSeries() {
         mHandler.obtainMessage(MESSAGE_SPEAK_SERIES).sendToTarget();
     }
 
@@ -126,6 +141,14 @@ public class SpeechEngine implements OnInitListener {
     public void speak(String words, long delay) {
         Message message = mHandler.obtainMessage(MESSAGE_SPEAK, words);
         mHandler.sendMessageDelayed(message, delay);
+    }
+
+    public boolean isSpeaking() {
+        if (mSpeaker != null && mSpeaker.isSpeaking()) {
+            return true;
+        }
+
+        return false;
     }
 
     private final void speakInternal(String words) {
