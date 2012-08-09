@@ -297,14 +297,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public void onClick(View v) {
-        if (mAdapter == null || mAdapter.getCount() < 1) {
-            return;
-        }
 
         final int id = v.getId();
 
         switch (id) {
             case R.id.start: {
+                if (mAdapter == null || mAdapter.getCount() < 1) {
+                    return;
+                }
                 Cursor c = mAdapter.getCursor();
                 String title = mStart.getText().toString();
                 if (title.equals(getString(R.string.complete)) && c != null) {
@@ -330,6 +330,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
                 break;
             case R.id.feedback: {
+                if (mAdapter == null || mAdapter.getCount() < 1) {
+                    return;
+                }
                 Cursor c = mAdapter.getCursor();
                 int messageID = 0;
                 if (c != null) {
