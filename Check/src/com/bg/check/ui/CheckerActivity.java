@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,11 +119,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Do nothing
     }
 
     @Override
@@ -393,11 +389,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public boolean hasNextSpeech() {
-        if (!mSpeechStop && ++mCurrentIndex < mAdapter.getCount()) {
+        if (!mSpeechStop && mCurrentIndex + 1 < mAdapter.getCount()) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    moveFocus(mCurrentIndex);
+                    moveFocus(++mCurrentIndex);
                 }
             });
             return true;
@@ -408,14 +404,15 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public synchronized void onSpeechComplete() {
-        // mCurrentIndex = 0;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mVoice.setVisibility(View.VISIBLE);
-                mVoiceStop.setVisibility(View.GONE);
-            }
-        });
+        if (!mSpeechEngine.isSpeaking()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mVoice.setVisibility(View.VISIBLE);
+                    mVoiceStop.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
@@ -429,4 +426,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        if (mSpeechEngine != null) {
+            mSpeechEngine.close();
+            mSpeechEngine = null;
+        }
+
+        super.onDestroy();
+    }
 }

@@ -120,11 +120,6 @@ public class LoginActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed() {
-        // Do nothing
-    }
-
-    @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DIALOG_QUERY_PROGRESS: {

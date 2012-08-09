@@ -2,8 +2,6 @@ package com.bg.check.engine;
 
 import java.util.Locale;
 
-import javax.net.ssl.HandshakeCompletedListener;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -11,7 +9,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bg.check.engine.utils.LogUtils;
 
@@ -45,7 +45,7 @@ public class SpeechEngine implements OnInitListener {
         mSpeechListener = null;
     }
 
-    public synchronized static final SpeechEngine getInstance(Context context) {
+    public static final SpeechEngine getInstance(Context context) {
         if (mSpeechEngine == null) {
             mSpeechEngine = new SpeechEngine(context);
         }
@@ -107,7 +107,7 @@ public class SpeechEngine implements OnInitListener {
 
     public void waitingForPreviousSpeakingFinish() {
         try {
-            while (mSpeaker.isSpeaking()) {
+            while (mSpeaker != null && mSpeaker.isSpeaking()) {
                 Thread.sleep(200);
             }
         } catch (InterruptedException e) {
@@ -170,7 +170,7 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
-    public synchronized void close() {
+    public void close() {
         mSpeakerAvailable = false;
 
         if (mSpeaker != null) {

@@ -287,11 +287,6 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         super.onResume();
     }
 
-    @Override
-    public void onBackPressed() {
-        // Do nothing
-    }
-
     private void startSpeech() {
         mTts.setText(mStopTts);
         mSpeechEngine.speakSeries();
