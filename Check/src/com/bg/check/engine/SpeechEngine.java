@@ -9,9 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bg.check.engine.utils.LogUtils;
 
@@ -28,6 +26,7 @@ public class SpeechEngine implements OnInitListener {
     private SpeechHandler mHandler;
     private HandlerThread mThread;
     private boolean mSpeakerAvailable;
+    private boolean mIsSpeakStart;
     private SpeechListener mSpeechListener;
 
     private SpeechEngine(Context context) {
@@ -72,32 +71,28 @@ public class SpeechEngine implements OnInitListener {
         @Override
         public void handleMessage(Message msg) {
             if (!mSpeakerAvailable) {
-                mHandler.sendMessageDelayed(Message.obtain(msg), 50);
+                mHandler.sendMessageDelayed(Message.obtain(msg), 1000);
                 return;
             }
-
-            final SpeechListener listener = mSpeechListener;
 
             switch (msg.what) {
             case MESSAGE_SPEAK:
                 speakInternal(msg.obj.toString());
-                waitingForPreviousSpeakingFinish();
-                if (listener != null) {
-                    listener.onSpeechComplete();
-                }
-
+                waitingForSpeakingFinish();
+                reportSpeechComplete();
+                mIsSpeakStart = false;
                 return;
             case MESSAGE_SPEAK_SERIES:
+                final SpeechListener listener = mSpeechListener;
                 if (listener != null) {
                      do {
                         final String words = listener.onPrepareSpeech();
                         speakInternal(words);
-                        waitingForPreviousSpeakingFinish();
+                        waitingForSpeakingFinish();
                     } while(listener.hasNextSpeech());
-
-                     listener.onSpeechComplete();
+                     reportSpeechComplete();
                 }
-
+                mIsSpeakStart = false;
                 return;
             default:
                 super.handleMessage(msg);
@@ -105,10 +100,25 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
-    public void waitingForPreviousSpeakingFinish() {
+    private void reportSpeechComplete() {
+        if (mSpeechListener != null && !hasMessage()) {
+            mSpeechListener.onSpeechComplete();
+        }
+    }
+
+    private boolean hasMessage() {
+        if (mHandler != null) {
+            return mHandler.hasMessages(MESSAGE_SPEAK) ||
+                    mHandler.hasMessages(MESSAGE_SPEAK_SERIES);
+        }
+
+        return false;
+    }
+
+    public void waitingForSpeakingFinish() {
         try {
             while (mSpeaker != null && mSpeaker.isSpeaking()) {
-                Thread.sleep(200);
+                Thread.sleep(500);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -131,20 +141,17 @@ public class SpeechEngine implements OnInitListener {
     }
 
     public void speakSeries() {
+        mIsSpeakStart = true;
         mHandler.obtainMessage(MESSAGE_SPEAK_SERIES).sendToTarget();
     }
 
     public void speak(String words) {
+        mIsSpeakStart = true;
         mHandler.obtainMessage(MESSAGE_SPEAK, words).sendToTarget();
     }
 
-    public void speak(String words, long delay) {
-        Message message = mHandler.obtainMessage(MESSAGE_SPEAK, words);
-        mHandler.sendMessageDelayed(message, delay);
-    }
-
     public boolean isSpeaking() {
-        if (mSpeaker != null && mSpeaker.isSpeaking()) {
+        if (mSpeaker != null && mSpeaker.isSpeaking() && hasMessage() && mIsSpeakStart) {
             return true;
         }
 
@@ -167,6 +174,11 @@ public class SpeechEngine implements OnInitListener {
     public void stopSpeak() {
         if (mSpeaker != null) {
             mSpeaker.stop();
+        }
+
+        if (mHandler != null) {
+            mHandler.removeMessages(MESSAGE_SPEAK);
+            mHandler.removeMessages(MESSAGE_SPEAK_SERIES);
         }
     }
 

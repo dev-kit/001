@@ -82,21 +82,6 @@
             android:text="@string/voice"/>
 
         <TextView
-            android:id="@+id/voice_stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_voice"
-            android:background="@drawable/clicker_bg_selector"
-            android:textColor="@android:color/white"
-            android:padding="5dp"
-            android:focusable="true"
-            android:gravity="center"
-            android:visibility="gone"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/voice_stop"/>
-
-        <TextView
             android:id="@+id/feedback"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

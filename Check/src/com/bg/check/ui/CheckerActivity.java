@@ -50,8 +50,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private TextView mVoice;
 
-    private TextView mVoiceStop;
-
     private int mCurrentIndex;
 
     private String[] mHeaders;
@@ -64,7 +62,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private SpeechEngine mSpeechEngine;
 
-    private boolean mSpeechStop;
+    private String mVoiceString;
+
+    private String mVoiceStopString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +92,15 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private void initString() {
-        Resources res = getResources();
         mHeaders = new String[4];
-        mHeaders[0] = res.getString(R.string.train_order);
-        mHeaders[1] = res.getString(R.string.track);
-        mHeaders[2] = res.getString(R.string.position);
-        mHeaders[3] = res.getString(R.string.notification);
-        mReportIndex = res.getString(R.string.report_index);
+        mHeaders[0] = mResources.getString(R.string.train_order);
+        mHeaders[1] = mResources.getString(R.string.track);
+        mHeaders[2] = mResources.getString(R.string.position);
+        mHeaders[3] = mResources.getString(R.string.notification);
+        mReportIndex = mResources.getString(R.string.report_index);
+
+        mVoiceString = mResources.getString(R.string.voice);
+        mVoiceStopString = mResources.getString(R.string.voice_stop);
     }
 
     private void initUi() {
@@ -106,13 +108,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mFeedback = (TextView)findViewById(R.id.feedback);
         mExit = (TextView)findViewById(R.id.exit);
         mVoice = (TextView)findViewById(R.id.voice);
-        mVoiceStop = (TextView)findViewById(R.id.voice_stop);
 
         mStart.setOnClickListener(this);
         mFeedback.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mVoice.setOnClickListener(this);
-        mVoiceStop.setOnClickListener(this);
     }
 
     private void gotoLogin() {
@@ -133,24 +133,20 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_OK:
-                stopSpeech();
                 startCurrentTaskSpeech();
                 return true;
             case CheckerKeyEvent.KEYCODE_REPLAY:
-                stopSpeech();
                 startCurrentTaskSpeech();
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
                     moveFocus(++mCurrentIndex);
-                    stopSpeech();
                     startCurrentTaskSpeech();
                 }
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 if (mCurrentIndex > 0) {
                     moveFocus(--mCurrentIndex);
-                    stopSpeech();
                     startCurrentTaskSpeech();
                 }
                 return true;
@@ -199,22 +195,15 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private class ReportAdapter extends CursorAdapter {
 
         private final int mColumnIndexConetntId;
-
         private final int mColumnIndexOrder;
-
         private final int mColumnIndexTrack;
-
         private final int mColumnIndexPosition;
-
         private final int mColumnIndexNotification;
 
         private class ViewHolder {
             TextView mOrder;
-
             TextView mTrack;
-
             TextView mPosition;
-
             TextView mNotification;
         }
 
@@ -266,34 +255,31 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private synchronized void stopSpeech() {
-        mSpeechStop = true;
-        mVoice.setVisibility(View.VISIBLE);
-        mVoiceStop.setVisibility(View.GONE);
         mSpeechEngine.stopSpeak();
-    }
-
-    private synchronized void prepareStartSpeech() {
-        mVoice.setVisibility(View.GONE);
-        mVoiceStop.setVisibility(View.VISIBLE);
-        mList.requestFocus();
-        mList.requestFocusFromTouch();
-        mSpeechStop = false;
+        mVoice.setText(mVoiceString);
     }
 
     private synchronized void startCurrentTaskSpeech() {
-        prepareStartSpeech();
+        stopSpeech();
         final String words = getCurrentTaskString();
         mSpeechEngine.speak(words);
+        setStartSpeechUi();
     }
 
     private synchronized void startSeriesSpeech() {
-        prepareStartSpeech();
+        stopSpeech();
         mSpeechEngine.speakSeries();
+        setStartSpeechUi();
+    }
+
+    private void setStartSpeechUi() {
+        mVoice.setText(mVoiceStopString);
+        mList.requestFocus();
+        mList.requestFocusFromTouch();
     }
 
     @Override
     public void onClick(View v) {
-
         final int id = v.getId();
 
         switch (id) {
@@ -342,14 +328,23 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 gotoLogin();
                 break;
             case R.id.voice:
-                startSeriesSpeech();
-                break;
-            case R.id.voice_stop:
-                stopSpeech();
+                if (isSpeechWorking()) {
+                    stopSpeech();
+                } else {
+                    startSeriesSpeech();
+                }
                 break;
             default:
                 LogUtils.logW("unknown id = " + id);
         }
+    }
+
+    private boolean isSpeechWorking() {
+        if (mVoiceString != null && mVoice != null) {
+            return !mVoiceString.equals(mVoice.getText().toString());
+        }
+
+        return false;
     }
 
     private void moveFocus(int position) {
@@ -388,8 +383,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     @Override
-    public boolean hasNextSpeech() {
-        if (!mSpeechStop && mCurrentIndex + 1 < mAdapter.getCount()) {
+    public synchronized boolean hasNextSpeech() {
+        if (isSpeechWorking() && mCurrentIndex + 1 < mAdapter.getCount()) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -404,15 +399,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public synchronized void onSpeechComplete() {
-        if (!mSpeechEngine.isSpeaking()) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mVoice.setVisibility(View.VISIBLE);
-                    mVoiceStop.setVisibility(View.GONE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mVoice != null && mVoice.getText().toString().equals(mVoiceStopString) && !mSpeechEngine.isSpeaking()) {
+                    mVoice.setText(mVoiceString);
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
@@ -421,7 +415,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdapter.changeCursor(cursor);
+                if (mAdapter != null) {
+                    mAdapter.changeCursor(cursor);
+                }
             }
         });
     }
