@@ -7,14 +7,19 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.datatype.User;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class GetUserInfoTask extends BaseTask {
     private String mUserDM;
-    public GetUserInfoTask(String dm) {
+    private Context mContext;
+
+    public GetUserInfoTask(Context context, String dm) {
         mUserDM = dm;
+        mContext = context.getApplicationContext();
     }
 
     @Override
@@ -37,7 +42,7 @@ public class GetUserInfoTask extends BaseTask {
         // 等价于envelope.bodyOut = rpc;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             // 调用WebService
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_USER_INFO,

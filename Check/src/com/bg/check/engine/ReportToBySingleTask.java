@@ -6,6 +6,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.datatype.Report;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
@@ -16,9 +18,12 @@ public class ReportToBySingleTask extends BaseTask {
 
     private Report mReport;
 
-    public ReportToBySingleTask(String dm, Report report) {
+    private Context mContext;
+
+    public ReportToBySingleTask(Context context, String dm, Report report) {
         mUserDM = dm;
         mReport = report;
+        mContext = context.getApplicationContext();
     }
 
     /**
@@ -55,7 +60,7 @@ public class ReportToBySingleTask extends BaseTask {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_REPORT_TO_BY_SINGLE,
                     envelope);

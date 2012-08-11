@@ -2,6 +2,7 @@
 package com.bg.check.engine.utils;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import com.bg.check.database.Database;
@@ -28,13 +29,13 @@ public class TaskHelper {
     // });
     // GeneralTaskEngine.getInstance().appendTask(task);
     // }
-    public static void replyTasks(String dm, final int messageIds) {
+    public static void replyTasks(Context context, String dm, final int messageIds) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
         String where = Database.TASK_MESSAGEID + "=" + messageIds;
         DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
-        ReplyTasksTask task = new ReplyTasksTask(dm, new String[] {
+        ReplyTasksTask task = new ReplyTasksTask(context, dm, new String[] {
             String.valueOf(messageIds)
         });
         task.setCallback(new TaskCallback() {
@@ -54,7 +55,7 @@ public class TaskHelper {
         ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    public static void reportTasks(User user, TaskContent taskcontent, final long id) {
+    public static void reportTasks(Context context, User user, TaskContent taskcontent, final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
         String where = Database.COLUMN_ID + "=" + id;
@@ -66,7 +67,7 @@ public class TaskHelper {
         // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
         // r.mReport_lx = String.valueOf(task.mTaskLX);
         // r.mTask_id = String.valueOf(task.mTaskID);
-        ReportToBySingleTask task = new ReportToBySingleTask(user.mUserDM, r);
+        ReportToBySingleTask task = new ReportToBySingleTask(context, user.mUserDM, r);
         task.setCallback(new TaskCallback() {
 
             @Override
@@ -83,7 +84,7 @@ public class TaskHelper {
         ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    public static void reportTasksForSingleTask(User user, TaskContent taskcontent, final long id) {
+    public static void reportTasksForSingleTask(Context context, User user, TaskContent taskcontent, final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
         String where = Database.COLUMN_ID + "=" + id;
@@ -95,7 +96,7 @@ public class TaskHelper {
         // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
         // r.mReport_lx = String.valueOf(task.mTaskLX);
         // r.mTask_id = String.valueOf(task.mTaskID);
-        ReportToBySingleTask task = new ReportToBySingleTask(user.mUserDM, r);
+        ReportToBySingleTask task = new ReportToBySingleTask(context, user.mUserDM, r);
 //        task.setCallback(new TaskCallback() {
 //
 //            @Override

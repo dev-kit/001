@@ -6,10 +6,18 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class GetServerTimeTask extends BaseTask {
+
+    private Context mContext;
+
+    public GetServerTimeTask(Context context) {
+        mContext = context.getApplicationContext();
+    }
 
     /**
      * Return Login status with String. Format: 2012-05-23 14:16:48
@@ -25,7 +33,7 @@ public class GetServerTimeTask extends BaseTask {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_SERVER_TIME,
                     envelope);

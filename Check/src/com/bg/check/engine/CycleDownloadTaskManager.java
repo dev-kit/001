@@ -3,6 +3,8 @@ package com.bg.check.engine;
 
 import java.util.List;
 
+import android.content.Context;
+
 import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.utils.LogUtils;
@@ -20,11 +22,14 @@ public class CycleDownloadTaskManager {
 
     private static CycleDownloadTaskManager sCycleDownloadTaskManagerInstance = new CycleDownloadTaskManager();
 
+    private static Context mContext;
+
     private CycleDownloadTaskManager() {
     }
 
-    public static CycleDownloadTaskManager getInstance() {
+    public static CycleDownloadTaskManager getInstance(Context context) {
         LogUtils.logD("CycleDownloadTaskManager.getInstance");
+        mContext = context.getApplicationContext();
         return sCycleDownloadTaskManagerInstance;
     }
 
@@ -59,7 +64,7 @@ public class CycleDownloadTaskManager {
     }
 
     private void addTask(final String userDM, String userName, String userZMLM) {
-        final GetTasksTask getTasksTask = new GetTasksTask(userDM, userName, userZMLM);
+        final GetTasksTask getTasksTask = new GetTasksTask(mContext, userDM, userName, userZMLM);
         TaskCallback getTasksCallback = new TaskCallback() {
             @Override
             public void onCallBack(Object result) {
@@ -70,7 +75,7 @@ public class CycleDownloadTaskManager {
                     @SuppressWarnings("unchecked")
                     List<TaskData> tasks = (List<TaskData>)result;
                     for (TaskData task : tasks) {
-                        final GetDetailsTask getDetailsTask = new GetDetailsTask(userDM,
+                        final GetDetailsTask getDetailsTask = new GetDetailsTask(mContext, userDM,
                                 task.mTaskContentID, task.mTaskLX, task.mTaskMessageID);
                         GeneralTaskEngine.getInstance().appendTask(getDetailsTask);
                         // TODO: How about failed? setCallback

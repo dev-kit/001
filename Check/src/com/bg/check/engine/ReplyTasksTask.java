@@ -6,6 +6,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
@@ -14,10 +16,12 @@ public class ReplyTasksTask extends BaseTask {
     private boolean mDebug = true;
 
     private String[] mMessageIds;
+    private Context mContext;
 
-    public ReplyTasksTask(String dm, String[] messageIds) {
+    public ReplyTasksTask(Context context, String dm, String[] messageIds) {
         mUserDM = dm;
         mMessageIds = messageIds;
+        mContext = context.getApplicationContext();
     }
 
     /**
@@ -43,7 +47,7 @@ public class ReplyTasksTask extends BaseTask {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_REPLY_TASKS, envelope);
         } catch (Exception e) {

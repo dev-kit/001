@@ -56,7 +56,7 @@ public class Welcome extends Application {
         r.mReport_id = "12323";
         r.mXXDate3 = "32131";
         r.mXXString3 = "3213";
-        ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask("mad", r));
+        ReportTaskEngine.getInstance().appendTask(new ReportToBySingleTask(this, "mad", r));
         // TaskEngine.getInstance().appendTask(new LogoutTask("mad"));
         // TaskEngine.getInstance().appendTask(new GetServerTimeTask());
     }

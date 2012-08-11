@@ -135,11 +135,13 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             case R.id.order:
                 if (click) {
                     ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
+                    speakPositiveOrder();
                 }
                 break;
             case R.id.reverse_order:
                 if (click) {
                     ((RadioButton)findViewById(R.id.order)).setChecked(false);
+                    speakNegativeOrder();
                 }
                 break;
             default:
@@ -195,7 +197,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
                     null, null, null);
             if (c.getCount() == 0) {
-                GetDetailsTask downloadTask = new GetDetailsTask(user.mUserDM, mContentID, mTaskLX,
+                GetDetailsTask downloadTask = new GetDetailsTask(SelectReportActivity.this, user.mUserDM, mContentID, mTaskLX,
                         mMessageID);
                 @SuppressWarnings("unchecked")
                 List<TaskContent> taskContents = (List<TaskContent>)downloadTask.run();
@@ -284,18 +286,26 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         return super.onKeyUp(keyCode, event);
     }
 
+    private void speakNegativeOrder() {
+        mSpeechEngine.stopSpeak();
+        mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
+    }
+
+    private void speakPositiveOrder() {
+        mSpeechEngine.stopSpeak();
+        mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-                mSpeechEngine.stopSpeak();
-                mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
+                speakNegativeOrder();
                 mRadioOrderNegative.setChecked(true);
                 mRadioOrderPositive.setChecked(false);
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-                mSpeechEngine.stopSpeak();
-                mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
+                speakPositiveOrder();
                 mRadioOrderNegative.setChecked(false);
                 mRadioOrderPositive.setChecked(true);
                 return true;

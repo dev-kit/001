@@ -396,12 +396,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         Cursor c = mAdapter.getCursor();
         String title = mStart.getText().toString();
         if (title.equals(getString(R.string.complete)) && c != null && c.moveToPosition(mCurrentIndex)) {
-            TaskHelper.reportTasksForSingleTask(
+            TaskHelper.reportTasksForSingleTask(this,
                     ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
                     c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
             mStart.setText(R.string.start);
             mStart.setCompoundDrawablesWithIntrinsicBounds(null,
                     mResources.getDrawable(R.drawable.ic_go), null, null);
+            moveSelectionTo(mCurrentIndex);
             return;
         }
 
@@ -410,7 +411,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
         }
         User user = ((Welcome)getApplication()).getCurrentUser();
-        TaskHelper.replyTasks(user.mUserDM, messageID);
+        TaskHelper.replyTasks(this, user.mUserDM, messageID);
 
         gotoSelectReport();
 
@@ -419,6 +420,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             mStart.setCompoundDrawablesWithIntrinsicBounds(null,
                     mResources.getDrawable(R.drawable.ic_complete), null, null);
         }
+
+        moveSelectionTo(mCurrentIndex);
     }
 
     @Override
@@ -439,7 +442,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                     messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
                 }
                 User user = ((Welcome)getApplication()).getCurrentUser();
-                TaskHelper.replyTasks(user.mUserDM, messageID);
+                TaskHelper.replyTasks(this, user.mUserDM, messageID);
                 break;
             }
             case R.id.exit:
@@ -564,7 +567,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
             // For test: end
 
-            return (Integer)new LogoutTask(user.mUserDM).run();
+            return (Integer)new LogoutTask(CheckerActivity.this, user.mUserDM).run();
         }
 
         @Override
