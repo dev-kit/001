@@ -231,7 +231,6 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     private void handleDown() {
         TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mTaskContent,
                 mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
-        stopSpeech();
         switch (mOrder) {
             case 1:
             case 3:
@@ -292,8 +291,9 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void startSpeech() {
-        mTts.setText(mStopTts);
+        mSpeechEngine.stopSpeak();
         mSpeechEngine.speakSeries();
+        mTts.setText(mStopTts);
     }
 
     private void stopSpeech() {

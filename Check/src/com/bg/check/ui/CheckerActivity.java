@@ -250,7 +250,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 highlightCurrentView(view);
                 int taskStatus = Integer.valueOf(((String[])mAdapter.getItem(position))[7]);
-                findViewById(R.id.feedback).setClickable(taskStatus < Database.TASK_STATUS_DEFAULT);
+                final boolean disable = taskStatus <= Database.TASK_STATUS_DEFAULT;
+                if (disable) {
+                    mFeedback.setEnabled(false);
+                    mFeedback.getCompoundDrawables()[1].setAlpha(50);
+                } else {
+                    mFeedback.setEnabled(true);
+                    mFeedback.getCompoundDrawables()[1].setAlpha(256);
+                }
             }
 
             @Override
@@ -402,7 +409,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             mStart.setText(R.string.start);
             mStart.setCompoundDrawablesWithIntrinsicBounds(null,
                     mResources.getDrawable(R.drawable.ic_go), null, null);
-            moveSelectionTo(mCurrentIndex);
             return;
         }
 
