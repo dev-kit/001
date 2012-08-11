@@ -250,7 +250,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 highlightCurrentView(view);
                 int taskStatus = Integer.valueOf(((String[])mAdapter.getItem(position))[7]);
-                findViewById(R.id.feedback).setClickable(taskStatus > Database.TASK_STATUS_DEFAULT);
+                findViewById(R.id.feedback).setClickable(taskStatus < Database.TASK_STATUS_DEFAULT);
             }
 
             @Override
