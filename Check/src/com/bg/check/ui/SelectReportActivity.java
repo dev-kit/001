@@ -148,26 +148,30 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
 
     }
 
+    private void startWork() {
+        Cursor c = mCursorAdapter.getCursor();
+        if (c == null || !c.moveToFirst()) {
+            LogUtils.logE("SelectReportActivity, onClick");
+            return;
+        }
+        Intent intent = new Intent(this, ReportActivity.class);
+        intent.putExtra("ContentID", mContentID);
+
+        if (((RadioButton)findViewById(R.id.order)).isChecked()) {
+            intent.putExtra(ReportActivity.ORDER, 1);
+        } else if (((RadioButton)findViewById(R.id.reverse_order)).isChecked()) {
+            intent.putExtra(ReportActivity.ORDER, 2);
+        } else {
+            intent.putExtra(ReportActivity.ORDER, 3);
+            intent.putExtra(Database.TASK_CONTENT_SWH, c.getPosition());
+        }
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.start) {
-            Cursor c = mCursorAdapter.getCursor();
-            if (c == null || !c.moveToFirst()) {
-                LogUtils.logE("SelectReportActivity, onClick");
-                return;
-            }
-            Intent intent = new Intent(this, ReportActivity.class);
-            intent.putExtra("ContentID", mContentID);
-
-            if (((RadioButton)findViewById(R.id.order)).isChecked()) {
-                intent.putExtra(ReportActivity.ORDER, 1);
-            } else if (((RadioButton)findViewById(R.id.reverse_order)).isChecked()) {
-                intent.putExtra(ReportActivity.ORDER, 2);
-            } else {
-                intent.putExtra(ReportActivity.ORDER, 3);
-                intent.putExtra(Database.TASK_CONTENT_SWH, c.getPosition());
-            }
-            startActivity(intent);
+            startWork();
         }
     }
 
@@ -195,7 +199,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                         mMessageID);
                 @SuppressWarnings("unchecked")
                 List<TaskContent> taskContents = (List<TaskContent>)downloadTask.run();
-                if (taskContents.size() > 0) {
+                if (taskContents != null && taskContents.size() > 0) {
                     c.close();
                     c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
                             null, null, null);
@@ -263,17 +267,40 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     }
 
     @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_OK:
+                // Do nothing;
+                return true;
+            default:
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                mSpeechEngine.stopSpeak();
                 mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
                 mRadioOrderNegative.setChecked(true);
                 mRadioOrderPositive.setChecked(false);
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                mSpeechEngine.stopSpeak();
                 mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
                 mRadioOrderNegative.setChecked(false);
                 mRadioOrderPositive.setChecked(true);
+                return true;
+            case CheckerKeyEvent.KEYCODE_OK:
+                startWork();
                 return true;
             default:
         }

@@ -270,9 +270,13 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 }
                 break;
             case R.id.ret:
-                finish();
+                goBack();
                 break;
         }
+    }
+
+    private void goBack() {
+        finish();
     }
 
     @Override
@@ -294,8 +298,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void stopSpeech() {
-        mTts.setText(R.string.tts);
         mSpeechEngine.stopSpeak();
+        mTts.setText(R.string.tts);
     }
 
     @Override
@@ -337,6 +341,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         builder.append(mLabelOperate);
         builder.append(SpeechEngine.COMMA);
         builder.append(TextUtils.isEmpty(mOperate) ? mEmpty : mOperate);
+
         return builder.toString();
     }
 
@@ -373,10 +378,33 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         case CheckerKeyEvent.KEYCODE_VOLUME_UP:
             handleUp();
             return true;
+        case CheckerKeyEvent.KEYCODE_RETURN:
+            goBack();
+            return true;
         default:
         }
 
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        case CheckerKeyEvent.KEYCODE_REPLAY:
+            // Do nothing;
+            return true;
+        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+            // Do nothing;
+            return true;
+        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+            // Do nothing;
+            return true;
+        case CheckerKeyEvent.KEYCODE_RETURN:
+            // Do nothing;
+            return true;
+        default:
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
 }

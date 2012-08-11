@@ -91,11 +91,21 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         initListAdapter();
     }
 
+    private boolean mIsOnRestart;
+
+    @Override
+    protected void onRestart() {
+        mIsOnRestart = true;
+        super.onRestart();
+    }
+
     @Override
     protected void onStart() {
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
-        startSeriesSpeech();
+        if (!mIsOnRestart) {
+            startSeriesSpeech();
+        }
         super.onStart();
     }
 
@@ -524,7 +534,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                     mAdapter.changeCursor(cursor);
                     final int newCount = mAdapter.getCount();
                     if (newCount > 0 && count != newCount) {
-//                        mCurrentIndex = 0;
                         startSeriesSpeech();
                     }
                 }
