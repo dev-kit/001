@@ -18,10 +18,10 @@ import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bg.check.R;
 import com.bg.check.Welcome;
-import com.bg.check.database.DatabaseHandler;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.CycleDownloadTaskManager;
 import com.bg.check.engine.GetUserInfoTask;
@@ -63,7 +63,16 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_activity);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.login_activity_title);
         mResources = getResources();
+        showLogoutVoiceToast();
         initUi();
+    }
+
+    private void showLogoutVoiceToast() {
+        if ("logout".equals(getIntent().getAction())) {
+            final String prompt = mResources.getString(R.string.toast_logout_success);
+            SpeechEngine.getInstance(this).speak(prompt);
+            Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initUi() {

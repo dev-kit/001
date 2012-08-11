@@ -6,8 +6,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import android.os.PowerManager;
-
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
