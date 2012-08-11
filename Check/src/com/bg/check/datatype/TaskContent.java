@@ -1,6 +1,8 @@
 
 package com.bg.check.datatype;
 
+import java.util.List;
+
 import org.ksoap2.serialization.SoapObject;
 
 import android.content.ContentValues;
@@ -55,21 +57,27 @@ public class TaskContent {
 
     public String mTaskContentLJZYSX;
 
+    public static void parseTaskContent(SoapObject soap, String userDM, long contentID,
+            long messageID, List<TaskContent> tasks) {
+        SoapObject result = (SoapObject)soap.getProperty(0);
+        loopSoap(result, userDM, contentID, messageID, tasks);
+    }
+
     public TaskContent() {
     }
 
-    public TaskContent(SoapObject soap, String userDM, long contentID, long messageID) {
-        loopSoap(soap, userDM, contentID, messageID);
-    }
-
-    private void loopSoap(SoapObject result, String userDM, long contentID, long messageID) {
+    private static void loopSoap(SoapObject result, String userDM, long contentID, long messageID,
+            List<TaskContent> tasks) {
         for (int i = 0; i < result.getPropertyCount(); i++) {
             Object childs = (Object)result.getProperty(i);
             if (childs instanceof SoapObject) {
-                loopSoap((SoapObject)childs, userDM, contentID, messageID);
+                loopSoap((SoapObject)childs, userDM, contentID, messageID, tasks);
             } else {
                 // LogUtils.logD(result.toString());
-                addTasks(result, userDM, contentID, messageID);
+                TaskContent task = new TaskContent();
+                task.addTasks(result, userDM, contentID, messageID);
+                tasks.add(task);
+
                 return;
             }
         }

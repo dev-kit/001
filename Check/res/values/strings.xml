@@ -37,6 +37,8 @@
     <string name="stop_tts">停止播报</string>
     <string name="down">下</string>
     <string name="retrun">返回</string>
+    <string name="message_load_task">任务加载中…</string>
+    <string name="message_no_task_found">没有任务详情</string>
 
     <!-- For Setting screen -->
     <string name="setting_basic">网络设置</string>

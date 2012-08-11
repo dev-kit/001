@@ -1,12 +1,16 @@
 
 package com.bg.check.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import com.bg.check.datatype.TaskContent;
+import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
@@ -55,9 +59,13 @@ public class GetDetailsTask extends BaseTask {
             return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
-        TaskContent taskContent = new TaskContent(object, mUserDM, mContentID, mMessageID);
-        // taskContent.updateDB();
-        return taskContent;
+        List<TaskContent> taskContents = new ArrayList<TaskContent>();
+        TaskContent.parseTaskContent(object, mUserDM, mContentID, mMessageID, taskContents);
+        if (taskContents.size() == 0) {
+            LogUtils.logD("There is no taskcontent for ContentID" + mContentID + " MessageID "
+                    + mMessageID);
+        }
+        return taskContents;
     }
 
 }

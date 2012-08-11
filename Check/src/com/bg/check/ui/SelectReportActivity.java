@@ -1,9 +1,16 @@
 
 package com.bg.check.ui;
 
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -28,23 +35,38 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bg.check.R;
+import com.bg.check.Welcome;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
+import com.bg.check.datatype.TaskContent;
+import com.bg.check.datatype.User;
+import com.bg.check.engine.GetDetailsTask;
 import com.bg.check.engine.SpeechEngine;
+import com.bg.check.engine.utils.LogUtils;
 
 public class SelectReportActivity extends ListActivity implements DatabaseObserver,
         OnCheckedChangeListener, OnClickListener {
+    private static final int DIALOG_LOAD_TASK_PROGRESS = 1;
+
+    private static final int DIALOG_NO_TASK_FOUND= 2;
 
     private AsyncQueryHandler mQueryHandler;
 
     private CursorAdapter mCursorAdapter;
 
     private SpeechEngine mSpeechEngine;
+
     private RadioButton mRadioOrderPositive;
+
     private RadioButton mRadioOrderNegative;
 
     private int mContentID;
+
+    private int mMessageID;
+
+    private int mTaskLX;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,15 +79,18 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         // setFullscreen();
         initListAdapter();
 
-        mRadioOrderPositive = ((RadioButton) findViewById(R.id.order));
+        mRadioOrderPositive = ((RadioButton)findViewById(R.id.order));
         mRadioOrderPositive.setOnCheckedChangeListener(this);
-        mRadioOrderNegative = ((RadioButton) findViewById(R.id.reverse_order));
+        mRadioOrderNegative = ((RadioButton)findViewById(R.id.reverse_order));
         mRadioOrderNegative.setOnCheckedChangeListener(this);
         findViewById(R.id.start).setOnClickListener(this);
 
         mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
         // kick off a query
         mContentID = getIntent().getIntExtra("ContentID", -1);
+        mMessageID = getIntent().getIntExtra("MessageID", -1);
+        mTaskLX = getIntent().getIntExtra("TaskLX", -1);
+        showDialog(DIALOG_LOAD_TASK_PROGRESS);
     }
 
     private void initListAdapter() {
@@ -118,7 +143,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                 }
                 break;
             default:
-                Log.e(":::::::", "onCheckedChanged");
+                LogUtils.logE("SelectReportActivity, onCheckedChanged");
         }
 
     }
@@ -128,7 +153,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         if (v.getId() == R.id.start) {
             Cursor c = mCursorAdapter.getCursor();
             if (c == null || !c.moveToFirst()) {
-                Log.e(":::::::", "onClick");
+                LogUtils.logE("SelectReportActivity, onClick");
                 return;
             }
             Intent intent = new Intent(this, ReportActivity.class);
@@ -149,15 +174,34 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     private class AsyncQueryReportTask extends AsyncTask<Integer, Void, Cursor> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
         protected Cursor doInBackground(Integer... contentID) {
+            User user = ((Welcome)getApplication()).getCurrentUser();
             String where = null;
             if (contentID != null && contentID[0] >= 0) {
                 where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0] + " and "
-                        + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT;
+                        + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT
+                        + " and " + Database.TASK_CONTENT_USERDM + "='" + user.mUserDM + "'";
             }
 
-            return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
-                    null, null);
+            Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
+                    null, null, null);
+            if (c.getCount() == 0) {
+                GetDetailsTask downloadTask = new GetDetailsTask(user.mUserDM, mContentID, mTaskLX,
+                        mMessageID);
+                @SuppressWarnings("unchecked")
+                List<TaskContent> taskContents = (List<TaskContent>)downloadTask.run();
+                if (taskContents.size() > 0) {
+                    c.close();
+                    c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
+                            null, null, null);
+                }
+            }
+            return c;
         }
 
         @Override
@@ -166,6 +210,10 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             findViewById(R.id.start).setClickable(cursor.getCount() > 0);
             mCursorAdapter.changeCursor(cursor);
             initSpinner(cursor);
+            dismissDialog(DIALOG_LOAD_TASK_PROGRESS);
+            if (cursor.getCount() == 0) {
+                showDialog(DIALOG_NO_TASK_FOUND);
+            }
         }
 
         private void initSpinner(final Cursor cursor) {
@@ -215,19 +263,42 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-            mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
-            mRadioOrderNegative.setChecked(true);
-            mRadioOrderPositive.setChecked(false);
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-            mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
-            mRadioOrderNegative.setChecked(false);
-            mRadioOrderPositive.setChecked(true);
-            return true;
-        default:
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                mSpeechEngine.speak(getResources().getString(R.string.speech_negative));
+                mRadioOrderNegative.setChecked(true);
+                mRadioOrderPositive.setChecked(false);
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                mSpeechEngine.speak(getResources().getString(R.string.speech_positive));
+                mRadioOrderNegative.setChecked(false);
+                mRadioOrderPositive.setChecked(true);
+                return true;
+            default:
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch(id) {
+            case DIALOG_LOAD_TASK_PROGRESS:
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(getString(R.string.message_load_task));
+                dialog.setCancelable(false);
+                return dialog;
+            case DIALOG_NO_TASK_FOUND: {
+                AlertDialog.Builder builder = new Builder(this);
+                builder.setMessage(R.string.message_no_task_found).setNegativeButton(
+                        R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                return builder.create();
+            }
+        }
+        return null;
     }
 }

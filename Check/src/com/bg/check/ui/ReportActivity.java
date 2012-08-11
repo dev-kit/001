@@ -25,6 +25,7 @@ import com.bg.check.datatype.TaskContent;
 import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.engine.utils.TaskHelper;
 
 public class ReportActivity extends Activity implements DatabaseObserver, OnClickListener,
@@ -154,14 +155,14 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 case 3:
                     break;
                 default:
-                    Log.e("::::", "order is not correct!");
+                    LogUtils.logE("ReportActivity, order is not correct!");
             }
             if (cursor.getCount() > mTranId) {
                 cursor.moveToPosition(mTranId);
                 render(cursor);
                 return;
             }
-            Log.e(":::::::::", "ReportActivity.onPostExecute()");
+            LogUtils.logE("ReportActivity.onPostExecute()");
         }
     }
 
@@ -223,7 +224,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 }
                 break;
             default:
-                Log.e("::::", "order is not correct!");
+                LogUtils.logE("ReportActivity, order is not correct!");
 
         }
     }
@@ -249,7 +250,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 }
                 break;
             default:
-                Log.e("::::", "order is not correct!");
+                LogUtils.logE("ReportActivity, order is not correct!");
 
         }
     }
