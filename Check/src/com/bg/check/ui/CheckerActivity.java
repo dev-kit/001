@@ -40,6 +40,8 @@ import com.bg.check.engine.utils.TaskHelper;
 public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener,
         SpeechListener {
 
+    private static final int SPEECH_COUNT = 5;
+
     private static final int DIALOG_LOGOUT_PROGRESS = 1;
 
     private ListView mList;
@@ -456,7 +458,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             StringBuilder builder = new StringBuilder();
             builder.append(String.format(mReportIndex, mCurrentIndex + 1));
             builder.append(SpeechEngine.COMMA);
-            for (int i = 1; i < row.length; i++) {
+            for (int i = 1; i < SPEECH_COUNT; i++) {
                 builder.append(mHeaders[i - 1]);
                 builder.append(SpeechEngine.COMMA);
                 builder.append("\"" + row[i] + "\"");
