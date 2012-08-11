@@ -12,6 +12,7 @@ import com.bg.check.webservice.SCWebService;
 
 public class ReplyTasksTask extends BaseTask {
     private String mUserDM;
+    private boolean mDebug = true;
 
     private String[] mMessageIds;
 
@@ -25,6 +26,9 @@ public class ReplyTasksTask extends BaseTask {
      */
     @Override
     public Object run() {
+        if (mDebug) {
+            return null;
+        }
         SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE, SCWebService.SC_METHOD_REPLY_TASKS);
 
         rpc.addProperty("User_dm", mUserDM);
