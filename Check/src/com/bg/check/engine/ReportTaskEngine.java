@@ -7,7 +7,7 @@ import com.bg.check.engine.utils.LogUtils;
 
 // FIXME: Duplicated Class to GerneralTaskEngine
 public class ReportTaskEngine {
-    private static final int SLEEP_TIME_MS = 1000;
+    private static final int SLEEP_TIME_MS = 10000;
 
     private ConcurrentLinkedQueue<BaseTask> mTaskQueue = new ConcurrentLinkedQueue<BaseTask>();
 

@@ -36,6 +36,8 @@ public class LoginActivity extends Activity {
 
     private static final int DIALOG_LOGIN_PROGRESS = 3;
 
+    private static final int DIALOG_LOGIN_FAIL = 4;
+
     private EditText mEditUsercode;
 
     private String mUsercode;
@@ -120,7 +122,7 @@ public class LoginActivity extends Activity {
     }
 
     @Override
-    protected Dialog onCreateDialog(int id) {
+    protected Dialog onCreateDialog(int id, Bundle bundle) {
         switch (id) {
             case DIALOG_QUERY_PROGRESS: {
                 final ProgressDialog dialog = new ProgressDialog(this);
@@ -144,6 +146,18 @@ public class LoginActivity extends Activity {
                 dialog.setCancelable(false);
                 return dialog;
             }
+            case DIALOG_LOGIN_FAIL: {
+                AlertDialog.Builder builder = new Builder(this);
+                int errorCode = bundle.getInt("error_code");
+                builder.setMessage(getString(R.string.error_message_login_fail, errorCode)).setNegativeButton(
+                        R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                return builder.create();
+            }
+
         }
 
         return super.onCreateDialog(id);
@@ -211,10 +225,12 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
                 finish();
             } else {
-                clearUserInformation();
-                mEditUsercode.requestFocus();
-                mEditUsercode.selectAll();
-                showDialog(DIALOG_USER_NOT_FOUND);
+                // clearUserInformation();
+                // mEditUsercode.requestFocus();
+                // mEditUsercode.selectAll();
+                Bundle bundle = new Bundle();
+                bundle.putInt("error_code", result);
+                showDialog(DIALOG_LOGIN_FAIL, bundle);
             }
 
             if (!LoginActivity.this.isFinishing()) {

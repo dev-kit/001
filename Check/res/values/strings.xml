@@ -67,6 +67,7 @@
     <string name="message_login">登录中…</string>
     <string name="message_logout">注销中…</string>
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
+    <string name="error_message_login_fail">登录失败，错误码  %d</string>
     <string name="ok">确定</string>
 
     <!-- For Checker screen -->
