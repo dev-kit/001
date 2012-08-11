@@ -10,6 +10,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import com.bg.check.datatype.TaskData;
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class GetTasksTask extends BaseTask {
@@ -49,11 +50,15 @@ public class GetTasksTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_TASKS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.logE("GetTasksTask: " + e);
             return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;
         List<TaskData> tasks = new ArrayList<TaskData>();
         TaskData.parseTask(object, tasks);
+        if (tasks.size() == 0) {
+            LogUtils.logD("GetTasksTask: there is no task in server");
+        }
 
         return tasks;
     }

@@ -7,6 +7,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import com.bg.check.datatype.TaskContent;
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class GetDetailsTask extends BaseTask {
@@ -50,6 +51,7 @@ public class GetDetailsTask extends BaseTask {
                     .call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GETDETAILS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.logE("GetDetailsTask: " + e);
             return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;

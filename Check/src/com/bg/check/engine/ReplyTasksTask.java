@@ -7,6 +7,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class ReplyTasksTask extends BaseTask {
@@ -44,6 +45,7 @@ public class ReplyTasksTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_REPLY_TASKS, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.logE("ReplyTasksTask: " + e);
             return null;
         }
         int result = 0;
@@ -54,6 +56,8 @@ public class ReplyTasksTask extends BaseTask {
                 // Report it automatically if failed
                 ReportTaskEngine.getInstance().appendTask(this);
             }
+        } else {
+            LogUtils.logE("ReplyTasksTask: " + envelope.bodyIn);
         }
         return result;
     }

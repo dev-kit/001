@@ -6,6 +6,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class LogoutTask extends BaseTask {
@@ -35,6 +36,7 @@ public class LogoutTask extends BaseTask {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_LOGOUT, envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.logE("LogoutTask: " + e);
             return null;
         }
         SoapObject object = (SoapObject)envelope.bodyIn;

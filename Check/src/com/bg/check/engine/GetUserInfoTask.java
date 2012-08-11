@@ -8,6 +8,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import com.bg.check.datatype.User;
+import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
 public class GetUserInfoTask extends BaseTask {
@@ -43,6 +44,7 @@ public class GetUserInfoTask extends BaseTask {
                     envelope);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.logE("GetUserInfoTask: " + e);
             return null;
         }
 
@@ -60,6 +62,7 @@ public class GetUserInfoTask extends BaseTask {
         } catch (SoapFault e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            LogUtils.logE("GetUserInfoTask: " + e);
             return null;
         }
         return user;

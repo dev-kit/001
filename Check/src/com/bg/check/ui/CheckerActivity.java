@@ -2,12 +2,17 @@
 package com.bg.check.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +33,7 @@ import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.datatype.TaskContent;
 import com.bg.check.datatype.User;
+import com.bg.check.engine.LogoutTask;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
@@ -35,6 +41,8 @@ import com.bg.check.engine.utils.TaskHelper;
 
 public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener,
         SpeechListener {
+
+    private static final int DIALOG_LOGOUT_PROGRESS = 1;
 
     private ListView mList;
 
@@ -116,9 +124,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private void gotoLogin() {
-        final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        new LogoutLoader().execute();
     }
 
     @Override
@@ -195,15 +201,22 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private class ReportAdapter extends CursorAdapter {
 
         private final int mColumnIndexConetntId;
+
         private final int mColumnIndexOrder;
+
         private final int mColumnIndexTrack;
+
         private final int mColumnIndexPosition;
+
         private final int mColumnIndexNotification;
 
         private class ViewHolder {
             TextView mOrder;
+
             TextView mTrack;
+
             TextView mPosition;
+
             TextView mNotification;
         }
 
@@ -402,7 +415,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mVoice != null && mVoice.getText().toString().equals(mVoiceStopString) && !mSpeechEngine.isSpeaking()) {
+                if (mVoice != null && mVoice.getText().toString().equals(mVoiceStopString)
+                        && !mSpeechEngine.isSpeaking()) {
                     mVoice.setText(mVoiceString);
                 }
             }
@@ -430,5 +444,46 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         super.onDestroy();
+    }
+
+    private class LogoutLoader extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            showDialog(DIALOG_LOGOUT_PROGRESS);
+        }
+
+        @Override
+        protected Integer doInBackground(Void... para) {
+            User user = ((Welcome)getApplication()).getCurrentUser();
+            return (Integer)new LogoutTask(user.mUserDM).run();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == 1) {
+                final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            if (!CheckerActivity.this.isFinishing()) {
+                dismissDialog(DIALOG_LOGOUT_PROGRESS);
+            }
+        }
+    }
+    
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DIALOG_LOGOUT_PROGRESS: {
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(mResources.getString(R.string.message_logout));
+                dialog.setCancelable(false);
+                return dialog;
+            }
+        }
+
+        return super.onCreateDialog(id);
     }
 }
