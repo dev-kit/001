@@ -71,7 +71,7 @@ public final class DatabaseHandler {
 
     public static final Cursor queryTask(String userName) {
         final SQLiteDatabase db = mDatabase.getReadableDatabase();
-        String where = Database.TASK_STATUS + "<=" + Database.TASK_STATUS_TO_REPORT
+        String where = Database.TASK_STATUS + "<" + Database.TASK_STATUS_TO_REPORT
                 + " and " +  Database.TASK_ZYR + "='" + userName + "'";
         return db.query(Database.TABLE_SC_TASK, TASK_CONTENT, where, null, null, null, null);
     }

@@ -26,7 +26,7 @@ public class ReplyTasksTask extends BaseTask {
     @Override
     public Object run() {
         if (mDebug) {
-            return null;
+            return 0;
         }
         SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE, SCWebService.SC_METHOD_REPLY_TASKS);
 

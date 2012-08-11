@@ -41,6 +41,9 @@ public class TaskHelper {
 
             @Override
             public void onCallBack(Object result) {
+                if (result == null || (Integer)result != 1) {
+                    return;
+                }
                 ContentValues values = new ContentValues();
                 values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
                 String where = Database.TASK_MESSAGEID + "=" + messageIds;
@@ -68,6 +71,9 @@ public class TaskHelper {
 
             @Override
             public void onCallBack(Object result) {
+                if (result == null || (Integer)result != 1) {
+                    return;
+                }
                 ContentValues values = new ContentValues();
                 values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
                 String where = Database.COLUMN_ID + "=" + id;
