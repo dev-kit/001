@@ -249,6 +249,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 highlightCurrentView(view);
+                int taskStatus = Integer.valueOf(((String[])mAdapter.getItem(position))[7]);
+                findViewById(R.id.feedback).setClickable(taskStatus > Database.TASK_STATUS_DEFAULT);
             }
 
             @Override
@@ -332,7 +334,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         public Object getItem(int position) {
             Cursor cursor = getCursor();
             if (cursor != null && cursor.moveToPosition(position)) {
-                String[] row = new String[7];
+                String[] row = new String[8];
                 row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
                 row[2] = cursor.getString(mColumnIndexTrack);
@@ -340,6 +342,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 row[4] = cursor.getString(mColumnIndexNotification);
                 row[5] = cursor.getString(cursor.getColumnIndex(Database.TASK_MESSAGEID));
                 row[6] = cursor.getString(cursor.getColumnIndex(Database.TASK_LX));
+                row[7] = cursor.getString(cursor.getColumnIndex(Database.TASK_STATUS));
                 return row;
             }
             return null;
