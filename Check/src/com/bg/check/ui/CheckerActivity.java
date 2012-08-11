@@ -64,6 +64,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private int mContentId = -1;
 
+    private int mMessageId = -1;
+
+    private int mTaskLX = -1;
+
     private Resources mResources;
 
     private SpeechEngine mSpeechEngine;
@@ -195,7 +199,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private void gotoSelectReport() {
         if (mAdapter != null && mAdapter.getCount() > 0) {
             final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
-            if (mContentId == -1 && mAdapter.getCount() > 0) {
+            if (mContentId == -1) {
                 mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
             }
 
@@ -205,6 +209,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
 
             intent.putExtra("ContentID", mContentId);
+            intent.putExtra("MessageID", mMessageId);
+            intent.putExtra("TaskLX", mTaskLX);
             startActivity(intent);
         }
     }
@@ -217,6 +223,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 highlightCurrentView(view);
                 mCurrentIndex = position;
                 mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
+                mMessageId = Integer.valueOf(((String[])mAdapter.getItem(position))[5]);
+                mTaskLX = Integer.valueOf(((String[])mAdapter.getItem(position))[6]);
                 startCurrentTaskSpeech();
             }
         });
@@ -233,7 +241,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 // Do nothing; 
             }
         });
-        final Cursor cursor = DatabaseHandler.queryTask();
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         mAdapter = new ReportAdapter(this, cursor);
         mList.setAdapter(mAdapter);
     }
@@ -313,12 +322,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         public Object getItem(int position) {
             Cursor cursor = getCursor();
             if (cursor != null && cursor.moveToPosition(position)) {
-                String[] row = new String[5];
+                String[] row = new String[7];
                 row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
                 row[2] = cursor.getString(mColumnIndexTrack);
                 row[3] = cursor.getString(mColumnIndexPosition);
                 row[4] = cursor.getString(mColumnIndexNotification);
+                row[5] = cursor.getString(cursor.getColumnIndex(Database.TASK_MESSAGEID));
+                row[6] = cursor.getString(cursor.getColumnIndex(Database.TASK_LX));
                 return row;
             }
             return null;
@@ -495,7 +506,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public void onUpdate() {
-        final Cursor cursor = DatabaseHandler.queryTask();
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
