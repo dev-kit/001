@@ -456,15 +456,28 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         @Override
         protected Integer doInBackground(Void... para) {
             User user = ((Welcome)getApplication()).getCurrentUser();
+            // For test: begain
+            if (user.mUserRole != null && user.mUserRole.equals("≤‚ ‘’ﬂ")) {
+                return 1;
+            }
+            // For test: end
+
             return (Integer)new LogoutTask(user.mUserDM).run();
         }
 
         @Override
         protected void onPostExecute(Integer result) {
             if (result == 1) {
+                final String prompt = mResources.getString(R.string.toast_logout_success);
+                Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+                mSpeechEngine.speak(prompt);
                 final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+            } else {
+                final String prompt = mResources.getString(R.string.toast_logout_fail);
+                Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+                mSpeechEngine.speak(prompt);
             }
 
             if (!CheckerActivity.this.isFinishing()) {
@@ -472,7 +485,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
         }
     }
-    
+
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {

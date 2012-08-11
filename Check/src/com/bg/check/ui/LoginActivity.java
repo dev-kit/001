@@ -181,10 +181,11 @@ public class LoginActivity extends Activity {
         }
 
         public void testPass() {
-            final User user = new User();
+            User user = ((Welcome)getApplication()).getCurrentUser();
             user.mUserDM = "test";
             user.mUserName = "¿Ó∞◊";
             user.mUserRole = "≤‚ ‘’ﬂ";
+
             onPostExecute(user);
         }
     }
