@@ -247,6 +247,12 @@ public class LoginActivity extends Activity {
         mEditName.setText(user.mUserName);
         mEditRole.setText(user.mUserRole);
         mLogin.setEnabled(true);
+        User u = ((Welcome)getApplication()).getCurrentUser();
+        u.mUserDM = user.mUserDM;
+        u.mUserMobile = user.mUserMobile;
+        u.mUserName = user.mUserName;
+        u.mUserRole = user.mUserRole;
+        u.mUserZMLM = user.mUserZMLM;
     }
 
     private void gotoSetting() {

@@ -566,6 +566,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 showVoiceToast(R.string.toast_logout_success);
                 final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
                 startActivity(intent);
+                User u = ((Welcome)getApplication()).getCurrentUser();
+                u.mUserDM = null;
+                u.mUserMobile = null;
+                u.mUserName = null;
+                u.mUserRole = null;
+                u.mUserZMLM = null;
                 finish();
             } else {
                 showVoiceToast(R.string.toast_logout_fail);
