@@ -567,8 +567,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         @Override
         protected void onPostExecute(Integer result) {
             if (result == 1) {
-                showVoiceToast(R.string.toast_logout_success);
                 final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
+                intent.setAction("logout");
                 startActivity(intent);
                 finish();
             } else {
