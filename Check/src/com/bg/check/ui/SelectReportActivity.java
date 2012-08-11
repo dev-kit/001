@@ -210,9 +210,11 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             findViewById(R.id.start).setClickable(cursor.getCount() > 0);
             mCursorAdapter.changeCursor(cursor);
             initSpinner(cursor);
-            dismissDialog(DIALOG_LOAD_TASK_PROGRESS);
-            if (cursor.getCount() == 0) {
-                showDialog(DIALOG_NO_TASK_FOUND);
+            if (!isFinishing()) {
+                dismissDialog(DIALOG_LOAD_TASK_PROGRESS);
+                if (cursor.getCount() == 0) {
+                    showDialog(DIALOG_NO_TASK_FOUND);
+                }
             }
         }
 

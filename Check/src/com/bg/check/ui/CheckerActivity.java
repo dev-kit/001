@@ -95,10 +95,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     protected void onStart() {
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
-        if (mAdapter.getCount() > 0) {
-            mCurrentIndex = 0;
-            startSeriesSpeech();
-        }
+        startSeriesSpeech();
         super.onStart();
     }
 
@@ -167,6 +164,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_RETURN:
+                // Do nothing;
+                return true;
         }
         return super.onKeyUp(keyCode, event);
     }
@@ -175,10 +175,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_OK:
-                startCurrentTaskSpeech();
+                startWork();
                 return true;
             case CheckerKeyEvent.KEYCODE_REPLAY:
                 startCurrentTaskSpeech();
+                return true;
+            case CheckerKeyEvent.KEYCODE_RETURN:
+                gotoLogin();
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
@@ -294,12 +297,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            if (!view.equals(mSelectedItemView)) {
-                view.setBackgroundResource(android.R.drawable.list_selector_background);
-            } else if (mSelectedItemView != null) {
-                view.setBackgroundResource(R.drawable.toolbar_bg);
-            }
-
+            view.setBackgroundResource(android.R.drawable.list_selector_background);
             ViewHolder holder = (ViewHolder)view.getTag();
             if (holder == null) {
                 holder = new ViewHolder();
@@ -376,40 +374,43 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         moveSelectionTo(mCurrentIndex);
     }
 
+    private void startWork() {
+        if (mAdapter == null || mAdapter.getCount() < 1) {
+            return;
+        }
+
+        stopSpeech();
+        Cursor c = mAdapter.getCursor();
+        String title = mStart.getText().toString();
+        if (title.equals(getString(R.string.complete)) && c != null) {
+            TaskHelper.reportTasksForSingleTask(
+                    ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
+                    c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
+            mStart.setText(R.string.start);
+            return;
+        }
+
+        int messageID = 0;
+        if (c != null) {
+            messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+        }
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        TaskHelper.replyTasks(user.mUserDM, messageID);
+
+        gotoSelectReport();
+
+        if (mContentId <= 0) {
+            mStart.setText(R.string.complete);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         final int id = v.getId();
 
         switch (id) {
-            case R.id.start: {
-                if (mAdapter == null || mAdapter.getCount() < 1) {
-                    return;
-                }
-
-                stopSpeech();
-                Cursor c = mAdapter.getCursor();
-                String title = mStart.getText().toString();
-                if (title.equals(getString(R.string.complete)) && c != null) {
-                    TaskHelper.reportTasksForSingleTask(
-                            ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
-                            c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
-                    mStart.setText(R.string.start);
-                    return;
-                }
-
-                int messageID = 0;
-                if (c != null) {
-                    messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
-                }
-                User user = ((Welcome)getApplication()).getCurrentUser();
-                TaskHelper.replyTasks(user.mUserDM, messageID);
-
-                gotoSelectReport();
-
-                if (mContentId <= 0) {
-                    mStart.setText(R.string.complete);
-                }
-            }
+            case R.id.start:
+                startWork();
                 break;
             case R.id.feedback: {
                 if (mAdapter == null || mAdapter.getCount() < 1) {
@@ -500,6 +501,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void run() {
                 if (mVoice != null && mVoice.getText().toString().equals(mVoiceStopString)
                         && !mSpeechEngine.isSpeaking()) {
+                    if (mSpeechEngine != null) {
+                        mSpeechEngine.stopSpeak();
+                    }
                     mVoice.setText(mVoiceString);
                 }
             }
