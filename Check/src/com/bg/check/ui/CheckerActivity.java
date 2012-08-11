@@ -392,11 +392,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         stopSpeech();
         Cursor c = mAdapter.getCursor();
         String title = mStart.getText().toString();
-        if (title.equals(getString(R.string.complete)) && c != null) {
+        if (title.equals(getString(R.string.complete)) && c != null && c.moveToPosition(mCurrentIndex)) {
             TaskHelper.reportTasksForSingleTask(
                     ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
                     c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
             mStart.setText(R.string.start);
+            mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                    mResources.getDrawable(R.drawable.ic_go), null, null);
             return;
         }
 
@@ -411,6 +413,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         if (mContentId <= 0) {
             mStart.setText(R.string.complete);
+            mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                    mResources.getDrawable(R.drawable.ic_complete), null, null);
         }
     }
 

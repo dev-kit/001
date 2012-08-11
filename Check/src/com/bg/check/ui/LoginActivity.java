@@ -21,12 +21,10 @@ import android.widget.TextView;
 
 import com.bg.check.R;
 import com.bg.check.Welcome;
-import com.bg.check.database.DatabaseHandler;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.CycleDownloadTaskManager;
 import com.bg.check.engine.GetUserInfoTask;
 import com.bg.check.engine.LoginTask;
-import com.bg.check.engine.SpeechEngine;
 
 public class LoginActivity extends Activity {
 
