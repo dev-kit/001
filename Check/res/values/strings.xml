@@ -19,6 +19,8 @@
     <string name="empty">无内容</string>
     <string name="speech_positive">正序工作方式</string>
     <string name="speech_negative">反序工作方式</string>
+    <string name="default_ip">210.75.98.59</string>
+    <string name="default_port">80</string>
 
     <!-- For report screen -->
     <string name="sw">顺位：</string>

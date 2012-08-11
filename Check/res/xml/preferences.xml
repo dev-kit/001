@@ -10,12 +10,14 @@
             android:key="edit_ip"
             android:title="@string/setting_ip_title"
             android:summary="@string/setting_ip_summary"
+            android:defaultValue="@string/default_ip"
             android:dialogTitle="@string/setting_ip_summary" />
 
         <EditTextPreference
             android:key="edit_port"
             android:title="@string/setting_port_title"
             android:summary="@string/setting_port_summary"
+            android:defaultValue="@string/default_port"
             android:dialogTitle="@string/setting_port_summary" />
     </PreferenceCategory>
 

@@ -3,13 +3,13 @@ package com.bg.check.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +22,6 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.datatype.TaskContent;
-import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
@@ -304,40 +303,74 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
     @Override
     public String onPrepareSpeech() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean hasOrder = preferences.getBoolean("checkbox_oreder", false);
+        final boolean hasTrainId = preferences.getBoolean("checkbox_train_id", false);
+        final boolean hasTrainType = preferences.getBoolean("checkbox_train_type", false);
+        final boolean hasStationStart = preferences.getBoolean("checkbox_station_start", false);
+        final boolean hasStationStop = preferences.getBoolean("checkbox_station_stop", false);
+        final boolean hasProduct = preferences.getBoolean("checkbox_product", false);
+        final boolean hasRecord = preferences.getBoolean("checkbox_record", false);
+        final boolean hasImportance = preferences.getBoolean("checkbox_importance", false);
+
         final StringBuilder builder = new StringBuilder();
 
-        builder.append(mLabelSw);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mSw) ? mEmpty : mSw);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelCh);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mCh) ? mEmpty : mCh);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelCz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mCz) ? mEmpty : mCz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelFz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mFz) ? mEmpty : mFz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelDz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mDz) ? mEmpty : mDz);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelPm);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mPm) ? mEmpty : mPm);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelJsl);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mJsl) ? mEmpty : mJsl);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(mLabelImportance);
-        builder.append(SpeechEngine.COMMA);
-        builder.append(TextUtils.isEmpty(mImportance) ? mEmpty : mImportance);
-        builder.append(SpeechEngine.COMMA);
+        if (hasOrder) {
+            builder.append(mLabelSw);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mSw) ? mEmpty : mSw);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasTrainId) {
+            builder.append(mLabelCh);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mCh) ? mEmpty : mCh);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasTrainType) {
+            builder.append(mLabelCz);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mCz) ? mEmpty : mCz);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasStationStart) {
+            builder.append(mLabelFz);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mFz) ? mEmpty : mFz);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasStationStop) {
+            builder.append(mLabelDz);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mDz) ? mEmpty : mDz);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasProduct) {
+            builder.append(mLabelPm);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mPm) ? mEmpty : mPm);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasRecord) {
+            builder.append(mLabelJsl);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mJsl) ? mEmpty : mJsl);
+            builder.append(SpeechEngine.COMMA);
+        }
+
+        if (hasImportance) {
+            builder.append(mLabelImportance);
+            builder.append(SpeechEngine.COMMA);
+            builder.append(TextUtils.isEmpty(mImportance) ? mEmpty : mImportance);
+            builder.append(SpeechEngine.COMMA);
+        }
+
         builder.append(mLabelOperate);
         builder.append(SpeechEngine.COMMA);
         builder.append(TextUtils.isEmpty(mOperate) ? mEmpty : mOperate);
