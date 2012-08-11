@@ -2,12 +2,9 @@
 package com.bg.check.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -84,10 +81,28 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     @Override
-    protected void onResume() {
+    protected void onStart() {
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
-        super.onResume();
+        if (mAdapter.getCount() > 0) {
+            mCurrentIndex = 0;
+            moveFocus(0);
+            startSeriesSpeech();
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        stopSpeech();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        DatabaseHandler.removeDatabaseObserver(this);
+        mSpeechEngine.unregisterSpeechListener();
+        super.onStop();
     }
 
     private void init() {
@@ -128,11 +143,22 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     @Override
-    protected void onPause() {
-        stopSpeech();
-        DatabaseHandler.removeDatabaseObserver(this);
-        mSpeechEngine.unregisterSpeechListener();
-        super.onPause();
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case CheckerKeyEvent.KEYCODE_OK:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_REPLAY:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                // Do nothing;
+                return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override
@@ -280,9 +306,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private synchronized void startSeriesSpeech() {
-        stopSpeech();
-        mSpeechEngine.speakSeries();
-        setStartSpeechUi();
+        if (mAdapter != null && mAdapter.getCount() > 0) {
+            stopSpeech();
+            mSpeechEngine.speakSeries();
+            setStartSpeechUi();
+        }
     }
 
     private void setStartSpeechUi() {
@@ -361,9 +389,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private void moveFocus(int position) {
-        mList.setSelectionFromTop(position, 100);
         mList.requestFocus();
         mList.requestFocusFromTouch();
+        mList.setSelectionFromTop(position, 100);
         final View item = mList.getSelectedView();
         if (item != null) {
             item.requestFocus();
@@ -404,6 +432,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                     moveFocus(++mCurrentIndex);
                 }
             });
+
             return true;
         } else {
             return false;
@@ -431,6 +460,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void run() {
                 if (mAdapter != null) {
                     mAdapter.changeCursor(cursor);
+                    if (mAdapter.getCount() > 0) {
+                        mCurrentIndex = 0;
+                        startSeriesSpeech();
+                    }
                 }
             }
         });

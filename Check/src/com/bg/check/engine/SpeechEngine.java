@@ -184,6 +184,7 @@ public class SpeechEngine implements OnInitListener {
 
     public void close() {
         mSpeakerAvailable = false;
+        mSpeechEngine = null;
 
         if (mSpeaker != null) {
             mSpeaker.shutdown();
