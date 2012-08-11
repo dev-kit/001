@@ -86,6 +86,10 @@ public class Database extends SQLiteOpenHelper {
     // 4: report success
     public static final String TASK_STATUS = "status";
 
+    public static final String TASK_BEGIN_TIME = "Task_begin";
+
+    public static final String TASK_FINISH_TIME = "Task_finish";
+
     public static final String TASK_MESSAGEID = "TASK_MESSAGEID";
 
     public static final String TASK_DQSJ = "TASK_DQSJ";
@@ -126,7 +130,7 @@ public class Database extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "lzbdata";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_SC_USER = "sc_user";
     
@@ -180,7 +184,9 @@ public class Database extends SQLiteOpenHelper {
                 TASK_ZZXH   + " NUMBER(3)," +
                 TASK_JLSJ   + " DATE," +
                 TASK_LYFX   + " VARCHAR2(10)," +
-                TASK_STATUS + " INTEGER default 0 " + ");");
+                TASK_STATUS + " INTEGER default 0," +
+                TASK_BEGIN_TIME + " TEXT, " +
+                TASK_FINISH_TIME + " TEXT " +");");
     }
 
     private void createTaskContentTable(SQLiteDatabase db) {
@@ -236,6 +242,11 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (oldVersion) {
+            case 1:
+                db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_BEGIN_TIME + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_FINISH_TIME + " TEXT");
+        }
     }
 }
 
