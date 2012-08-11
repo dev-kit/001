@@ -184,7 +184,7 @@ public class LoginActivity extends Activity {
         @Override
         protected User doInBackground(String... usercode) {
             // TODO: It' bad to new task like this
-            return (User)new GetUserInfoTask(usercode[0]).run();
+            return (User)new GetUserInfoTask(LoginActivity.this, usercode[0]).run();
         }
 
         @Override
@@ -222,7 +222,7 @@ public class LoginActivity extends Activity {
         protected Integer doInBackground(Void... para) {
             User user = ((Welcome)getApplication()).getCurrentUser();
             user.mPassword = mEditPassword.getText().toString();
-            return (Integer)new LoginTask(user.mUserDM, user.mPassword, user.mUserMobile).run();
+            return (Integer)new LoginTask(LoginActivity.this, user.mUserDM, user.mPassword, user.mUserMobile).run();
         }
 
         @Override
@@ -272,7 +272,7 @@ public class LoginActivity extends Activity {
     private void login() {
 
         if (mEditRole.getText().toString().trim().equals("测试者")) {
-            CycleDownloadTaskManager.getInstance().run("mad", "马爱东", "SXT");
+            CycleDownloadTaskManager.getInstance(LoginActivity.this).run("mad", "马爱东", "SXT");
             final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
             startActivity(intent);
             finish();

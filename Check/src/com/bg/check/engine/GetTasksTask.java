@@ -9,6 +9,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
@@ -20,10 +22,13 @@ public class GetTasksTask extends BaseTask {
 
     private String mUserZMLM;
 
-    public GetTasksTask(String userDM, String userName, String userZMLM) {
+    private Context mContext;
+
+    public GetTasksTask(Context context, String userDM, String userName, String userZMLM) {
         mUserDM = userDM;
         mUserName = userName;
         mUserZMLM = userZMLM;
+        mContext = context.getApplicationContext();
     }
 
     /**
@@ -45,7 +50,7 @@ public class GetTasksTask extends BaseTask {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_TASKS, envelope);
         } catch (Exception e) {

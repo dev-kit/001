@@ -6,6 +6,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.content.Context;
+
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
@@ -16,11 +18,13 @@ public class LoginTask extends BaseTask {
 
     private String mMobile;
 
-    public LoginTask(String dm, String password, String mobile) {
+    private Context mContext;
+
+    public LoginTask(Context context, String dm, String password, String mobile) {
         mUserDM = dm;
         mPassword = password;
         mMobile = mobile;
-
+        mContext = context.getApplicationContext();
     }
 
     /**
@@ -40,7 +44,7 @@ public class LoginTask extends BaseTask {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(rpc);
 
-        HttpTransportSE transport = new HttpTransportSE(SCWebService.SC_END_POINT);
+        HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_LOGIN, envelope);
         } catch (Exception e) {
@@ -54,7 +58,7 @@ public class LoginTask extends BaseTask {
             LogUtils.logE("User " + mUserDM +" re-login:" + result);
         }
         if (result == 1 || result == -6) {
-            CycleDownloadTaskManager.getInstance().run(mUserDM, "", "");
+            CycleDownloadTaskManager.getInstance(mContext).run(mUserDM, "", "");
         }
         return result;
     }
