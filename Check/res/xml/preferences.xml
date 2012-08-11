@@ -25,34 +25,42 @@
         android:title="@string/setting_report_content">
         <CheckBoxPreference
                 android:key="checkbox_order"
-                android:title="@string/setting_order"/>
+                android:title="@string/setting_order"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_train_id"
-                android:title="@string/setting_train_id"/>
+                android:title="@string/setting_train_id"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_train_type"
-                android:title="@string/setting_train_type"/>
+                android:title="@string/setting_train_type"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_station_start"
-                android:title="@string/setting_station_start"/>
+                android:title="@string/setting_station_start"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_station_stop"
-                android:title="@string/setting_station_stop"/>
+                android:title="@string/setting_station_stop"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_product"
-                android:title="@string/setting_product"/>
+                android:title="@string/setting_product"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_record"
-                android:title="@string/setting_record"/>
+                android:title="@string/setting_record"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="checkbox_importance"
-                android:title="@string/setting_importance"/>
+                android:title="@string/setting_importance"
+                android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>
