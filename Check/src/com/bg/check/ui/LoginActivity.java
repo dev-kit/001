@@ -91,10 +91,8 @@ public class LoginActivity extends Activity {
                     }
                     // #############
                     if (!TextUtils.isEmpty(usercode)) {
-                        if (!usercode.equals(mUsercode)) {
-                            mUsercode = usercode;
-                            loadUserInformation(usercode);
-                        }
+                        mUsercode = usercode;
+                        loadUserInformation(usercode);
                     } else {
                         clearUserInformation();
                     }

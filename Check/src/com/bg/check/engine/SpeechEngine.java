@@ -58,7 +58,7 @@ public class SpeechEngine implements OnInitListener {
 
     public interface SpeechListener {
         public String onPrepareSpeech();
-        public boolean hasNextSpeech();
+        public boolean moveToNext();
         public void onSpeechComplete();
     }
 
@@ -85,12 +85,12 @@ public class SpeechEngine implements OnInitListener {
             case MESSAGE_SPEAK_SERIES:
                 final SpeechListener listener = mSpeechListener;
                 if (listener != null) {
-                     do {
+                    do {
                         final String words = listener.onPrepareSpeech();
                         speakInternal(words);
                         waitingForSpeakingFinish();
-                    } while(listener.hasNextSpeech());
-                     reportSpeechComplete();
+                    } while (listener.moveToNext());
+                    reportSpeechComplete();
                 }
                 mIsSpeakStart = false;
                 return;

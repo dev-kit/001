@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,6 +72,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private String mVoiceStopString;
 
+    private View mSelectedItemView;
+
+    private boolean mStopSeriesSpeech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +91,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mSpeechEngine.registerSpeechListener(this);
         if (mAdapter.getCount() > 0) {
             mCurrentIndex = 0;
-            moveFocus(0);
             startSeriesSpeech();
         }
         super.onStart();
@@ -172,13 +176,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
-                    moveFocus(++mCurrentIndex);
+                    moveSelectionTo(++mCurrentIndex);
                     startCurrentTaskSpeech();
                 }
                 return true;
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 if (mCurrentIndex > 0) {
-                    moveFocus(--mCurrentIndex);
+                    moveSelectionTo(--mCurrentIndex);
                     startCurrentTaskSpeech();
                 }
                 return true;
@@ -196,9 +200,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
 
             if (mContentId == 0) {
-                final String prompt = mResources.getString(R.string.toast_no_content_id);
-                Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
-                mSpeechEngine.speak(prompt);
+                showVoiceToast(R.string.toast_no_content_id);
                 return;
             }
 
@@ -209,19 +211,43 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private void initListAdapter() {
         mList = (ListView)findViewById(R.id.list);
-        mList.setSelectionAfterHeaderView();
         mList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> dapterView, View view, int position, long id) {
-                view.requestFocusFromTouch();
+                highlightCurrentView(view);
                 mCurrentIndex = position;
                 mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
+                startCurrentTaskSpeech();
             }
         });
 
+        mList.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                highlightCurrentView(view);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // Do nothing; 
+            }
+        });
         final Cursor cursor = DatabaseHandler.queryTask();
         mAdapter = new ReportAdapter(this, cursor);
         mList.setAdapter(mAdapter);
+    }
+
+    private void highlightCurrentView(View view) {
+        if (mSelectedItemView != null) {
+            mSelectedItemView.setBackgroundResource(android.R.drawable.list_selector_background);
+        }
+
+        if (view != null) {
+            view.setBackgroundResource(R.drawable.toolbar_bg);
+        }
+
+        mSelectedItemView = view;
     }
 
     private class ReportAdapter extends CursorAdapter {
@@ -257,6 +283,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            if (!view.equals(mSelectedItemView)) {
+                view.setBackgroundResource(android.R.drawable.list_selector_background);
+            } else if (mSelectedItemView != null) {
+                view.setBackgroundResource(R.drawable.toolbar_bg);
+            }
+
             ViewHolder holder = (ViewHolder)view.getTag();
             if (holder == null) {
                 holder = new ViewHolder();
@@ -293,21 +325,34 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
     }
 
-    private synchronized void stopSpeech() {
+    private void stopSpeech() {
+        mStopSeriesSpeech = true;
         mSpeechEngine.stopSpeak();
         mVoice.setText(mVoiceString);
     }
 
-    private synchronized void startCurrentTaskSpeech() {
+    private void showVoiceToast(int resId) {
+        final String prompt = mResources.getString(resId);
+        Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+        startSingleSpeech(prompt);
+    }
+
+    private void startSingleSpeech(String words) {
+        stopSpeech();
+        mSpeechEngine.speak(words);
+    }
+
+    private void startCurrentTaskSpeech() {
         stopSpeech();
         final String words = getCurrentTaskString();
         mSpeechEngine.speak(words);
         setStartSpeechUi();
     }
 
-    private synchronized void startSeriesSpeech() {
+    private void startSeriesSpeech() {
         if (mAdapter != null && mAdapter.getCount() > 0) {
             stopSpeech();
+            mStopSeriesSpeech = false;
             mSpeechEngine.speakSeries();
             setStartSpeechUi();
         }
@@ -315,8 +360,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private void setStartSpeechUi() {
         mVoice.setText(mVoiceStopString);
-        mList.requestFocus();
-        mList.requestFocusFromTouch();
+        moveSelectionTo(mCurrentIndex);
     }
 
     @Override
@@ -328,6 +372,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 if (mAdapter == null || mAdapter.getCount() < 1) {
                     return;
                 }
+
+                stopSpeech();
                 Cursor c = mAdapter.getCursor();
                 String title = mStart.getText().toString();
                 if (title.equals(getString(R.string.complete)) && c != null) {
@@ -388,15 +434,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         return false;
     }
 
-    private void moveFocus(int position) {
-        mList.requestFocus();
+    private void moveSelectionTo(int position) {
         mList.requestFocusFromTouch();
-        mList.setSelectionFromTop(position, 100);
-        final View item = mList.getSelectedView();
-        if (item != null) {
-            item.requestFocus();
-            item.requestFocusFromTouch();
-        }
+        mList.setSelectionFromTop(position, 200);
     }
 
     private String getCurrentTaskString() {
@@ -420,19 +460,19 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public String onPrepareSpeech() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                moveSelectionTo(mCurrentIndex);
+            }
+        });
         return getCurrentTaskString();
     }
 
     @Override
-    public synchronized boolean hasNextSpeech() {
-        if (isSpeechWorking() && mCurrentIndex + 1 < mAdapter.getCount()) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    moveFocus(++mCurrentIndex);
-                }
-            });
-
+    public synchronized boolean moveToNext() {
+        if (!mStopSeriesSpeech && isSpeechWorking() && mCurrentIndex + 1 < mAdapter.getCount()) {
+            mCurrentIndex++;
             return true;
         } else {
             return false;
@@ -441,6 +481,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     public synchronized void onSpeechComplete() {
+        mStopSeriesSpeech = false;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -458,25 +499,19 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                final Cursor oldCursor = mAdapter.getCursor();
+                final int count = oldCursor != null ? oldCursor.getCount() : 0;
+
                 if (mAdapter != null) {
                     mAdapter.changeCursor(cursor);
-                    if (mAdapter.getCount() > 0) {
-                        mCurrentIndex = 0;
+                    final int newCount = mAdapter.getCount();
+                    if (newCount > 0 && count != newCount) {
+//                        mCurrentIndex = 0;
                         startSeriesSpeech();
                     }
                 }
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mSpeechEngine != null) {
-            mSpeechEngine.close();
-            mSpeechEngine = null;
-        }
-
-        super.onDestroy();
     }
 
     private class LogoutLoader extends AsyncTask<Void, Void, Integer> {
@@ -501,16 +536,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         @Override
         protected void onPostExecute(Integer result) {
             if (result == 1) {
-                final String prompt = mResources.getString(R.string.toast_logout_success);
-                Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
-                mSpeechEngine.speak(prompt);
+                showVoiceToast(R.string.toast_logout_success);
                 final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                final String prompt = mResources.getString(R.string.toast_logout_fail);
-                Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
-                mSpeechEngine.speak(prompt);
+                showVoiceToast(R.string.toast_logout_fail);
             }
 
             if (!CheckerActivity.this.isFinishing()) {

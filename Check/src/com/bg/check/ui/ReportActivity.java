@@ -341,7 +341,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     @Override
-    public boolean hasNextSpeech() {
+    public boolean moveToNext() {
         return false;
     }
 
