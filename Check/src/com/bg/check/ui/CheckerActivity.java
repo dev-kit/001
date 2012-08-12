@@ -4,6 +4,7 @@ package com.bg.check.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -410,6 +411,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             mStart.setCompoundDrawablesWithIntrinsicBounds(null,
                     mResources.getDrawable(R.drawable.ic_go), null, null);
             return;
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(Database.TASK_BEGIN_TIME, System.currentTimeMillis());
+            String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
+            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
         }
 
         int messageID = 0;

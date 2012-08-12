@@ -95,6 +95,12 @@ public final class DatabaseHandler {
         return count;
     }
 
+    public static int updateWithoutNotify(String table, ContentValues values, String whereClause, String[] whereArgs) {
+        final SQLiteDatabase db = mDatabase.getWritableDatabase();
+        final int count = db.update(table, values, whereClause, whereArgs);
+        return count;
+    }
+
     public static int delete(String table, String whereClause, String[] whereArgs) {
         final SQLiteDatabase db = mDatabase.getWritableDatabase();
         final int count = db.delete(table, whereClause, whereArgs);

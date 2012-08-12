@@ -87,6 +87,7 @@ public class TaskHelper {
     public static void reportTasksForSingleTask(Context context, User user, TaskContent taskcontent, final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
+        values.put(Database.TASK_FINISH_TIME, System.currentTimeMillis());
         String where = Database.COLUMN_ID + "=" + id;
         DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
