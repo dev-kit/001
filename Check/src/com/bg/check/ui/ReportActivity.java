@@ -2,6 +2,7 @@
 package com.bg.check.ui;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -86,6 +87,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
     private SpeechEngine mSpeechEngine;
 
+    private int mMessageID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +108,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
         // kick off a query
         int contentID = getIntent().getIntExtra("ContentID", -1);
+        mMessageID = getIntent().getIntExtra("MessageID", -1);
         new AsyncQueryReportTask().execute(contentID);
     }
 
@@ -401,20 +405,20 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case CheckerKeyEvent.KEYCODE_REPLAY:
-            stopSpeech();
-            startSpeech();
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-            handleDown();
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-            handleUp();
-            return true;
-        case CheckerKeyEvent.KEYCODE_RETURN:
-            goBack();
-            return true;
-        default:
+            case CheckerKeyEvent.KEYCODE_REPLAY:
+                stopSpeech();
+                startSpeech();
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                handleDown();
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                handleUp();
+                return true;
+            case CheckerKeyEvent.KEYCODE_RETURN:
+                goBack();
+                return true;
+            default:
         }
 
         return super.onKeyDown(keyCode, event);
@@ -423,19 +427,19 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case CheckerKeyEvent.KEYCODE_REPLAY:
-            // Do nothing;
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-            // Do nothing;
-            return true;
-        case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-            // Do nothing;
-            return true;
-        case CheckerKeyEvent.KEYCODE_RETURN:
-            // Do nothing;
-            return true;
-        default:
+            case CheckerKeyEvent.KEYCODE_REPLAY:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_VOLUME_UP:
+                // Do nothing;
+                return true;
+            case CheckerKeyEvent.KEYCODE_RETURN:
+                // Do nothing;
+                return true;
+            default:
         }
 
         return super.onKeyUp(keyCode, event);

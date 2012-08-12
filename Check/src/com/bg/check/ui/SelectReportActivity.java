@@ -9,6 +9,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.AsyncQueryHandler;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -158,6 +159,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         }
         Intent intent = new Intent(this, ReportActivity.class);
         intent.putExtra("ContentID", mContentID);
+        intent.putExtra("MessageID", mMessageID);
 
         if (((RadioButton)findViewById(R.id.order)).isChecked()) {
             intent.putExtra(ReportActivity.ORDER, 1);
@@ -206,6 +208,14 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                     c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
                             null, null, null);
                 }
+            }
+            if (c.getCount() == 0) {
+                // Update task to complete status that don't has avaliable task
+                // content
+                ContentValues values = new ContentValues();
+                values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
+                where = Database.TASK_MESSAGEID + "=" + mMessageID;
+                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
             }
             return c;
         }
