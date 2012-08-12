@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -213,21 +214,39 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private void gotoSelectReport() {
-        if (mAdapter != null && mAdapter.getCount() > 0) {
-            final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
-            if (mContentId == -1) {
-                mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
-            }
+        final Intent intent = new Intent(CheckerActivity.this, SelectReportActivity.class);
+        intent.putExtra("ContentID", mContentId);
+        intent.putExtra("MessageID", mMessageId);
+        intent.putExtra("TaskLX", mTaskLX);
+        startActivity(intent);
+    }
 
-            if (mContentId == 0) {
-                showVoiceToast(R.string.toast_no_content_id);
-                return;
-            }
+    private void checkFeedback(int position) {
+        int taskStatus = Integer.valueOf(((String[])mAdapter.getItem(position))[7]);
+        final boolean disable = taskStatus > Database.TASK_STATUS_DEFAULT;
+        if (disable) {
+            mFeedback.setEnabled(false);
+            mFeedback.getCompoundDrawables()[1].setAlpha(50);
+        } else {
+            mFeedback.setEnabled(true);
+            mFeedback.getCompoundDrawables()[1].setAlpha(255);
+        }
+    }
 
-            intent.putExtra("ContentID", mContentId);
-            intent.putExtra("MessageID", mMessageId);
-            intent.putExtra("TaskLX", mTaskLX);
-            startActivity(intent);
+    private void checkStart(int position) {
+        final Cursor cursor = mAdapter.getCursor();
+        if (cursor != null && cursor.moveToPosition(position)) {
+            final int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
+            final boolean unsucceed = status > 0;
+            if (unsucceed) {
+                mStart.setText(R.string.complete);
+                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                        mResources.getDrawable(R.drawable.ic_complete), null, null);
+            } else {
+                mStart.setText(R.string.start);
+                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                        mResources.getDrawable(R.drawable.ic_go), null, null);
+            }
         }
     }
 
@@ -250,15 +269,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 highlightCurrentView(view);
-                int taskStatus = Integer.valueOf(((String[])mAdapter.getItem(position))[7]);
-                final boolean enable = taskStatus <= Database.TASK_STATUS_DEFAULT;
-                if (enable) {
-                    mFeedback.setEnabled(true);
-                    mFeedback.getCompoundDrawables()[1].setAlpha(255);
-                } else {
-                    mFeedback.setEnabled(false);
-                    mFeedback.getCompoundDrawables()[1].setAlpha(70);
-                }
+                checkFeedback(position);
+                checkStart(position);
             }
 
             @Override
@@ -419,21 +431,31 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         int messageID = 0;
-        if (c != null) {
+        long id = -1;
+        if (c != null && c.moveToPosition(mCurrentIndex)) {
             messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+            id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         }
         User user = ((Welcome)getApplication()).getCurrentUser();
         TaskHelper.replyTasks(this, user.mUserDM, messageID);
 
-        gotoSelectReport();
+        if (mContentId == -1) {
+            mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
+        }
 
         if (mContentId <= 0) {
             mStart.setText(R.string.complete);
             mStart.setCompoundDrawablesWithIntrinsicBounds(null,
                     mResources.getDrawable(R.drawable.ic_complete), null, null);
+            showVoiceToast(R.string.toast_no_content_id);
+            // Mark it for "wait success"
+            final ContentValues values = new ContentValues(1);
+            values.put(Database.TASK_WAIT_SUCCESS, 1);
+            DatabaseHandler.update(Database.TABLE_SC_TASK, values, Database.COLUMN_ID + " = " + id, null);
+            return;
         }
 
-        moveSelectionTo(mCurrentIndex);
+        gotoSelectReport();
     }
 
     @Override
@@ -554,6 +576,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
                 if (mAdapter != null) {
                     mAdapter.changeCursor(cursor);
+                    moveSelectionTo(mCurrentIndex);
                     final int newCount = mAdapter.getCount();
                     if (newCount > 0 && count != newCount) {
                         startSeriesSpeech();

@@ -60,6 +60,8 @@ public class Database extends SQLiteOpenHelper {
     // 4: report success
     public static final String TASK_CONTENT_STATUS = "status";
 
+    public static final String TASK_WAIT_SUCCESS = "wait_success";
+
     public static final String TASK_LYFX = "TASK_LYFX";
 
     public static final String TASK_JLSJ = "TASK_JLSJ";
@@ -185,6 +187,7 @@ public class Database extends SQLiteOpenHelper {
                 TASK_JLSJ   + " DATE," +
                 TASK_LYFX   + " VARCHAR2(10)," +
                 TASK_STATUS + " INTEGER default 0," +
+                TASK_WAIT_SUCCESS + " INTEGER default 0," +
                 TASK_BEGIN_TIME + " TEXT, " +
                 TASK_FINISH_TIME + " TEXT " +");");
     }
@@ -246,6 +249,8 @@ public class Database extends SQLiteOpenHelper {
             case 1:
                 db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_BEGIN_TIME + " TEXT");
                 db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_FINISH_TIME + " TEXT");
+            case 3:
+                db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_WAIT_SUCCESS + " INTEGER default 0");
         }
     }
 }

@@ -30,7 +30,8 @@ public final class DatabaseHandler {
         Database.TASK_MESSAGEID,
         Database.COLUMN_ID,
         Database.TASK_LX,
-        Database.TASK_STATUS
+        Database.TASK_STATUS,
+        Database.TASK_WAIT_SUCCESS
     };
 
     public interface DatabaseObserver {
