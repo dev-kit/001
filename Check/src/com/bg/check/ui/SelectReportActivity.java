@@ -152,7 +152,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
 
     private void startWork() {
         Cursor c = mCursorAdapter.getCursor();
-        if (c == null || !c.moveToFirst()) {
+        if (c == null) {
             LogUtils.logE("SelectReportActivity, onClick");
             return;
         }
