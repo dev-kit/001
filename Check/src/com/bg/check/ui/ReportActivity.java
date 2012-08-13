@@ -264,8 +264,10 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         switch (v.getId()) {
             case R.id.up:
                 handleUp();
+                break;
             case R.id.down:
                 handleDown();
+                break;
             case R.id.tts:
                 if (mStopTts.equals(mTts.getText().toString())) {
                     stopSpeech();
@@ -410,9 +412,11 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
                 stopSpeech();
                 startSpeech();
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 handleDown();
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 handleUp();
                 return true;
@@ -431,9 +435,11 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
             case CheckerKeyEvent.KEYCODE_REPLAY:
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 // Do nothing;
                 return true;

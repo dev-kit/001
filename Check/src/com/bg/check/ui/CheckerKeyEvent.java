@@ -9,4 +9,6 @@ public class CheckerKeyEvent {
     public static final int KEYCODE_OK = KeyEvent.KEYCODE_CAMERA;
     public static final int KEYCODE_REPLAY = 36;
     public static final int KEYCODE_RETURN = 35;
+    public static final int KEYCODE_DPAD_UP = KeyEvent.KEYCODE_DPAD_UP;
+    public static final int KEYCODE_DPAD_DOWN = KeyEvent.KEYCODE_DPAD_DOWN;
 }

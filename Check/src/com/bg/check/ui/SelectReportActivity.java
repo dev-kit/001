@@ -281,9 +281,11 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 // Do nothing;
                 return true;
@@ -309,11 +311,13 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 speakNegativeOrder();
                 mRadioOrderNegative.setChecked(true);
                 mRadioOrderPositive.setChecked(false);
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 speakPositiveOrder();
                 mRadioOrderNegative.setChecked(false);

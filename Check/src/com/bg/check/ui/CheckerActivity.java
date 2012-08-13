@@ -170,9 +170,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             case CheckerKeyEvent.KEYCODE_REPLAY:
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
+                
                 // Do nothing;
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 // Do nothing;
                 return true;
@@ -195,12 +198,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             case CheckerKeyEvent.KEYCODE_RETURN:
                 gotoLogin();
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mAdapter != null && mCurrentIndex < mAdapter.getCount() - 1) {
                     moveSelectionTo(++mCurrentIndex);
                     startCurrentTaskSpeech();
                 }
                 return true;
+            case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 if (mCurrentIndex > 0) {
                     moveSelectionTo(--mCurrentIndex);
