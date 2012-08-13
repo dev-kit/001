@@ -117,7 +117,7 @@ public class TaskHelper {
                 ContentValues values = new ContentValues();
                 values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
                 String where = Database.COLUMN_ID + "=" + id;
-                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+                DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
             }
         });
         ReportTaskEngine.getInstance().appendTask(task);

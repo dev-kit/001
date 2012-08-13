@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -94,6 +93,14 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private boolean mIsOnRestart;
+
+    @Override
+    protected void onResume() {
+        if (mStart != null) {
+            mStart.setEnabled(true);
+        }
+        super.onResume();
+    }
 
     @Override
     protected void onRestart() {
@@ -255,6 +262,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
     }
 
+    private void recordValues(int position) {
+        mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
+        mMessageId = Integer.valueOf(((String[])mAdapter.getItem(position))[5]);
+        mTaskLX = Integer.valueOf(((String[])mAdapter.getItem(position))[6]);
+    }
+
     private void initListAdapter() {
         mList = (ListView)findViewById(R.id.list);
         mList.setOnItemClickListener(new OnItemClickListener() {
@@ -262,9 +275,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void onItemClick(AdapterView<?> dapterView, View view, int position, long id) {
                 highlightCurrentView(view);
                 mCurrentIndex = position;
-                mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
-                mMessageId = Integer.valueOf(((String[])mAdapter.getItem(position))[5]);
-                mTaskLX = Integer.valueOf(((String[])mAdapter.getItem(position))[6]);
+                recordValues(position);
                 startCurrentTaskSpeech();
             }
         });
@@ -276,13 +287,15 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 highlightCurrentView(view);
                 checkFeedback(position);
                 checkStart(position);
+                recordValues(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // Do nothing; 
+                stopSpeech();
             }
         });
+
         User user = ((Welcome)getApplication()).getCurrentUser();
         final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         mAdapter = new ReportAdapter(this, cursor);
@@ -380,10 +393,18 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mVoice.setText(mVoiceString);
     }
 
+    private Toast mToast;
+
     private void showVoiceToast(int resId) {
         final String prompt = mResources.getString(resId);
-        Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
         startSingleSpeech(prompt);
+
+        if (mToast == null) {
+            mToast = Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG);
+        }
+
+        mToast.cancel();
+        mToast.show();
     }
 
     private void startSingleSpeech(String words) {
@@ -417,31 +438,34 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             return;
         }
 
-        stopSpeech();
-        Cursor c = mAdapter.getCursor();
-        String title = mStart.getText().toString();
-        if (title.equals(getString(R.string.complete)) && c != null && c.moveToPosition(mCurrentIndex)) {
-            TaskHelper.reportTasksForSingleTask(this,
-                    ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
-                    c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
-            mStart.setText(R.string.start);
-            mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                    mResources.getDrawable(R.drawable.ic_go), null, null);
+        final Cursor c = mAdapter.getCursor();
+        if (c == null || !c.moveToPosition(mCurrentIndex)) {
             return;
-        } else {
-            ContentValues values = new ContentValues();
-            values.put(Database.TASK_BEGIN_TIME, System.currentTimeMillis());
-            String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
-            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
         }
 
-        int messageID = 0;
-        long id = -1;
-        if (c != null && c.moveToPosition(mCurrentIndex)) {
-            messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
-            id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
+        stopSpeech();
+        final String title = mStart.getText().toString();
+        if (title.equals(getString(R.string.complete))) {
+            if (mStart.isEnabled()) {
+                mStart.setEnabled(false);
+                TaskHelper.reportTasksForSingleTask(this,
+                        ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
+                        c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
+                mStart.setText(R.string.start);
+                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                        mResources.getDrawable(R.drawable.ic_go), null, null);
+            }
+            return;
         }
-        User user = ((Welcome)getApplication()).getCurrentUser();
+
+        final ContentValues values = new ContentValues(1);
+        values.put(Database.TASK_BEGIN_TIME, System.currentTimeMillis());
+        final String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
+        DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
+
+        final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+        final long id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
+        final User user = ((Welcome)getApplication()).getCurrentUser();
         TaskHelper.replyTasks(this, user.mUserDM, messageID);
 
         if (mContentId == -1) {
@@ -449,18 +473,25 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         if (mContentId <= 0) {
-            mStart.setText(R.string.complete);
-            mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                    mResources.getDrawable(R.drawable.ic_complete), null, null);
-            showVoiceToast(R.string.toast_no_content_id);
-            // Mark it for "wait success"
-            final ContentValues values = new ContentValues(1);
-            values.put(Database.TASK_WAIT_SUCCESS, 1);
-            DatabaseHandler.update(Database.TABLE_SC_TASK, values, Database.COLUMN_ID + " = " + id, null);
+            if (mStart.isEnabled()) {
+                mStart.setEnabled(false);
+                mStart.setText(R.string.complete);
+                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                        mResources.getDrawable(R.drawable.ic_complete), null, null);
+                showVoiceToast(R.string.toast_no_content_id);
+                // Mark it for "wait success"
+                final ContentValues v = new ContentValues(1);
+                v.put(Database.TASK_WAIT_SUCCESS, 1);
+                DatabaseHandler.update(Database.TABLE_SC_TASK, v, Database.COLUMN_ID + " = " + id, null);
+                moveSelectionTo(mCurrentIndex);
+            }
             return;
         }
 
-        gotoSelectReport();
+        if (mStart.isEnabled()) {
+            mStart.setEnabled(false);
+            gotoSelectReport();
+        }
     }
 
     @Override
@@ -587,6 +618,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                         startSeriesSpeech();
                     }
                 }
+
+                mStart.setEnabled(true);
+                moveSelectionTo(mCurrentIndex);
             }
         });
     }
