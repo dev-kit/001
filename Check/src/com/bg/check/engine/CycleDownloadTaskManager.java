@@ -56,6 +56,7 @@ public class CycleDownloadTaskManager {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         LogUtils.logW("CycleDownloadTaskManager has been canceled, ID" + sID);
+                        return;
                     }
                 }
             }

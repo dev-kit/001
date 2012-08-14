@@ -47,6 +47,7 @@ public class LogoutTask extends BaseTask {
         int result = Integer.parseInt(object.getProperty(0).toString());
         if (result == 1) {
             CycleDownloadTaskManager.getInstance(mContext).stop();
+            GeneralTaskEngine.getInstance().clearAllTasks();
         }
         return result;
     }

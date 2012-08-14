@@ -49,7 +49,8 @@ public class GeneralTaskEngine {
                             LogUtils.logE("To sleep " + SLEEP_TIME_MS);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                            LogUtils.logE(e.toString());
+                            LogUtils.logE("GeneralTaskEngine has been canceled, ID");
+                            return;
                         }
                         continue;
                     }
