@@ -175,6 +175,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
             case CheckerKeyEvent.KEYCODE_RETURN:
+            case KeyEvent.KEYCODE_BACK:
                 // Do nothing;
                 return true;
         }

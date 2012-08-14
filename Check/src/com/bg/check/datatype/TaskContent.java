@@ -134,7 +134,7 @@ public class TaskContent {
     }
 
     public void updateDB() {
-        String where = Database.TASK_CONTENT_CH + "=" + mTaskContentCH;
+        String where = Database.TASK_CONTENT_PK + "=" + mTaskContentPK;
         ContentValues values = new ContentValues();
         values.put(Database.TASK_CONTENT_CONTENT_ID, mContentID);
         values.put(Database.TASK_MESSAGEID, mMessageID);
