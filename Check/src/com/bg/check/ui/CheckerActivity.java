@@ -449,7 +449,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             if (mStart.isEnabled()) {
                 mStart.setEnabled(false);
                 TaskHelper.reportTasksForSingleTask(this,
-                        ((Welcome)getApplication()).getCurrentUser(), new TaskContent(),
+                        ((Welcome)getApplication()).getCurrentUser(), mMessageId,
                         c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
                 mStart.setText(R.string.start);
                 mStart.setCompoundDrawablesWithIntrinsicBounds(null,

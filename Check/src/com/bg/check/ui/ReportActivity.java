@@ -202,7 +202,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void handleUp() {
-        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mMessageID,
                 mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
         stopSpeech();
         switch (mOrder) {
@@ -234,7 +234,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void handleDown() {
-        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mTaskContent,
+        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mMessageID,
                 mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
         stopSpeech();
         switch (mOrder) {

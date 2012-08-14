@@ -8,6 +8,8 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import android.content.Context;
 
+import com.bg.check.Welcome;
+import com.bg.check.datatype.User;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
@@ -55,10 +57,12 @@ public class LoginTask extends BaseTask {
         SoapObject object = (SoapObject)envelope.bodyIn;
         int result = Integer.parseInt(object.getProperty(0).toString());
         if (result == -6) {
-            LogUtils.logE("User " + mUserDM +" re-login:" + result);
+            LogUtils.logE("User " + mUserDM + " re-login:" + result);
         }
         if (result == 1 || result == -6) {
-            CycleDownloadTaskManager.getInstance(mContext).run(mUserDM, "", "");
+            User user = ((Welcome)mContext.getApplicationContext()).getCurrentUser();
+            CycleDownloadTaskManager.getInstance(mContext).run(user.mUserDM, user.mUserName,
+                    user.mUserZMLM);
         }
         return result;
     }

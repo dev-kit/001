@@ -13,7 +13,7 @@ import com.bg.check.webservice.SCWebService;
 
 public class ReplyTasksTask extends BaseTask {
     private String mUserDM;
-    private boolean mDebug = false;
+    private boolean mDebug = true;
 
     private String[] mMessageIds;
     private Context mContext;
