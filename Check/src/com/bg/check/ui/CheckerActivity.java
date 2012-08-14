@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private TextView mStart;
 
+    private TextView mComplete;
+
     private TextView mFeedback;
 
     private TextView mExit;
@@ -93,14 +96,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     private boolean mIsOnRestart;
-
-    @Override
-    protected void onResume() {
-        if (mStart != null) {
-            mStart.setEnabled(true);
-        }
-        super.onResume();
-    }
 
     @Override
     protected void onRestart() {
@@ -154,10 +149,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private void initUi() {
         mStart = (TextView)findViewById(R.id.start);
+        mComplete = (TextView)findViewById(R.id.complete);
         mFeedback = (TextView)findViewById(R.id.feedback);
         mExit = (TextView)findViewById(R.id.exit);
         mVoice = (TextView)findViewById(R.id.voice);
 
+        mComplete.setOnClickListener(this);
         mStart.setOnClickListener(this);
         mFeedback.setOnClickListener(this);
         mExit.setOnClickListener(this);
@@ -172,20 +169,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_OK:
-                // Do nothing;
-                return true;
             case CheckerKeyEvent.KEYCODE_REPLAY:
-                // Do nothing;
-                return true;
             case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
-                
-                // Do nothing;
-                return true;
             case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
-                // Do nothing;
-                return true;
             case CheckerKeyEvent.KEYCODE_RETURN:
                 // Do nothing;
                 return true;
@@ -197,7 +185,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_OK:
-                startWork();
+                if (mComplete.getVisibility() == View.VISIBLE) {
+                    replyComplete();
+                } else if (mStart.getVisibility() == View.VISIBLE) {
+                    startWork();
+                }
                 return true;
             case CheckerKeyEvent.KEYCODE_REPLAY:
                 startCurrentTaskSpeech();
@@ -245,19 +237,24 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
     }
 
-    private void checkStart(int position) {
-        final Cursor cursor = mAdapter.getCursor();
+    private void checkTask(int position) {
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         if (cursor != null && cursor.moveToPosition(position)) {
             final int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
             final boolean unsucceed = status > 0;
             if (unsucceed) {
-                mStart.setText(R.string.complete);
-                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                        mResources.getDrawable(R.drawable.ic_complete), null, null);
+                mComplete.setVisibility(View.VISIBLE);
+                mStart.setVisibility(View.GONE);
+//                mStart.setText(R.string.complete);
+//                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+//                        mResources.getDrawable(R.drawable.ic_complete), null, null);
             } else {
-                mStart.setText(R.string.start);
-                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                        mResources.getDrawable(R.drawable.ic_go), null, null);
+//                mStart.setText(R.string.start);
+//                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+//                        mResources.getDrawable(R.drawable.ic_go), null, null);
+                mComplete.setVisibility(View.GONE);
+                mStart.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -286,7 +283,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 highlightCurrentView(view);
                 checkFeedback(position);
-                checkStart(position);
+                checkTask(position);
                 recordValues(position);
             }
 
@@ -444,20 +441,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         stopSpeech();
-        final String title = mStart.getText().toString();
-        if (title.equals(getString(R.string.complete))) {
-            if (mStart.isEnabled()) {
-                mStart.setEnabled(false);
-                TaskHelper.reportTasksForSingleTask(this,
-                        ((Welcome)getApplication()).getCurrentUser(), mMessageId,
-                        c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
-                mStart.setText(R.string.start);
-                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                        mResources.getDrawable(R.drawable.ic_go), null, null);
-            }
-            return;
-        }
-
         final ContentValues values = new ContentValues(1);
         values.put(Database.TASK_BEGIN_TIME, System.currentTimeMillis());
         final String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
@@ -473,25 +456,49 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         if (mContentId <= 0) {
-            if (mStart.isEnabled()) {
-                mStart.setEnabled(false);
-                mStart.setText(R.string.complete);
-                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                        mResources.getDrawable(R.drawable.ic_complete), null, null);
-                showVoiceToast(R.string.toast_no_content_id);
-                // Mark it for "wait success"
-                final ContentValues v = new ContentValues(1);
-                v.put(Database.TASK_WAIT_SUCCESS, 1);
-                DatabaseHandler.update(Database.TABLE_SC_TASK, v, Database.COLUMN_ID + " = " + id, null);
-                moveSelectionTo(mCurrentIndex);
-            }
+            mComplete.setVisibility(View.VISIBLE);
+            mStart.setVisibility(View.GONE);
+            showVoiceToast(R.string.toast_no_content_id);
+            // Mark it for "wait success"
+            final ContentValues v = new ContentValues(1);
+            v.put(Database.TASK_WAIT_SUCCESS, 1);
+            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, v,
+                    Database.COLUMN_ID + " = " + id, null);
+            moveSelectionTo(mCurrentIndex);
             return;
         }
 
-        if (mStart.isEnabled()) {
-            mStart.setEnabled(false);
-            gotoSelectReport();
+        gotoSelectReport();
+    }
+
+    private static long sLastClickTime;
+
+    public static final boolean isDoubleClick() {
+        long current = System.currentTimeMillis();
+        if (current - sLastClickTime > 500) {
+            sLastClickTime = current;
+            return false;
         }
+
+        sLastClickTime = current;
+        return true;
+    }
+
+    public void replyComplete() {
+        if (mAdapter == null || mAdapter.getCount() < 1) {
+            return;
+        }
+
+        final Cursor c = mAdapter.getCursor();
+        if (c == null || !c.moveToPosition(mCurrentIndex)) {
+            return;
+        }
+
+        mComplete.setVisibility(View.GONE);
+        stopSpeech();
+        TaskHelper.reportTasksForSingleTask(this,
+                ((Welcome)getApplication()).getCurrentUser(), mMessageId,
+                c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
     }
 
     @Override
@@ -499,20 +506,32 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         final int id = v.getId();
 
         switch (id) {
+            case R.id.complete: {
+                if (isDoubleClick()) {
+                    return;
+                }
+
+                replyComplete();
+                break;
+            }
             case R.id.start:
+                if (isDoubleClick()) {
+                    return;
+                }
+
                 startWork();
                 break;
             case R.id.feedback: {
                 if (mAdapter == null || mAdapter.getCount() < 1) {
                     return;
                 }
+
                 Cursor c = mAdapter.getCursor();
-                int messageID = 0;
-                if (c != null) {
-                    messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+                if (c != null && c.moveToPosition(mCurrentIndex)) {
+                    final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+                    final User user = ((Welcome)getApplication()).getCurrentUser();
+                    TaskHelper.replyTasks(this, user.mUserDM, messageID);
                 }
-                User user = ((Welcome)getApplication()).getCurrentUser();
-                TaskHelper.replyTasks(this, user.mUserDM, messageID);
                 break;
             }
             case R.id.exit:
@@ -612,14 +631,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
                 if (mAdapter != null) {
                     mAdapter.changeCursor(cursor);
-                    moveSelectionTo(mCurrentIndex);
                     final int newCount = mAdapter.getCount();
                     if (newCount > 0 && count != newCount) {
-                        startSeriesSpeech();
+                        mStart.setVisibility(View.VISIBLE);
+                        mComplete.setVisibility(View.GONE);
                     }
                 }
 
-                mStart.setEnabled(true);
                 moveSelectionTo(mCurrentIndex);
             }
         });

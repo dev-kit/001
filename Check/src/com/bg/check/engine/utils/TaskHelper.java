@@ -23,7 +23,7 @@ public class TaskHelper {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
         String where = Database.TASK_MESSAGEID + "=" + messageIds;
-        DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+        DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
 
         ReplyTasksTask task = new ReplyTasksTask(context, dm, new String[] {
             String.valueOf(messageIds)

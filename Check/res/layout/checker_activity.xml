@@ -68,6 +68,21 @@
             android:text="@string/start"/>
 
         <TextView
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_complete"
+            android:background="@drawable/clicker_bg_selector"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            android:padding="5dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/complete"/>
+
+        <TextView
             android:id="@+id/voice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
