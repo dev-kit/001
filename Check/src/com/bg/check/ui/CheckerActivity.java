@@ -294,7 +294,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                stopSpeech();
             }
         });
 
