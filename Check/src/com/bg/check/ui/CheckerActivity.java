@@ -185,6 +185,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case CheckerKeyEvent.KEYCODE_OK:
+                if (isDoubleClick()) {
+                    return true;
+                }
+
                 if (mComplete.getVisibility() == View.VISIBLE) {
                     replyComplete();
                 } else if (mStart.getVisibility() == View.VISIBLE) {
