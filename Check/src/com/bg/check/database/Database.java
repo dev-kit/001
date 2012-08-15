@@ -156,36 +156,36 @@ public class Database extends SQLiteOpenHelper {
     private void createUserTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_USER + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
-                USER_DM +     " VARCHAR2(20) not null," +
-                USER_NAME +  " VARCHAR2(20) not null," +
-                USER_MOBILE +" VARCHAR2(20)," +
-                USER_ONLINE +" NUMBER default 0 not null," +
-                USER_ROLE +  " VARCHAR2(20) not null," +
-                USER_TIME  + " DATE," +
-                USER_ZMLM + " VARCHAR2(20) not null);");
+                USER_DM +     " TEXT not null," +
+                USER_NAME +  " TEXT not null," +
+                USER_MOBILE +" TEXT," +
+                USER_ONLINE +" INTEGER default 0 not null," +
+                USER_ROLE +  " TEXT not null," +
+                USER_TIME  + " TEXT," +
+                USER_ZMLM + " TEXT not null);");
 
     }
     
     private void createTaskTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_SC_TASK + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
-                TASK_ID + " INTEGER not null," +
-                XLTASK_ID  + " NUMBER(10)," +
-                TASK_CONTENTID + " NUMBER(20)," +
-                TASK_CC   + "   VARCHAR2(30) not null," +
-                TASK_GDM   + " VARCHAR2(20) not null," +
-                TASK_CZBZ  + " NUMBER(1) not null," +
-                TASK_ZYR    + " VARCHAR2(10) not null," +
-                TASK_SCHM  + " VARCHAR2(10)," +
-                TASK_ZMLM  + " VARCHAR2(4) not null," +
-                TASK_LX   + " NUMBER(2) not null," +
-                TASK_DQSJ  + " DATE," +
-                TASK_MESSAGEID + " NUMBER(10)," +
-                TASK_JCWZ   + " VARCHAR2(2)," +
-                TASK_QSXH  + " NUMBER(3)," +
-                TASK_ZZXH   + " NUMBER(3)," +
-                TASK_JLSJ   + " DATE," +
-                TASK_LYFX   + " VARCHAR2(10)," +
+                TASK_ID + " INTEGER," +
+                XLTASK_ID  + " INTEGER," +
+                TASK_CONTENTID + " INTEGER," +
+                TASK_CC   + " TEXT," +
+                TASK_GDM   + " TEXT," +
+                TASK_CZBZ  + " INTEGER," +
+                TASK_ZYR    + " TEXT," +
+                TASK_SCHM  + " TEXT," +
+                TASK_ZMLM  + " TEXT," +
+                TASK_LX   + " INTEGER," +
+                TASK_DQSJ  + " TEXT," +
+                TASK_MESSAGEID + " INTEGER," +
+                TASK_JCWZ   + " TEXT," +
+                TASK_QSXH  + " INTEGER," +
+                TASK_ZZXH   + " INTEGER," +
+                TASK_JLSJ   + " TEXT," +
+                TASK_LYFX   + " TEXT," +
                 TASK_STATUS + " INTEGER default 0," +
                 TASK_WAIT_SUCCESS + " INTEGER default 0," +
                 TASK_BEGIN_TIME + " TEXT, " +
