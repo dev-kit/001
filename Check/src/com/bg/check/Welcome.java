@@ -4,20 +4,8 @@ package com.bg.check;
 import android.app.Application;
 
 import com.bg.check.database.Database;
-import com.bg.check.datatype.Report;
 import com.bg.check.datatype.User;
-import com.bg.check.engine.CycleDownloadTaskManager;
-import com.bg.check.engine.GetDetailsTask;
-import com.bg.check.engine.GetServerTimeTask;
-import com.bg.check.engine.GetTasksTask;
-import com.bg.check.engine.GetUserInfoTask;
-import com.bg.check.engine.LoginTask;
-import com.bg.check.engine.LogoutTask;
-import com.bg.check.engine.ReplyTasksTask;
-import com.bg.check.engine.ReportTaskEngine;
-import com.bg.check.engine.ReportToBySingleTask;
 import com.bg.check.engine.SpeechEngine;
-import com.bg.check.engine.GeneralTaskEngine;
 
 public class Welcome extends Application {
 

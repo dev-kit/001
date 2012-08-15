@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteException;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.datatype.Report;
-import com.bg.check.datatype.TaskContent;
-import com.bg.check.datatype.TaskData;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.ReplyTasksTask;

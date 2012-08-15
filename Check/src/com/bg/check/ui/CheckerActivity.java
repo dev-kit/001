@@ -11,7 +11,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +31,6 @@ import com.bg.check.Welcome;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
-import com.bg.check.datatype.TaskContent;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.LogoutTask;
 import com.bg.check.engine.SpeechEngine;
@@ -95,21 +94,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         initListAdapter();
     }
 
-    private boolean mIsOnRestart;
-
-    @Override
-    protected void onRestart() {
-        mIsOnRestart = true;
-        super.onRestart();
-    }
-
     @Override
     protected void onStart() {
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
-        if (!mIsOnRestart) {
-            startSeriesSpeech();
-        }
         super.onStart();
     }
 
@@ -376,7 +364,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 String[] row = new String[8];
                 row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
+                row[1] = replaceVoiceChar(row[1]);
                 row[2] = cursor.getString(mColumnIndexTrack);
+                row[2] = replaceVoiceChar(row[2]);
                 row[3] = cursor.getString(mColumnIndexPosition);
                 row[4] = cursor.getString(mColumnIndexNotification);
                 row[5] = cursor.getString(cursor.getColumnIndex(Database.TASK_MESSAGEID));
@@ -386,6 +376,53 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
             return null;
         }
+    }
+
+    private String replaceVoiceChar(String words) {
+        if (TextUtils.isEmpty(words)) {
+            return null;
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < words.length(); i++) {
+            char c = words.charAt(i);
+            switch (c) {
+            case '0':
+                c = '动';
+                break;
+            case '1':
+                c = '邀';
+                break;
+            case '2':
+                c = '二';
+                break;
+            case '3':
+                c = '三';
+                break;
+            case '4':
+                c = '四';
+                break;
+            case '5':
+                c = '五';
+                break;
+            case '6':
+                c = '六';
+                break;
+            case '7':
+                c = '拐';
+                break;
+            case '8':
+                c = '八';
+                break;
+            case '9':
+                c = '九';
+                break;
+            }
+
+            builder.append(c);
+        }
+
+        return builder.toString();
     }
 
     private void stopSpeech() {
@@ -411,6 +448,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     private void startSingleSpeech(String words) {
         stopSpeech();
         mSpeechEngine.speak(words);
+    }
+
+    private void startSingleSpeech(String words, Runnable runnable) {
+        stopSpeech();
+        mSpeechEngine.speak(words, runnable);
     }
 
     private void startCurrentTaskSpeech() {
@@ -631,14 +673,30 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             @Override
             public void run() {
                 final Cursor oldCursor = mAdapter.getCursor();
-                final int count = oldCursor != null ? oldCursor.getCount() : 0;
+                final int oldCount = oldCursor != null ? oldCursor.getCount() : 0;
 
                 if (mAdapter != null) {
                     mAdapter.changeCursor(cursor);
                     final int newCount = mAdapter.getCount();
-                    if (newCount > 0 && count != newCount) {
+                    if (newCount > 0 && oldCount != newCount) {
                         mStart.setVisibility(View.VISIBLE);
                         mComplete.setVisibility(View.GONE);
+                        final int count = newCount - oldCount;
+                        if (count > 0) {
+                            startSingleSpeech("您有" + count + "条新任务",
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    startSeriesSpeech();
+                                                    moveSelectionTo(0);
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
                     }
                 }
 

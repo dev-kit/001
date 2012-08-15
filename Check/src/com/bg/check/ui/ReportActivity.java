@@ -2,7 +2,6 @@
 package com.bg.check.ui;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;

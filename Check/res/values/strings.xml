@@ -86,7 +86,7 @@
     <string name="position">位置</string>
     <string name="notification">通知</string>
     <string name="product_check">货检</string>
-    <string name="report_index">第%s条记录</string>
+    <string name="report_index">第%s条,</string>
     <string name="toast_no_content_id">此记录为整单</string>
     <string name="toast_logout_success">注销成功</string>
     <string name="toast_logout_fail">注销失败</string>

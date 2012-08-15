@@ -1,12 +1,12 @@
 
 package com.bg.check.webservice;
 
-import com.bg.check.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
+import com.bg.check.R;
 
 public class SCWebService {
     public static final String SC_NAME_SPACE = "http://tempuri.org/";
