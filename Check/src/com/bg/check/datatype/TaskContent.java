@@ -60,30 +60,34 @@ public class TaskContent {
     public static void parseTaskContent(SoapObject soap, String userDM, long contentID,
             long messageID, List<TaskContent> tasks) {
         SoapObject result = (SoapObject)soap.getProperty(0);
-        loopSoap(result, userDM, contentID, messageID, tasks);
+        if (loopSoap(result, userDM, contentID, messageID, tasks) > 0) {
+            DatabaseHandler.notifyDBObeserver();
+        }
     }
 
     public TaskContent() {
     }
 
-    private static void loopSoap(SoapObject result, String userDM, long contentID, long messageID,
+    private static int loopSoap(SoapObject result, String userDM, long contentID, long messageID,
             List<TaskContent> tasks) {
+        int newTaskNumber = 0; 
         for (int i = 0; i < result.getPropertyCount(); i++) {
             Object childs = (Object)result.getProperty(i);
             if (childs instanceof SoapObject) {
-                loopSoap((SoapObject)childs, userDM, contentID, messageID, tasks);
+                newTaskNumber += loopSoap((SoapObject)childs, userDM, contentID, messageID, tasks);
             } else {
                 // LogUtils.logD(result.toString());
                 TaskContent task = new TaskContent();
-                task.addTasks(result, userDM, contentID, messageID);
+                newTaskNumber += task.addTasks(result, userDM, contentID, messageID);
                 tasks.add(task);
 
-                return;
+                return newTaskNumber;
             }
         }
+        return newTaskNumber;
     }
 
-    private void addTasks(SoapObject soap, String userDM, long contentID, long messageID) {
+    private int addTasks(SoapObject soap, String userDM, long contentID, long messageID) {
         mMessageID = messageID;
         mContentID = contentID;
         mUserDM = userDM;
@@ -130,10 +134,10 @@ public class TaskContent {
         mTaskContentHJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_HJZYSX);
 
         mTaskContentLJZYSX = soap.getPropertySafelyAsString(Database.TASK_CONTENT_LJZYSX);
-        updateDB();
+        return updateDB();
     }
 
-    public void updateDB() {
+    public int updateDB() {
         String where = Database.TASK_CONTENT_PK + "=" + mTaskContentPK;
         ContentValues values = new ContentValues();
         values.put(Database.TASK_CONTENT_CONTENT_ID, mContentID);
@@ -181,10 +185,12 @@ public class TaskContent {
         if (c != null && c.getCount() > 0) {
             // LogUtils.logD("Duplicated tasks " + this);
             LogUtils.logD("TaskContent : Duplicated Taskcontent ");
+            return 0;
         } else {
             LogUtils.logD("TaskContent : insert new taskcontent with mTaskContentPK:"
                     + mTaskContentPK);
-            DatabaseHandler.insert(Database.TABLE_SC_TASK_CONTENT, values);
+            DatabaseHandler.insertWithoutNotify(Database.TABLE_SC_TASK_CONTENT, values);
+            return 1;
         }
     }
 

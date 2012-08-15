@@ -60,25 +60,29 @@ public class TaskData {
 
     public static void parseTask(SoapObject soap, List<TaskData> tasks) {
         SoapObject result = (SoapObject)soap.getProperty(0);
-        loopSoapObject(result, tasks);
-    }
-
-    private static void loopSoapObject(SoapObject result, List<TaskData> tasks) {
-        for (int i = 0; i < result.getPropertyCount(); i++) {
-            Object childs = (Object)result.getProperty(i);
-            if (childs instanceof SoapObject) {
-                loopSoapObject((SoapObject)childs, tasks);
-            } else {
-                // LogUtils.logD(result.toString());
-                TaskData task = new TaskData();
-                task.addTasks(result);
-                tasks.add(task);
-                return;
-            }
+        if (loopSoapObject(result, tasks) > 0) {
+            DatabaseHandler.notifyDBObeserver();
         }
     }
 
-    private void addTasks(SoapObject soap) {
+    private static int loopSoapObject(SoapObject result, List<TaskData> tasks) {
+        int newTaskNumber = 0; 
+        for (int i = 0; i < result.getPropertyCount(); i++) {
+            Object childs = (Object)result.getProperty(i);
+            if (childs instanceof SoapObject) {
+                newTaskNumber += loopSoapObject((SoapObject)childs, tasks);
+            } else {
+                // LogUtils.logD(result.toString());
+                TaskData task = new TaskData();
+                newTaskNumber += task.addTasks(result);
+                tasks.add(task);
+                return newTaskNumber;
+            }
+        }
+        return newTaskNumber;
+    }
+
+    private int addTasks(SoapObject soap) {
         mTaskMessageID = Long.parseLong(soap.getPropertySafelyAsString(Database.TASK_MESSAGEID));
         mTaskID = Long.parseLong(soap.getPropertySafely(Database.TASK_ID).toString());
         mTaskContentID = Long.parseLong(soap.getPropertySafely(Database.TASK_CONTENTID).toString());
@@ -97,10 +101,10 @@ public class TaskData {
         mTaskQSXH = Integer.parseInt(soap.getPropertySafely(Database.TASK_QSXH).toString());
         mTaskZZXH = Integer.parseInt(soap.getPropertySafely(Database.TASK_ZZXH).toString());
         mTaskLYFX = soap.getPropertySafelyAsString(Database.TASK_LYFX);
-        updateDB();
+        return updateDB();
     }
 
-    public void updateDB() {
+    public int updateDB() {
         String where = Database.TASK_ID + "=" + mTaskID;
         ContentValues values = new ContentValues();
         values.put(Database.TASK_ID, mTaskID);
@@ -136,10 +140,12 @@ public class TaskData {
         if (c != null && c.getCount() > 0) {
             // LogUtils.logD("Duplicated tasks " + this);
             LogUtils.logD("TaskData: Duplicated tasks ");
+            return 0;
         } else {
             LogUtils.logD("TaskData: insert new tasks mTaskID:" + mTaskID + " mTaskContentID:"
                     + mTaskContentID);
-            DatabaseHandler.insert(Database.TABLE_SC_TASK, values);
+            DatabaseHandler.insertWithoutNotify(Database.TABLE_SC_TASK, values);
+            return 1;
         }
     }
 

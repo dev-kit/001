@@ -89,6 +89,16 @@ public final class DatabaseHandler {
         return id;
     }
 
+    public static long insertWithoutNotify(String table, ContentValues values) {
+        final SQLiteDatabase db = mDatabase.getWritableDatabase();
+        final long id = db.insert(table, null, values);
+        return id;
+    }
+
+    public static void notifyDBObeserver() {
+        notifyUpdate();
+    }
+
     public static int update(String table, ContentValues values, String whereClause, String[] whereArgs) {
         final SQLiteDatabase db = mDatabase.getWritableDatabase();
         final int count = db.update(table, values, whereClause, whereArgs);
