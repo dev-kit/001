@@ -137,6 +137,8 @@ public class TaskData {
             // LogUtils.logD("Duplicated tasks " + this);
             LogUtils.logD("TaskData: Duplicated tasks ");
         } else {
+            LogUtils.logD("TaskData: insert new tasks mTaskID:" + mTaskID + " mTaskContentID:"
+                    + mTaskContentID);
             DatabaseHandler.insert(Database.TABLE_SC_TASK, values);
         }
     }

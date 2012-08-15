@@ -180,8 +180,10 @@ public class TaskContent {
                 null, null);
         if (c != null && c.getCount() > 0) {
             // LogUtils.logD("Duplicated tasks " + this);
-            LogUtils.logD("TaskContent : Duplicated tasks ");
+            LogUtils.logD("TaskContent : Duplicated Taskcontent ");
         } else {
+            LogUtils.logD("TaskContent : insert new taskcontent with mTaskContentPK:"
+                    + mTaskContentPK);
             DatabaseHandler.insert(Database.TABLE_SC_TASK_CONTENT, values);
         }
     }
