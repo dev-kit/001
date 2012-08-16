@@ -85,6 +85,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private boolean mStopSeriesSpeech;
 
+    private boolean mIsFirstStart = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,9 +97,18 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
     }
 
     @Override
+    protected void onRestart() {
+        mIsFirstStart = false;
+        super.onRestart();
+    }
+
+    @Override
     protected void onStart() {
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
+        if (mIsFirstStart) {
+            startSeriesSpeech();
+        }
         super.onStart();
     }
 
@@ -297,7 +308,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         }
 
         if (view != null) {
-            view.setBackgroundResource(R.drawable.toolbar_bg);
+            view.setBackgroundResource(R.drawable.list_item_selected_background);
         }
 
         mSelectedItemView = view;
@@ -574,6 +585,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
                 Cursor c = mAdapter.getCursor();
                 if (c != null && c.moveToPosition(mCurrentIndex)) {
+                    stopSpeech();
                     final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
                     final User user = ((Welcome)getApplication()).getCurrentUser();
                     TaskHelper.replyTasks(this, user.mUserDM, messageID);
