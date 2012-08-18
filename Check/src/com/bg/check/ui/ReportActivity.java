@@ -310,7 +310,7 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     @Override
     public String onPrepareSpeech() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final boolean hasOrder = preferences.getBoolean("checkbox_oreder", false);
+        final boolean hasOrder = preferences.getBoolean("checkbox_order", false);
         final boolean hasTrainId = preferences.getBoolean("checkbox_train_id", false);
         final boolean hasTrainType = preferences.getBoolean("checkbox_train_type", false);
         final boolean hasStationStart = preferences.getBoolean("checkbox_station_start", false);
@@ -331,14 +331,14 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         if (hasTrainId) {
             builder.append(mLabelCh);
             builder.append(SpeechEngine.COMMA);
-            builder.append(TextUtils.isEmpty(mCh) ? mEmpty : mCh);
+            builder.append(TextUtils.isEmpty(mCh) ? mEmpty : Utils.replaceVoiceChar(mCh));
             builder.append(SpeechEngine.COMMA);
         }
 
         if (hasTrainType) {
             builder.append(mLabelCz);
             builder.append(SpeechEngine.COMMA);
-            builder.append(TextUtils.isEmpty(mCz) ? mEmpty : mCz);
+            builder.append(TextUtils.isEmpty(mCz) ? mEmpty : Utils.replaceVoiceChar(mCz));
             builder.append(SpeechEngine.COMMA);
         }
 
