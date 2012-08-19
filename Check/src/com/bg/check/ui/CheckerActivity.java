@@ -158,6 +158,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mFeedback.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mVoice.setOnClickListener(this);
+
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        ((TextView) findViewById(R.id.username)).setText(user.mUserName);
     }
 
     private void gotoLogin() {
@@ -375,9 +378,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 String[] row = new String[8];
                 row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
-                row[1] = replaceVoiceChar(row[1]);
+                row[1] = Utils.replaceVoiceChar(row[1]);
                 row[2] = cursor.getString(mColumnIndexTrack);
-                row[2] = replaceVoiceChar(row[2]);
+                row[2] = Utils.replaceVoiceChar(row[2]);
                 row[3] = cursor.getString(mColumnIndexPosition);
                 row[4] = cursor.getString(mColumnIndexNotification);
                 row[5] = cursor.getString(cursor.getColumnIndex(Database.TASK_MESSAGEID));
@@ -387,53 +390,6 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             }
             return null;
         }
-    }
-
-    private String replaceVoiceChar(String words) {
-        if (TextUtils.isEmpty(words)) {
-            return null;
-        }
-
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < words.length(); i++) {
-            char c = words.charAt(i);
-            switch (c) {
-            case '0':
-                c = '动';
-                break;
-            case '1':
-                c = '邀';
-                break;
-            case '2':
-                c = '二';
-                break;
-            case '3':
-                c = '三';
-                break;
-            case '4':
-                c = '四';
-                break;
-            case '5':
-                c = '五';
-                break;
-            case '6':
-                c = '六';
-                break;
-            case '7':
-                c = '拐';
-                break;
-            case '8':
-                c = '八';
-                break;
-            case '9':
-                c = '九';
-                break;
-            }
-
-            builder.append(c);
-        }
-
-        return builder.toString();
     }
 
     private void stopSpeech() {
@@ -740,7 +696,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         @Override
         protected void onPostExecute(Integer result) {
-            if (result == 1) {
+            if (result != null && result.intValue() == 1) {
                 final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
                 intent.setAction("logout");
                 startActivity(intent);
