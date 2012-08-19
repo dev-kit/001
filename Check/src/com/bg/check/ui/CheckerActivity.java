@@ -506,7 +506,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
         final long id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         final User user = ((Welcome)getApplication()).getCurrentUser();
-        TaskHelper.replyTasks(this, user.mUserDM, messageID);
+//        TaskHelper.replyTasks(this, user.mUserDM, messageID);
+        TaskHelper.replyTasks(this, user, messageID);
 
         if (mContentId == -1) {
             mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
@@ -588,7 +589,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                     stopSpeech();
                     final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
                     final User user = ((Welcome)getApplication()).getCurrentUser();
-                    TaskHelper.replyTasks(this, user.mUserDM, messageID);
+//                    TaskHelper.replyTasks(this, user.mUserDM, messageID);
+                    TaskHelper.replyTasks(this, user, messageID);
                 }
                 break;
             }

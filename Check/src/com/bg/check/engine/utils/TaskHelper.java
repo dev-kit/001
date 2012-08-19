@@ -17,6 +17,47 @@ import com.bg.check.engine.ReportToBySingleTask;
 
 public class TaskHelper {
 
+    public static void replyTasks(Context context, User user, final int messageID) {
+        ContentValues values = new ContentValues();
+        values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
+        String where = Database.TASK_MESSAGEID + "=" + messageID;
+        DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
+
+        Report r = formReport(user, messageID, -1, REPORT_TYPE_REPLY);
+        ReportToBySingleTask task = new ReportToBySingleTask(context, user.mUserDM, r);
+        task.setCallback(new TaskCallback() {
+
+            @Override
+            public void onCallBack(Object result) {
+                if (result == null || (Integer)result != 1) {
+                    return;
+                }
+                String where = Database.TASK_MESSAGEID + "=" + messageID;
+                Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, new String[] {
+                    Database.TASK_STATUS
+                }, where, null, null, null, null);
+                int status = 0;
+                if (c != null) {
+                    try {
+                        if (c.moveToNext()) {
+                            status = c.getInt(0);
+                            if (status > Database.TASK_STATUS_TO_REPLY) {
+                                return;
+                            }
+                        }
+                    } catch (SQLiteException e) {
+                        c.close();
+                    }
+                }
+                ContentValues values = new ContentValues();
+                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
+                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+
+            }
+        });
+        ReportTaskEngine.getInstance().appendTask(task);
+    }
+
     public static void replyTasks(Context context, String dm, final int messageIds) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
@@ -65,7 +106,7 @@ public class TaskHelper {
         String where = Database.COLUMN_ID + "=" + id;
         DatabaseHandler.update(Database.TABLE_SC_TASK_CONTENT, values, where, null);
 
-        Report r = formReport(user, messageID, where, false);
+        Report r = formReport(user, messageID, id, REPORT_TYPE_TASK_CONTENT);
         ReportToBySingleTask task = new ReportToBySingleTask(context, user.mUserDM, r);
         task.setCallback(new TaskCallback() {
 
@@ -83,39 +124,34 @@ public class TaskHelper {
         ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    private static Report formReport(User user, int messageID, String where, boolean singleTask) {
-        Cursor taskContentCursor = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null,
-                where, null, null, null, null);
+    private static final int REPORT_TYPE_SINGLE_TASK = 0;
+
+    private static final int REPORT_TYPE_TASK_CONTENT = 1;
+
+    private static final int REPORT_TYPE_REPLY = 2;
+
+    private static Report formReport(User user, int messageID, long contentID, int reportType) {
+
         Report r = new Report();
         r.mXXString2 = user.mUserName;
-        if (taskContentCursor != null) {
-            try {
-                if (taskContentCursor.moveToNext()) {
-                    r.mReport_contentid = taskContentCursor.getString(taskContentCursor
-                            .getColumnIndex(Database.TASK_CONTENT_CONTENT_ID));
-                    r.mReport_zmlm = taskContentCursor.getString(taskContentCursor
-                            .getColumnIndex(Database.TASK_CONTENT_ZMLM));
-                    if (!singleTask) {
-                        r.mXXString1 = taskContentCursor.getString(taskContentCursor
-                                .getColumnIndex(Database.TASK_CONTENT_CH));
-                    }
-                }
-
-            } catch (SQLiteException e) {
-                LogUtils.logE(e.toString());
-                taskContentCursor.close();
-            }
-        }
-
         r.mXXDate1 = String.valueOf("2011-10-18 10:27:06");
         r.mXXDate2 = String.valueOf("2011-10-18 11:27:06");
         r.mMessage_id = String.valueOf(messageID);
-        where = Database.TASK_MESSAGEID + "=" + messageID;
+        // r.mXXString3 = "3213";
+        // r.mXXDate3 = "32131";
+        r.mReport_id = "5656787990";
+        r.mReport_czbz = String.valueOf(reportType);
+
+        String where = Database.TASK_MESSAGEID + "=" + messageID;
         Cursor taskCursor = DatabaseHandler.query(Database.TABLE_SC_TASK, null, where, null, null,
                 null, null);
         if (taskCursor != null) {
             try {
                 if (taskCursor.moveToNext()) {
+                    r.mReport_zmlm = taskCursor.getString(taskCursor
+                            .getColumnIndex(Database.TASK_ZMLM));
+                    r.mReport_contentid = taskCursor.getString(taskCursor
+                            .getColumnIndex(Database.TASK_CONTENTID));
                     r.mTask_id = taskCursor.getString(taskCursor.getColumnIndex(Database.TASK_ID));
                     r.mReport_zmlm = taskCursor.getString(taskCursor
                             .getColumnIndex(Database.TASK_ZMLM));
@@ -127,12 +163,39 @@ public class TaskHelper {
             } catch (SQLiteException e) {
                 LogUtils.logE(e.toString());
                 taskCursor.close();
+            } finally {
+                taskCursor.close();
             }
         }
-        r.mReport_czbz = String.valueOf(singleTask ? 0 : 1);
-        // r.mXXString3 = "3213";
-        // r.mXXDate3 = "32131";
-        r.mReport_id = "5656787990";
+        switch (reportType) {
+            case REPORT_TYPE_SINGLE_TASK:
+                break;
+            case REPORT_TYPE_TASK_CONTENT:
+                where = Database.COLUMN_ID + "=" + contentID;
+                Cursor taskContentCursor = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT,
+                        new String[] {
+                            Database.TASK_CONTENT_CH
+                        }, where, null, null, null, null);
+                if (taskContentCursor != null) {
+                    try {
+                        if (taskContentCursor.moveToNext()) {
+                            r.mXXString1 = taskContentCursor.getString(0);
+                        }
+
+                    } catch (SQLiteException e) {
+                        LogUtils.logE(e.toString());
+                        taskContentCursor.close();
+                    } finally {
+                        taskContentCursor.close();
+                    }
+                }
+
+                break;
+            case REPORT_TYPE_REPLY:
+                r.mXXString1 = "0";
+                break;
+        }
+
         return r;
     }
 
@@ -144,7 +207,7 @@ public class TaskHelper {
         String where = Database.COLUMN_ID + "=" + id;
         DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
-        Report r = formReport(user, messageID, where, true);
+        Report r = formReport(user, messageID, -1, REPORT_TYPE_SINGLE_TASK);
         // r.mReport_contentid = String.valueOf(task.mTaskContentID);
         // r.mMessage_id = String.valueOf(task.mTaskMessageID);
         // r.mReport_czbz = String.valueOf(task.mTaskCZBZ);
