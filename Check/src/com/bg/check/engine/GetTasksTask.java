@@ -64,7 +64,11 @@ public class GetTasksTask extends BaseTask {
         if (tasks.size() == 0) {
             LogUtils.logD("GetTasksTask: there is no task in server");
         } else {
-            ReplyTasksTask task = new ReplyTasksTask(mContext, mUserDM, (String[])tasks.toArray());
+            String[] messageIDs = new String[tasks.size()];
+            for (int index = 0; index < tasks.size(); index++) {
+                messageIDs[index] = String.valueOf(tasks.get(index).mTaskMessageID);
+            }
+            ReplyTasksTask task = new ReplyTasksTask(mContext, mUserDM, messageIDs);
             ReportTaskEngine.getInstance().appendTask(task);
         }
 

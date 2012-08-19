@@ -1,6 +1,8 @@
 
 package com.bg.check.engine.utils;
 
+import java.text.SimpleDateFormat;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -58,47 +60,47 @@ public class TaskHelper {
         ReportTaskEngine.getInstance().appendTask(task);
     }
 
-    public static void replyTasks(Context context, String dm, final int messageIds) {
-        ContentValues values = new ContentValues();
-        values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
-        String where = Database.TASK_MESSAGEID + "=" + messageIds;
-        DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
-
-        ReplyTasksTask task = new ReplyTasksTask(context, dm, new String[] {
-            String.valueOf(messageIds)
-        });
-        task.setCallback(new TaskCallback() {
-
-            @Override
-            public void onCallBack(Object result) {
-                if (result == null || (Integer)result != 1) {
-                    return;
-                }
-                String where = Database.TASK_MESSAGEID + "=" + messageIds;
-                Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, new String[] {
-                    Database.TASK_STATUS
-                }, where, null, null, null, null);
-                int status = 0;
-                if (c != null) {
-                    try {
-                        if (c.moveToNext()) {
-                            status = c.getInt(0);
-                            if (status > Database.TASK_STATUS_TO_REPLY) {
-                                return;
-                            }
-                        }
-                    } catch (SQLiteException e) {
-                        c.close();
-                    }
-                }
-                ContentValues values = new ContentValues();
-                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
-                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
-
-            }
-        });
-        ReportTaskEngine.getInstance().appendTask(task);
-    }
+//    public static void replyTasks(Context context, String dm, final int messageIds) {
+//        ContentValues values = new ContentValues();
+//        values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
+//        String where = Database.TASK_MESSAGEID + "=" + messageIds;
+//        DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
+//
+//        ReplyTasksTask task = new ReplyTasksTask(context, dm, new String[] {
+//            String.valueOf(messageIds)
+//        });
+//        task.setCallback(new TaskCallback() {
+//
+//            @Override
+//            public void onCallBack(Object result) {
+//                if (result == null || (Integer)result != 1) {
+//                    return;
+//                }
+//                String where = Database.TASK_MESSAGEID + "=" + messageIds;
+//                Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, new String[] {
+//                    Database.TASK_STATUS
+//                }, where, null, null, null, null);
+//                int status = 0;
+//                if (c != null) {
+//                    try {
+//                        if (c.moveToNext()) {
+//                            status = c.getInt(0);
+//                            if (status > Database.TASK_STATUS_TO_REPLY) {
+//                                return;
+//                            }
+//                        }
+//                    } catch (SQLiteException e) {
+//                        c.close();
+//                    }
+//                }
+//                ContentValues values = new ContentValues();
+//                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
+//                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+//
+//            }
+//        });
+//        ReportTaskEngine.getInstance().appendTask(task);
+//    }
 
     public static void reportTasks(Context context, User user, int messageID, final long id) {
         ContentValues values = new ContentValues();
@@ -134,8 +136,9 @@ public class TaskHelper {
 
         Report r = new Report();
         r.mXXString2 = user.mUserName;
-        r.mXXDate1 = String.valueOf("2011-10-18 10:27:06");
-        r.mXXDate2 = String.valueOf("2011-10-18 11:27:06");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        r.mXXDate1 = simpleDateFormat.format(System.currentTimeMillis());
+        r.mXXDate2 = simpleDateFormat.format(System.currentTimeMillis());
         r.mMessage_id = String.valueOf(messageID);
         // r.mXXString3 = "3213";
         // r.mXXDate3 = "32131";
@@ -203,7 +206,8 @@ public class TaskHelper {
             final long id) {
         ContentValues values = new ContentValues();
         values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
-        values.put(Database.TASK_FINISH_TIME, System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        values.put(Database.TASK_FINISH_TIME, simpleDateFormat.format(System.currentTimeMillis()));
         String where = Database.COLUMN_ID + "=" + id;
         DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 

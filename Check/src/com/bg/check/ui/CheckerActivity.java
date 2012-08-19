@@ -1,6 +1,8 @@
 
 package com.bg.check.ui;
 
+import java.text.SimpleDateFormat;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -455,7 +457,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         stopSpeech();
         final ContentValues values = new ContentValues(1);
-        values.put(Database.TASK_BEGIN_TIME, System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        values.put(Database.TASK_BEGIN_TIME, simpleDateFormat.format(System.currentTimeMillis()));
         final String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
 
