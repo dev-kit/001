@@ -22,6 +22,7 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.datatype.TaskContent;
+import com.bg.check.datatype.User;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
@@ -88,6 +89,10 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
     private int mMessageID;
 
+    private int mContentID;
+
+    private int mTaskID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,9 +111,10 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         mTts.setOnClickListener(this);
         mSpeechEngine = SpeechEngine.getInstance(getApplicationContext());
         // kick off a query
-        int contentID = getIntent().getIntExtra("ContentID", -1);
+        mContentID = getIntent().getIntExtra("ContentID", -1);
         mMessageID = getIntent().getIntExtra("MessageID", -1);
-        new AsyncQueryReportTask().execute(contentID);
+        mTaskID = getIntent().getIntExtra("TaskID", -1);
+        new AsyncQueryReportTask().execute(mContentID);
     }
 
     private void initString() {
@@ -201,7 +207,12 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
     }
 
     private void handleUp() {
-        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mMessageID,
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        if (mReportOnce) {
+            mReportOnce = false;
+            TaskHelper.reportTask(this, user, mTaskID, mContentID, true);
+        }
+        TaskHelper.reportTaskContent(this, user, mTaskID,
                 mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
         stopSpeech();
         switch (mOrder) {
@@ -232,8 +243,15 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
         }
     }
 
+    private boolean mReportOnce = true;
+
     private void handleDown() {
-        TaskHelper.reportTasks(this, ((Welcome)getApplication()).getCurrentUser(), mMessageID,
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        if (mReportOnce) {
+            mReportOnce = false;
+            TaskHelper.reportTask(this, user, mTaskID, mContentID, true);
+        }
+        TaskHelper.reportTaskContent(this, user, mTaskID,
                 mCursor.getLong(mCursor.getColumnIndex(Database.COLUMN_ID)));
         stopSpeech();
         switch (mOrder) {

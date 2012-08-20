@@ -89,6 +89,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private boolean mIsFirstStart = true;
 
+    private int mTaskID = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,6 +233,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         intent.putExtra("ContentID", mContentId);
         intent.putExtra("MessageID", mMessageId);
         intent.putExtra("TaskLX", mTaskLX);
+        intent.putExtra("TaskID", mTaskID );
         startActivity(intent);
     }
 
@@ -272,6 +275,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mContentId = Integer.valueOf(((String[])mAdapter.getItem(position))[0]);
         mMessageId = Integer.valueOf(((String[])mAdapter.getItem(position))[5]);
         mTaskLX = Integer.valueOf(((String[])mAdapter.getItem(position))[6]);
+        mTaskID = Integer.valueOf(((String[])mAdapter.getItem(position))[8]);
     }
 
     private void initListAdapter() {
@@ -377,7 +381,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         public Object getItem(int position) {
             Cursor cursor = getCursor();
             if (cursor != null && cursor.moveToPosition(position)) {
-                String[] row = new String[8];
+                String[] row = new String[9];
                 row[0] = cursor.getString(mColumnIndexConetntId);
                 row[1] = cursor.getString(mColumnIndexOrder);
                 row[1] = Utils.replaceVoiceChar(row[1]);
@@ -388,6 +392,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 row[5] = cursor.getString(cursor.getColumnIndex(Database.TASK_MESSAGEID));
                 row[6] = cursor.getString(cursor.getColumnIndex(Database.TASK_LX));
                 row[7] = cursor.getString(cursor.getColumnIndex(Database.TASK_STATUS));
+                row[8] = cursor.getString(cursor.getColumnIndex(Database.TASK_ID));
                 return row;
             }
             return null;
@@ -462,11 +467,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         final String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
 
-        final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+        final int taskID = c.getInt(c.getColumnIndex(Database.TASK_ID));
         final long id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         final User user = ((Welcome)getApplication()).getCurrentUser();
+        final long contentID = c.getLong(c.getColumnIndex(Database.TASK_CONTENTID));
 //        TaskHelper.replyTasks(this, user.mUserDM, messageID);
-        TaskHelper.replyTasks(this, user, messageID);
+        TaskHelper.replyTasks(this, user, taskID);
+        TaskHelper.reportTask(this, user, taskID, contentID, true);
 
         if (mContentId == -1) {
             mContentId = Integer.valueOf(((String[])mAdapter.getItem(0))[0]);
@@ -513,9 +520,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         mComplete.setVisibility(View.GONE);
         stopSpeech();
-        TaskHelper.reportTasksForSingleTask(this,
-                ((Welcome)getApplication()).getCurrentUser(), mMessageId,
-                c.getLong(c.getColumnIndex(Database.COLUMN_ID)));
+        TaskHelper.reportTask(this,
+                ((Welcome)getApplication()).getCurrentUser(), mTaskID,
+                c.getLong(c.getColumnIndex(Database.TASK_CONTENTID)), false);
     }
 
     @Override
@@ -546,10 +553,10 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 Cursor c = mAdapter.getCursor();
                 if (c != null && c.moveToPosition(mCurrentIndex)) {
                     stopSpeech();
-                    final int messageID = c.getInt(c.getColumnIndex(Database.TASK_MESSAGEID));
+                    final int taskID = c.getInt(c.getColumnIndex(Database.TASK_ID));
                     final User user = ((Welcome)getApplication()).getCurrentUser();
 //                    TaskHelper.replyTasks(this, user.mUserDM, messageID);
-                    TaskHelper.replyTasks(this, user, messageID);
+                    TaskHelper.replyTasks(this, user, taskID);
                 }
                 break;
             }

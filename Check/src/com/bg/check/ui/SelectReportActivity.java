@@ -44,12 +44,13 @@ import com.bg.check.datatype.User;
 import com.bg.check.engine.GetDetailsTask;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.utils.LogUtils;
+import com.bg.check.engine.utils.TaskHelper;
 
 public class SelectReportActivity extends ListActivity implements DatabaseObserver,
         OnCheckedChangeListener, OnClickListener {
     private static final int DIALOG_LOAD_TASK_PROGRESS = 1;
 
-    private static final int DIALOG_NO_TASK_FOUND= 2;
+    private static final int DIALOG_NO_TASK_FOUND = 2;
 
     private AsyncQueryHandler mQueryHandler;
 
@@ -64,6 +65,8 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
     private int mContentID;
 
     private int mMessageID;
+
+    private int mTaskID;
 
     private int mTaskLX;
 
@@ -90,6 +93,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         mContentID = getIntent().getIntExtra("ContentID", -1);
         mMessageID = getIntent().getIntExtra("MessageID", -1);
         mTaskLX = getIntent().getIntExtra("TaskLX", -1);
+        mTaskID = getIntent().getIntExtra("TaskID", -1);
         showDialog(DIALOG_LOAD_TASK_PROGRESS);
     }
 
@@ -159,6 +163,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         Intent intent = new Intent(this, ReportActivity.class);
         intent.putExtra("ContentID", mContentID);
         intent.putExtra("MessageID", mMessageID);
+        intent.putExtra("TaskID", mTaskID);
 
         if (((RadioButton)findViewById(R.id.order)).isChecked()) {
             intent.putExtra(ReportActivity.ORDER, 1);
@@ -198,8 +203,8 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
                     null, null, null);
             if (c.getCount() == 0) {
-                GetDetailsTask downloadTask = new GetDetailsTask(SelectReportActivity.this, user.mUserDM, mContentID, mTaskLX,
-                        mMessageID);
+                GetDetailsTask downloadTask = new GetDetailsTask(SelectReportActivity.this,
+                        user.mUserDM, mContentID, mTaskLX, mMessageID);
                 @SuppressWarnings("unchecked")
                 List<TaskContent> taskContents = (List<TaskContent>)downloadTask.run();
                 if (taskContents != null && taskContents.size() > 0) {
@@ -209,12 +214,16 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                 }
             }
             if (c.getCount() == 0) {
-                // Update task to complete status that don't has avaliable task
+                // Update task to complete status that don't has available task
                 // content
-                ContentValues values = new ContentValues();
-                values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
-                where = Database.TASK_MESSAGEID + "=" + mMessageID;
-                DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
+                // ContentValues values = new ContentValues();
+                // values.put(Database.TASK_STATUS,
+                // Database.TASK_STATUS_TO_REPORT);
+                // where = Database.TASK_MESSAGEID + "=" + mMessageID;
+                // DatabaseHandler.update(Database.TABLE_SC_TASK, values, where,
+                // null);
+                TaskHelper.reportTask(SelectReportActivity.this, user, mTaskID, mContentID,
+                        false);
             }
             return c;
         }
@@ -333,7 +342,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        switch(id) {
+        switch (id) {
             case DIALOG_LOAD_TASK_PROGRESS:
                 final ProgressDialog dialog = new ProgressDialog(this);
                 dialog.setMessage(getString(R.string.message_load_task));
@@ -341,8 +350,8 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                 return dialog;
             case DIALOG_NO_TASK_FOUND: {
                 AlertDialog.Builder builder = new Builder(this);
-                builder.setMessage(R.string.message_no_task_found).setNegativeButton(
-                        R.string.ok, new DialogInterface.OnClickListener() {
+                builder.setMessage(R.string.message_no_task_found).setNegativeButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                                 finish();
