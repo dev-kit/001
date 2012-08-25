@@ -34,6 +34,8 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.database.DatabaseHandler.DatabaseObserver;
 import com.bg.check.datatype.User;
+import com.bg.check.engine.CycleDownloadTaskManager;
+import com.bg.check.engine.GeneralTaskEngine;
 import com.bg.check.engine.LogoutTask;
 import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.SpeechEngine.SpeechListener;
@@ -164,10 +166,16 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mVoice.setOnClickListener(this);
 
         User user = ((Welcome)getApplication()).getCurrentUser();
-        ((TextView) findViewById(R.id.username)).setText(user.mUserName);
+        ((TextView)findViewById(R.id.username)).setText(user.mUserName);
     }
 
-    private void gotoLogin() {
+    private void gotoLogout() {
+        if (!Utils.isNetworkAvailable(this)) {
+            leave();
+            CycleDownloadTaskManager.getInstance(this).stop();
+            GeneralTaskEngine.getInstance().clearAllTasks();
+            return;
+        }
         new LogoutLoader().execute();
     }
 
@@ -206,7 +214,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 startCurrentTaskSpeech();
                 return true;
             case CheckerKeyEvent.KEYCODE_RETURN:
-                gotoLogin();
+                gotoLogout();
                 return true;
             case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
@@ -233,7 +241,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         intent.putExtra("ContentID", mContentId);
         intent.putExtra("MessageID", mMessageId);
         intent.putExtra("TaskLX", mTaskLX);
-        intent.putExtra("TaskID", mTaskID );
+        intent.putExtra("TaskID", mTaskID);
         startActivity(intent);
     }
 
@@ -253,18 +261,19 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         User user = ((Welcome)getApplication()).getCurrentUser();
         final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         if (cursor != null && cursor.moveToPosition(position)) {
-            final int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
+            final int status = cursor.getInt(cursor
+                    .getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
             final boolean unsucceed = status > 0;
             if (unsucceed) {
                 mComplete.setVisibility(View.VISIBLE);
                 mStart.setVisibility(View.GONE);
-//                mStart.setText(R.string.complete);
-//                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-//                        mResources.getDrawable(R.drawable.ic_complete), null, null);
+                // mStart.setText(R.string.complete);
+                // mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                // mResources.getDrawable(R.drawable.ic_complete), null, null);
             } else {
-//                mStart.setText(R.string.start);
-//                mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-//                        mResources.getDrawable(R.drawable.ic_go), null, null);
+                // mStart.setText(R.string.start);
+                // mStart.setCompoundDrawablesWithIntrinsicBounds(null,
+                // mResources.getDrawable(R.drawable.ic_go), null, null);
                 mComplete.setVisibility(View.GONE);
                 mStart.setVisibility(View.VISIBLE);
             }
@@ -462,16 +471,17 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         stopSpeech();
         final ContentValues values = new ContentValues(1);
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         values.put(Database.TASK_BEGIN_TIME, simpleDateFormat.format(System.currentTimeMillis()));
-        final String where = Database.COLUMN_ID + "=" + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
+        final String where = Database.COLUMN_ID + "="
+                + c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
 
         final int taskID = c.getInt(c.getColumnIndex(Database.TASK_ID));
         final long id = c.getLong(c.getColumnIndex(Database.COLUMN_ID));
         final User user = ((Welcome)getApplication()).getCurrentUser();
         final long contentID = c.getLong(c.getColumnIndex(Database.TASK_CONTENTID));
-//        TaskHelper.replyTasks(this, user.mUserDM, messageID);
+        // TaskHelper.replyTasks(this, user.mUserDM, messageID);
         TaskHelper.replyTasks(this, user, taskID);
         TaskHelper.reportTask(this, user, taskID, contentID, true);
 
@@ -486,8 +496,8 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
             // Mark it for "wait success"
             final ContentValues v = new ContentValues(1);
             v.put(Database.TASK_WAIT_SUCCESS, 1);
-            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, v,
-                    Database.COLUMN_ID + " = " + id, null);
+            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, v, Database.COLUMN_ID
+                    + " = " + id, null);
             moveSelectionTo(mCurrentIndex);
             return;
         }
@@ -520,8 +530,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         mComplete.setVisibility(View.GONE);
         stopSpeech();
-        TaskHelper.reportTask(this,
-                ((Welcome)getApplication()).getCurrentUser(), mTaskID,
+        TaskHelper.reportTask(this, ((Welcome)getApplication()).getCurrentUser(), mTaskID,
                 c.getLong(c.getColumnIndex(Database.TASK_CONTENTID)), false);
         showVoiceToast(R.string.voice_complete_task);
     }
@@ -556,13 +565,13 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                     stopSpeech();
                     final int taskID = c.getInt(c.getColumnIndex(Database.TASK_ID));
                     final User user = ((Welcome)getApplication()).getCurrentUser();
-//                    TaskHelper.replyTasks(this, user.mUserDM, messageID);
+                    // TaskHelper.replyTasks(this, user.mUserDM, messageID);
                     TaskHelper.replyTasks(this, user, taskID);
                 }
                 break;
             }
             case R.id.exit:
-                gotoLogin();
+                gotoLogout();
                 break;
             case R.id.voice:
                 if (isSpeechWorking()) {
@@ -664,19 +673,18 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                         mComplete.setVisibility(View.GONE);
                         final int count = newCount - oldCount;
                         if (count > 0) {
-                            startSingleSpeech("您有" + count + "条新任务",
-                                    new Runnable() {
+                            startSingleSpeech("您有" + count + "条新任务", new Runnable() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    startSeriesSpeech();
-                                                    moveSelectionTo(0);
-                                                }
-                                            });
+                                            startSeriesSpeech();
+                                            moveSelectionTo(0);
                                         }
                                     });
+                                }
+                            });
                         }
                     }
                 }
@@ -708,16 +716,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         @Override
         protected void onPostExecute(Integer result) {
             if (result != null && result.intValue() == 1) {
-                final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
-                intent.setAction("logout");
-                startActivity(intent);
-                User u = ((Welcome)getApplication()).getCurrentUser();
-                u.mUserDM = null;
-                u.mUserMobile = null;
-                u.mUserName = null;
-                u.mUserRole = null;
-                u.mUserZMLM = null;
-                finish();
+                leave();
             } else {
                 showVoiceToast(R.string.toast_logout_fail);
             }
@@ -726,6 +725,20 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
                 dismissDialog(DIALOG_LOGOUT_PROGRESS);
             }
         }
+
+    }
+
+    private void leave() {
+        final Intent intent = new Intent(CheckerActivity.this, LoginActivity.class);
+        intent.setAction("logout");
+        startActivity(intent);
+        final User u = ((Welcome)getApplication()).getCurrentUser();
+        u.mUserDM = null;
+        u.mUserMobile = null;
+        u.mUserName = null;
+        u.mUserRole = null;
+        u.mUserZMLM = null;
+        finish();
     }
 
     @Override
