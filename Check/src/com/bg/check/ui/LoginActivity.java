@@ -6,9 +6,12 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -67,11 +70,19 @@ public class LoginActivity extends Activity {
         initUi();
     }
 
+    private void showVoiceToast(int resId) {
+        showVoiceToast(resId, null);
+    }
+
+    private void showVoiceToast(int resId, Integer append) {
+        final String prompt = String.format(mResources.getString(resId), append);
+        SpeechEngine.getInstance(this).speak(prompt);
+        Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+    }
+
     private void showLogoutVoiceToast() {
         if ("logout".equals(getIntent().getAction())) {
-            final String prompt = mResources.getString(R.string.toast_logout_success);
-            SpeechEngine.getInstance(this).speak(prompt);
-            Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+            showVoiceToast(R.string.toast_logout_success);
         }
     }
 
@@ -99,7 +110,10 @@ public class LoginActivity extends Activity {
                         return;
                     }
                     // #############
-                    if (!TextUtils.isEmpty(usercode)) {
+
+                    if (!Utils.isNetworkAvailable(LoginActivity.this)) {
+                        showVoiceToast(R.string.error_message_connect_fail);
+                    } else if (!TextUtils.isEmpty(usercode)) {
                         mUsercode = usercode;
                         loadUserInformation(usercode);
                     } else {
@@ -195,7 +209,8 @@ public class LoginActivity extends Activity {
                 clearUserInformation();
                 mEditUsercode.requestFocus();
                 mEditUsercode.selectAll();
-                showDialog(DIALOG_USER_NOT_FOUND);
+//                showDialog(DIALOG_USER_NOT_FOUND);
+                showVoiceToast(R.string.error_message_no_user_found);
             }
 
             dismissDialog(DIALOG_QUERY_PROGRESS);
@@ -237,7 +252,8 @@ public class LoginActivity extends Activity {
                 // mEditUsercode.selectAll();
                 Bundle bundle = new Bundle();
                 bundle.putInt("error_code", result);
-                showDialog(DIALOG_LOGIN_FAIL, bundle);
+                showVoiceToast(R.string.error_message_login_fail, result == null ? null : result);
+//                showDialog(DIALOG_LOGIN_FAIL, bundle);
             }
 
             if (!LoginActivity.this.isFinishing()) {
@@ -270,6 +286,9 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
+        if (!Utils.isNetworkAvailable(this)) {
+            showVoiceToast(R.string.error_message_connect_fail);
+        }
 
         if (mEditRole.getText().toString().trim().equals("²âÊÔÕß")) {
             CycleDownloadTaskManager.getInstance(LoginActivity.this).run("mad", "Âí°®¶«", "SXT");
@@ -279,6 +298,5 @@ public class LoginActivity extends Activity {
         } else {
             new LoginLoader().execute();
         }
-        // TODO do login action
     }
 }

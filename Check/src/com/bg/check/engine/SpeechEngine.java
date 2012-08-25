@@ -163,7 +163,9 @@ public class SpeechEngine implements OnInitListener {
             public void run() {
                 speak(words);
                 waitingForSpeakingFinish();
-                runnable.run();
+                if (runnable != null) {
+                    runnable.run();
+                }
             }
         }.start();
     }

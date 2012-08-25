@@ -1,9 +1,20 @@
 package com.bg.check.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 public class Utils {
 
+    public static final boolean isNetworkAvailable (Context context) {
+        NetworkInfo network = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (network == null || !network.isAvailable() || !network.isConnected()) {
+            return false;
+        }
+
+        return true;
+    }
 
     public static final String replaceVoiceChar(String words) {
         if (TextUtils.isEmpty(words)) {

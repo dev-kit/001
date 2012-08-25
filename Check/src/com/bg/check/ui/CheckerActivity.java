@@ -523,6 +523,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         TaskHelper.reportTask(this,
                 ((Welcome)getApplication()).getCurrentUser(), mTaskID,
                 c.getLong(c.getColumnIndex(Database.TASK_CONTENTID)), false);
+        showVoiceToast(R.string.voice_complete_task);
     }
 
     @Override

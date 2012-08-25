@@ -73,6 +73,7 @@
     <string name="message_logout">注销中…</string>
     <string name="error_message_no_user_found">无效代码，请重新输入！</string>
     <string name="error_message_login_fail">登录失败，错误码  %d</string>
+    <string name="error_message_connect_fail">网络连接失败， 请检查设置</string>
     <string name="ok">确定</string>
 
     <!-- For Checker screen -->
@@ -90,4 +91,5 @@
     <string name="toast_no_content_id">此记录为整单</string>
     <string name="toast_logout_success">注销成功</string>
     <string name="toast_logout_fail">注销失败</string>
+    <string name="voice_complete_task">该任务已结束</string>
 </resources>
