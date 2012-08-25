@@ -60,6 +60,11 @@ public class Database extends SQLiteOpenHelper {
     // 4: report success
     public static final String TASK_CONTENT_STATUS = "status";
 
+    /**
+     * 标识task为“开始“还是”完成“
+     * 0：开始
+     * 1：完成
+     */
     public static final String TASK_WAIT_SUCCESS = "wait_success";
 
     public static final String TASK_LYFX = "TASK_LYFX";

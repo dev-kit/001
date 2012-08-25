@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -261,19 +262,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         User user = ((Welcome)getApplication()).getCurrentUser();
         final Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
         if (cursor != null && cursor.moveToPosition(position)) {
-            final int status = cursor.getInt(cursor
-                    .getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
+            final int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.TASK_WAIT_SUCCESS));
             final boolean unsucceed = status > 0;
             if (unsucceed) {
                 mComplete.setVisibility(View.VISIBLE);
                 mStart.setVisibility(View.GONE);
-                // mStart.setText(R.string.complete);
-                // mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                // mResources.getDrawable(R.drawable.ic_complete), null, null);
             } else {
-                // mStart.setText(R.string.start);
-                // mStart.setCompoundDrawablesWithIntrinsicBounds(null,
-                // mResources.getDrawable(R.drawable.ic_go), null, null);
                 mComplete.setVisibility(View.GONE);
                 mStart.setVisibility(View.VISIBLE);
             }
@@ -322,7 +316,7 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private void highlightCurrentView(View view) {
         if (mSelectedItemView != null) {
-            mSelectedItemView.setBackgroundResource(android.R.drawable.list_selector_background);
+            mSelectedItemView.setBackgroundResource(R.drawable.white);
         }
 
         if (view != null) {
@@ -365,7 +359,12 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            view.setBackgroundResource(android.R.drawable.list_selector_background);
+            final int position = cursor.getPosition();
+            if (position == mCurrentIndex) {
+                highlightCurrentView(view);
+            } else {
+                view.setBackgroundResource(R.drawable.white);
+            }
             ViewHolder holder = (ViewHolder)view.getTag();
             if (holder == null) {
                 holder = new ViewHolder();

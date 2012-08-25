@@ -70,6 +70,10 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
 
     private int mTaskLX;
 
+    private static final String ASC = Database.TASK_CONTENT_SWH + " ASC ";
+    private static final String DESC = Database.TASK_CONTENT_SWH + " DESC ";
+    private String mOrderBy = ASC;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,20 +142,21 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         switch (button.getId()) {
             case R.id.order:
                 if (click) {
-                    ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
+                    mOrderBy = ASC;
+                    new AsyncQueryReportTask().execute(mContentID);
                     speakPositiveOrder();
                 }
                 break;
             case R.id.reverse_order:
                 if (click) {
-                    ((RadioButton)findViewById(R.id.order)).setChecked(false);
+                    mOrderBy = DESC;
+                    new AsyncQueryReportTask().execute(mContentID);
                     speakNegativeOrder();
                 }
                 break;
             default:
                 LogUtils.logE("SelectReportActivity, onCheckedChanged");
         }
-
     }
 
     private void startWork() {
@@ -165,9 +170,9 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
         intent.putExtra("MessageID", mMessageID);
         intent.putExtra("TaskID", mTaskID);
 
-        if (((RadioButton)findViewById(R.id.order)).isChecked()) {
+        if (mRadioOrderPositive.isChecked()) {
             intent.putExtra(ReportActivity.ORDER, 1);
-        } else if (((RadioButton)findViewById(R.id.reverse_order)).isChecked()) {
+        } else if (mRadioOrderNegative.isChecked()) {
             intent.putExtra(ReportActivity.ORDER, 2);
         } else {
             intent.putExtra(ReportActivity.ORDER, 3);
@@ -201,7 +206,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             }
 
             Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
-                    null, null, null);
+                    null, null, mOrderBy);
             if (c.getCount() == 0) {
                 GetDetailsTask downloadTask = new GetDetailsTask(SelectReportActivity.this,
                         user.mUserDM, mContentID, mTaskLX, mMessageID);
@@ -256,10 +261,10 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             s.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapter, View v, int pos, long id) {
                     cursor.moveToPosition(pos);
-                    if (pos != 0) {
-                        ((RadioButton)findViewById(R.id.order)).setChecked(false);
-                    }
-                    ((RadioButton)findViewById(R.id.reverse_order)).setChecked(false);
+//                    if (pos != 0) {
+//                        mRadioOrderPositive.setChecked(false);
+//                    }
+//                    mRadioOrderNegative.setChecked(false);
                 }
 
                 public void onNothingSelected(AdapterView<?> arg0) {
@@ -322,14 +327,14 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 speakNegativeOrder();
-                mRadioOrderNegative.setChecked(true);
-                mRadioOrderPositive.setChecked(false);
+//                mRadioOrderNegative.setChecked(true);
+//                mRadioOrderPositive.setChecked(false);
                 return true;
             case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 speakPositiveOrder();
-                mRadioOrderNegative.setChecked(false);
-                mRadioOrderPositive.setChecked(true);
+//                mRadioOrderNegative.setChecked(false);
+//                mRadioOrderPositive.setChecked(true);
                 return true;
             case CheckerKeyEvent.KEYCODE_OK:
                 startWork();

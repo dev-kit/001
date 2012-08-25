@@ -84,35 +84,40 @@
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <RadioButton
-            android:id="@+id/order"
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white"
-            android:text="@string/order" />
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:text="@string/order" />
 
-        <RadioButton
-            android:id="@+id/reverse_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white"
-            android:text="@string/reverse_order" />
-
+            <RadioButton
+                android:id="@+id/reverse_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:text="@string/reverse_order" />
+        </RadioGroup>
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
@@ -120,6 +125,7 @@
             android:text="@string/in_order"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />

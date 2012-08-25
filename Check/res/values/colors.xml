@@ -20,7 +20,7 @@
 <resources>
     <color name="title_background">#ff33B5E5</color>
     <drawable name="tranparent_blue">#880000aa</drawable>
-    
+    <drawable name="white">#ffffff</drawable>
     
     <!-- Activity background color -->
     <drawable name="class_zero_background">#7f040000</drawable>
