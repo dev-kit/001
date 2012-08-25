@@ -231,12 +231,13 @@ public class TaskHelper {
         if (start) {
             values.put(Database.TASK_BEGIN_TIME,
                     simpleDateFormat.format(System.currentTimeMillis()));
+            DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
         } else {
             values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPORT);
             values.put(Database.TASK_FINISH_TIME,
                     simpleDateFormat.format(System.currentTimeMillis()));
+            DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
         }
-        DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
 
         Report r = formReport(user, taskID, -1, REPORT_TYPE_TASK);
         // r.mReport_contentid = String.valueOf(task.mTaskContentID);
@@ -245,20 +246,23 @@ public class TaskHelper {
         // r.mReport_lx = String.valueOf(task.mTaskLX);
         // r.mTask_id = String.valueOf(task.mTaskID);
         ReportToBySingleTask task = new ReportToBySingleTask(context, user.mUserDM, r);
-        task.setCallback(new TaskCallback() {
+        if (!start) {
+            task.setCallback(new TaskCallback() {
 
-            @Override
-            public void onCallBack(Object result) {
-                if (result == null || (Integer)result != 1) {
-                    return;
+                @Override
+                public void onCallBack(Object result) {
+                    if (result == null || (Integer)result != 1) {
+                        return;
+                    }
+
+                    ContentValues values = new ContentValues();
+                    values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
+                    String where = Database.TASK_ID + "=" + taskID;
+                    DatabaseHandler
+                            .updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
                 }
-
-                ContentValues values = new ContentValues();
-                values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPORT_SUCCESS);
-                String where = Database.TASK_ID + "=" + taskID;
-                DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values, where, null);
-            }
-        });
+            });
+        }
         ReportTaskEngine.getInstance().appendTask(task);
     }
 }
