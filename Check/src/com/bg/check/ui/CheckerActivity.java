@@ -111,6 +111,11 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     @Override
     protected void onStart() {
+        User user = ((Welcome)getApplication()).getCurrentUser();
+        Cursor cursor = DatabaseHandler.queryTask(user.mUserName);
+        if (mAdapter != null) {
+            mAdapter.changeCursor(cursor);
+        }
         DatabaseHandler.addDatabaseObserver(this);
         mSpeechEngine.registerSpeechListener(this);
         if (mIsFirstStart) {
