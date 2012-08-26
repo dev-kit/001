@@ -17,6 +17,10 @@ import com.bg.check.engine.ReplyTasksTask;
 import com.bg.check.engine.ReportTaskEngine;
 import com.bg.check.engine.ReportToBySingleTask;
 
+/**
+ * Convenient class to change task status for UI.
+ *
+ */
 public class TaskHelper {
 
     public static void replyTasks(Context context, User user, final int taskID) {
@@ -59,50 +63,6 @@ public class TaskHelper {
         });
         ReportTaskEngine.getInstance().appendTask(task);
     }
-
-    // public static void replyTasks(Context context, String dm, final int
-    // messageIds) {
-    // ContentValues values = new ContentValues();
-    // values.put(Database.TASK_STATUS, Database.TASK_STATUS_TO_REPLY);
-    // String where = Database.TASK_MESSAGEID + "=" + messageIds;
-    // DatabaseHandler.updateWithoutNotify(Database.TABLE_SC_TASK, values,
-    // where, null);
-    //
-    // ReplyTasksTask task = new ReplyTasksTask(context, dm, new String[] {
-    // String.valueOf(messageIds)
-    // });
-    // task.setCallback(new TaskCallback() {
-    //
-    // @Override
-    // public void onCallBack(Object result) {
-    // if (result == null || (Integer)result != 1) {
-    // return;
-    // }
-    // String where = Database.TASK_MESSAGEID + "=" + messageIds;
-    // Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK, new String[] {
-    // Database.TASK_STATUS
-    // }, where, null, null, null, null);
-    // int status = 0;
-    // if (c != null) {
-    // try {
-    // if (c.moveToNext()) {
-    // status = c.getInt(0);
-    // if (status > Database.TASK_STATUS_TO_REPLY) {
-    // return;
-    // }
-    // }
-    // } catch (SQLiteException e) {
-    // c.close();
-    // }
-    // }
-    // ContentValues values = new ContentValues();
-    // values.put(Database.TASK_STATUS, Database.TASK_STATUS_REPLY_SUCCESS);
-    // DatabaseHandler.update(Database.TABLE_SC_TASK, values, where, null);
-    //
-    // }
-    // });
-    // ReportTaskEngine.getInstance().appendTask(task);
-    // }
 
     public static void reportTaskContent(Context context, User user, int taskID,
             final long taskColumnID) {

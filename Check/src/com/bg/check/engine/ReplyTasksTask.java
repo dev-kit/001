@@ -11,6 +11,10 @@ import android.content.Context;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to reply task.
+ *
+ */
 public class ReplyTasksTask extends BaseTask {
     private String mUserDM;
     private boolean mDebug = false;

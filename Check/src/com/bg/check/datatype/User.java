@@ -13,6 +13,10 @@ import android.database.Cursor;
 import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 
+/**
+ * Define User class for web Service. 
+ *
+ */
 public class User implements KvmSerializable {
     public String mUserName;
 

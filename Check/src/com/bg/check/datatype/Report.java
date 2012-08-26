@@ -6,6 +6,10 @@ import java.util.Hashtable;
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 
+/**
+ * Report class for Web service
+ *
+ */
 public class Report implements KvmSerializable {
 
     public String mReport_id;

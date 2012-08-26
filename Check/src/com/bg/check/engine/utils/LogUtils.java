@@ -1,6 +1,10 @@
 package com.bg.check.engine.utils;
 import android.util.Log;
 
+/**
+ * Main class for log.
+ *
+ */
 public class LogUtils {
 
     /** Application tag prefix for LogCat. **/

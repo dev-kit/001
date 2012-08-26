@@ -11,6 +11,10 @@ import android.content.Context;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to logout.
+ *
+ */
 public class LogoutTask extends BaseTask {
     private String mUserDM;
     private Context mContext;

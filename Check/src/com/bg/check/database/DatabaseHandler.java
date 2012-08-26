@@ -8,6 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bg.check.datatype.User;
 
+/**
+ * Wrap class to access DB, which has a function to notify UI.
+ * UI register database Observer by <b>addDatabaseObserver</b> and remove observer by
+ * <b>removeDatabaseObserver</b>
+ *
+ */
 public final class DatabaseHandler {
 
     private final static Database mDatabase = Database.getInstance();

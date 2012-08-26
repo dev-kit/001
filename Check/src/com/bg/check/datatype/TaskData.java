@@ -12,6 +12,10 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * Define task for Web Service.
+ *
+ */
 public class TaskData {
     // <TASK_MESSAGEID/>
     public long mTaskMessageID;

@@ -13,6 +13,10 @@ import com.bg.check.datatype.User;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to login.
+ *
+ */
 public class LoginTask extends BaseTask {
     private String mUserDM;
 

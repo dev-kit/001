@@ -7,6 +7,11 @@ import com.bg.check.database.Database;
 import com.bg.check.datatype.User;
 import com.bg.check.engine.SpeechEngine;
 
+/**
+ *  Main entry to this application, where we will initiate some component like
+ *  Database, test information.
+ *
+ */
 public class Welcome extends Application {
 
     private User mUser = new User();

@@ -11,6 +11,10 @@ import android.content.Context;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to get server time.
+ *
+ */
 public class GetServerTimeTask extends BaseTask {
 
     private Context mContext;

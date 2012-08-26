@@ -9,6 +9,12 @@ import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.BaseTask.TaskCallback;
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * It's a task download manager, not a engine. So it just add download task to engine,
+ * and then sleep. Sleep time is define in <b>SLEEP_TIME_MS</b>.
+ * Please modify this class carefully.
+ *
+ */
 public class CycleDownloadTaskManager {
     private static int sID;
 

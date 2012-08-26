@@ -13,6 +13,10 @@ import android.text.TextUtils;
 
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * Main engine to manage speech(TTS).
+ *
+ */
 public class SpeechEngine implements OnInitListener {
 
 

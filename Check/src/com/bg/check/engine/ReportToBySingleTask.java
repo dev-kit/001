@@ -12,7 +12,11 @@ import com.bg.check.datatype.Report;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
-// If ReportToBySingleTask failed, it will report automatically
+/**
+ * Task to report task.
+ * <b>If ReportToBySingleTask failed, it will report automatically</b>.
+ *
+ */
 public class ReportToBySingleTask extends BaseTask {
     private String mUserDM;
 

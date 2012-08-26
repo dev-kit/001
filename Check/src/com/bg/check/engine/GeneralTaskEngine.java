@@ -5,6 +5,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * Main engine to run task, which is designed to only run tasks which download task and
+ * task details. Report tasks is running in <b>ReportTaskEngine</b>.
+ * If there is no task to do, it will sleep for <b>SLEEP_TIME_MS</b>.
+ * Please modify this class carefully.
+ *
+ */
 public class GeneralTaskEngine {
     private static final int SLEEP_TIME_MS = 10000;
 

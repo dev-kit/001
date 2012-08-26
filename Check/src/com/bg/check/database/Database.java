@@ -4,6 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ *  Main database manage class, where to create task, define column, db method.
+ * But we define another class <b> DatabaseHandler </b> to wrap this class.
+ * <b> DatabaseHandler </b> is has a function to notify UI.
+ *
+ */
 public class Database extends SQLiteOpenHelper {
     public static final String TASK_CONTENT_USERDM = "USERDM";
 

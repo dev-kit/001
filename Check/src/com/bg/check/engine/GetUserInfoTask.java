@@ -13,6 +13,10 @@ import com.bg.check.datatype.User;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to get User Information.
+ *
+ */
 public class GetUserInfoTask extends BaseTask {
     private String mUserDM;
     private Context mContext;

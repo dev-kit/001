@@ -3,6 +3,12 @@ package com.bg.check.engine;
 
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * Base task which define methods to run in Engines.
+ * All tasks should be its sub-class.
+ * Please modify this class carefully.
+ *
+ */
 public abstract class BaseTask {
     private boolean mIsCanceled;
 

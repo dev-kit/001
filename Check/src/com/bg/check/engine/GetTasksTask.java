@@ -15,6 +15,10 @@ import com.bg.check.datatype.TaskData;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.webservice.SCWebService;
 
+/**
+ * Task to download task.
+ *
+ */
 public class GetTasksTask extends BaseTask {
     private String mUserDM;
 

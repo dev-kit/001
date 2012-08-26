@@ -12,6 +12,10 @@ import com.bg.check.database.Database;
 import com.bg.check.database.DatabaseHandler;
 import com.bg.check.engine.utils.LogUtils;
 
+/**
+ * Task always has more than one task details. Here define fields it should contain.
+ *
+ */
 public class TaskContent {
     public long mMessageID;
 

@@ -8,6 +8,10 @@ import android.preference.PreferenceManager;
 
 import com.bg.check.R;
 
+/**
+ * Main class to define Web Service information.
+ *
+ */
 public class SCWebService {
     public static final String SC_NAME_SPACE = "http://tempuri.org/";
 

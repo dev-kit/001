@@ -5,7 +5,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.bg.check.engine.utils.LogUtils;
 
-// FIXME: Duplicated Class to GerneralTaskEngine
+/**
+ * Main task to reply and report tasks situation to Web Service.
+ * Please also see doc in <b>GerneralTaskEngine</b>
+ * FIXME: Duplicated Class to <b>GerneralTaskEngine</b>, we should refactor the two classes.
+ *
+ */
 public class ReportTaskEngine {
     private static final int SLEEP_TIME_MS = 10000;
 
