@@ -125,7 +125,7 @@
             android:text="@string/in_order"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
+            android:layout_marginLeft="40dp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -141,7 +141,7 @@
 
         <ImageView
             android:id="@+id/start"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

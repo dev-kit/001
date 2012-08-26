@@ -327,14 +327,14 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             case CheckerKeyEvent.KEYCODE_DPAD_DOWN:
             case CheckerKeyEvent.KEYCODE_VOLUME_DOWN:
                 speakNegativeOrder();
-//                mRadioOrderNegative.setChecked(true);
-//                mRadioOrderPositive.setChecked(false);
+                mRadioOrderNegative.setChecked(true);
+                mRadioOrderPositive.setChecked(false);
                 return true;
             case CheckerKeyEvent.KEYCODE_DPAD_UP:
             case CheckerKeyEvent.KEYCODE_VOLUME_UP:
                 speakPositiveOrder();
-//                mRadioOrderNegative.setChecked(false);
-//                mRadioOrderPositive.setChecked(true);
+                mRadioOrderNegative.setChecked(false);
+                mRadioOrderPositive.setChecked(true);
                 return true;
             case CheckerKeyEvent.KEYCODE_OK:
                 startWork();

@@ -420,6 +420,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
 
     private Toast mToast;
 
+    /**
+     * Show the toast with voice prompt.
+     */
     private void showVoiceToast(int resId) {
         final String prompt = mResources.getString(resId);
         startSingleSpeech(prompt);
@@ -432,6 +435,9 @@ public class CheckerActivity extends Activity implements DatabaseObserver, OnCli
         mToast.show();
     }
 
+    /**
+     * Start the single voice.
+     */
     private void startSingleSpeech(String words) {
         stopSpeech();
         mSpeechEngine.speak(words);
