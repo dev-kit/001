@@ -15,10 +15,10 @@ import com.bg.check.webservice.SCWebService;
 
 /**
  * Task to get User Information.
- *
  */
 public class GetUserInfoTask extends BaseTask {
     private String mUserDM;
+
     private Context mContext;
 
     public GetUserInfoTask(Context context, String dm) {
@@ -32,23 +32,16 @@ public class GetUserInfoTask extends BaseTask {
         SoapObject rpc = new SoapObject(SCWebService.SC_NAME_SPACE,
                 SCWebService.SC_METHOD_GET_USER_INFO);
 
-        // UserInfo u = new UserInfo();
-        // u.setProperty(1, "ycf");
         rpc.addProperty("User_dm", mUserDM);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 
-        // envelope.addMapping(SCWebService.SC_NAME_SPACE, "User", User.class);
-
         envelope.bodyOut = rpc;
-        // 设置是否调用的是dotNet开发的WebService
         envelope.dotNet = true;
-        // 等价于envelope.bodyOut = rpc;
         envelope.setOutputSoapObject(rpc);
 
         HttpTransportSE transport = new HttpTransportSE(SCWebService.getEndPoint(mContext));
         try {
-            // 调用WebService
             transport.call(SCWebService.SC_NAME_SPACE + SCWebService.SC_METHOD_GET_USER_INFO,
                     envelope);
         } catch (Exception e) {
@@ -57,8 +50,6 @@ public class GetUserInfoTask extends BaseTask {
             return null;
         }
 
-        // 获取返回的数据
-        // SoapObject object = (SoapObject)envelope.bodyIn;
         SoapObject result;
         User user = null;
         try {
@@ -69,7 +60,6 @@ public class GetUserInfoTask extends BaseTask {
                 user.updateDB();
             }
         } catch (SoapFault e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             LogUtils.logE("GetUserInfoTask: " + e);
             return null;
