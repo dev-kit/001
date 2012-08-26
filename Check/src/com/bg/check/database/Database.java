@@ -141,7 +141,7 @@ public class Database extends SQLiteOpenHelper {
 
     public static final String TABLE_SC_USER = "sc_user";
     
-    public static final String TABLE_SC_TASK = "sc_task";
+    public static final String TABLE_SC_TASK = "sc_task ";
 
     public static final String TABLE_SC_TASK_CONTENT = "sc_task_content";
 
@@ -206,7 +206,7 @@ public class Database extends SQLiteOpenHelper {
                 TASK_CONTENT_USERDM + " TEXT," +
                 TASK_CONTENT_CONTENT_ID + "  INTEGER, " +
                 TASK_CONTENT_PK + "  TEXT, " +
-                TASK_CONTENT_SWH + "  TEXT," +
+                TASK_CONTENT_SWH + "  INTEGER," +
                 TASK_CONTENT_CH + "  TEXT, " +
                 TASK_CONTENT_CZ + "  TEXT, " +
                 TASK_CONTENT_YZ + "  TEXT, " +
@@ -254,8 +254,8 @@ public class Database extends SQLiteOpenHelper {
             case 1:
                 db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_BEGIN_TIME + " TEXT");
                 db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_FINISH_TIME + " TEXT");
-            case 3:
                 db.execSQL("ALTER TABLE " + TABLE_SC_TASK + " ADD COLUMN " + TASK_WAIT_SUCCESS + " INTEGER default 0");
+                break;
         }
     }
 }
