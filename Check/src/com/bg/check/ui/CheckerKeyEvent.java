@@ -2,6 +2,9 @@ package com.bg.check.ui;
 
 import android.view.KeyEvent;
 
+/**
+ * 定义内部使用的按键信息。
+ */
 public class CheckerKeyEvent {
 
     public static final int KEYCODE_VOLUME_DOWN = KeyEvent.KEYCODE_VOLUME_DOWN;

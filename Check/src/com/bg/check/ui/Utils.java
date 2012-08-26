@@ -5,8 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 
+/**
+ * 工具类。
+ */
 public class Utils {
 
+    /**
+     * 判断当前网络连接是否正常。
+     */
     public static final boolean isNetworkAvailable (Context context) {
         NetworkInfo network = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (network == null || !network.isAvailable() || !network.isConnected()) {
@@ -16,6 +22,9 @@ public class Utils {
         return true;
     }
 
+    /**
+     * 将特殊数字转换为对应的特殊读音。
+     */
     public static final String replaceVoiceChar(String words) {
         if (TextUtils.isEmpty(words)) {
             return null;

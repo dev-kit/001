@@ -6,12 +6,9 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,6 +28,9 @@ import com.bg.check.engine.GetUserInfoTask;
 import com.bg.check.engine.LoginTask;
 import com.bg.check.engine.SpeechEngine;
 
+/**
+ * µÇÂ¼½çÃæ
+ */
 public class LoginActivity extends Activity {
 
     private static final int DIALOG_QUERY_PROGRESS = 1;

@@ -13,8 +13,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +41,10 @@ import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.engine.utils.TaskHelper;
 
+/**
+ * 外勤系统：货检作业页面。
+ * 点击任意项会有语音播报。
+ */
 public class CheckerActivity extends Activity implements DatabaseObserver, OnClickListener,
         SpeechListener {
 

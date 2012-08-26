@@ -28,6 +28,9 @@ import com.bg.check.engine.SpeechEngine.SpeechListener;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.engine.utils.TaskHelper;
 
+/**
+ * 外勤作业系统：车辆界面
+ */
 public class ReportActivity extends Activity implements DatabaseObserver, OnClickListener,
         SpeechListener {
 

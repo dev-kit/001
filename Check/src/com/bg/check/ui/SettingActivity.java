@@ -10,6 +10,9 @@ import android.text.TextUtils;
 
 import com.bg.check.R;
 
+/**
+ * …Ë÷√ΩÁ√Ê°£
+ */
 public class SettingActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private static final String PREFERENCE_KEY_EDIT_IP = "edit_ip";

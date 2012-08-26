@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +45,9 @@ import com.bg.check.engine.SpeechEngine;
 import com.bg.check.engine.utils.LogUtils;
 import com.bg.check.engine.utils.TaskHelper;
 
+/**
+ * 外勤作业系统：确报界面
+ */
 public class SelectReportActivity extends ListActivity implements DatabaseObserver,
         OnCheckedChangeListener, OnClickListener {
     private static final int DIALOG_LOAD_TASK_PROGRESS = 1;

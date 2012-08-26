@@ -14,8 +14,10 @@ import android.text.TextUtils;
 import com.bg.check.engine.utils.LogUtils;
 
 /**
- * Main engine to manage speech(TTS).
- *
+ * 语音引擎类。
+ * 提供了连续语音播报和单一语音播报功能。
+ * 
+ * 要实现连续语音播报功能，需要实现SpeechListener接口。
  */
 public class SpeechEngine implements OnInitListener {
 
@@ -56,13 +58,33 @@ public class SpeechEngine implements OnInitListener {
         return mSpeechEngine;
     }
 
+    /**
+     * 得到语音引擎的实例对象。
+     */
     public static final SpeechEngine peekInstance() {
         return mSpeechEngine;
     }
 
+    /**
+     * 语音服务listener，提供连续语音播报功能。
+     */
     public interface SpeechListener {
+        /**
+         * 回调方法，当连续语音播放时，返回当前要播报的语句。
+         */
         public String onPrepareSpeech();
+
+        /**
+         * 移动到下一条语音播报语句。
+         * 
+         * 返回true表示移动成功，并继续播报
+         * 返回false表示不再继续播报
+         */
         public boolean moveToNext();
+
+        /**
+         * 当连续语音播报成功结束时被调用。
+         */
         public void onSpeechComplete();
     }
 
@@ -119,6 +141,9 @@ public class SpeechEngine implements OnInitListener {
         return false;
     }
 
+    /**
+     * 等待直到当前语音播报结束。
+     */
     public void waitingForSpeakingFinish() {
         try {
             while (mSpeaker != null && mSpeaker.isSpeaking()) {
@@ -144,16 +169,25 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
+    /**
+     * 播报连续语音，播报内容有SpeechListener提供。
+     */
     public void speakSeries() {
         mIsSpeakStart = true;
         mHandler.obtainMessage(MESSAGE_SPEAK_SERIES).sendToTarget();
     }
 
+    /**
+     * 播报单一语音内容。
+     */
     public void speak(String words) {
         mIsSpeakStart = true;
         mHandler.obtainMessage(MESSAGE_SPEAK, words).sendToTarget();
     }
 
+    /**
+     * 判断是否在语音播报在进行中。
+     */
     public boolean isSpeaking() {
         if (mSpeaker != null && mSpeaker.isSpeaking() && hasMessage() && mIsSpeakStart) {
             return true;
@@ -162,6 +196,9 @@ public class SpeechEngine implements OnInitListener {
         return false;
     }
 
+    /**
+     * 播报单一语音内容，并且在完成之后调用runnable。
+     */
     public void speak(final String words, final Runnable runnable) {
         new Thread() {
             public void run() {
@@ -187,6 +224,9 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
+    /**
+     * 停止语音播报。
+     */
     public void stopSpeak() {
         if (mSpeaker != null) {
             mSpeaker.stop();
@@ -198,6 +238,9 @@ public class SpeechEngine implements OnInitListener {
         }
     }
 
+    /**
+     * 关闭语音播报引擎。
+     */
     public void close() {
         mSpeakerAvailable = false;
         mSpeechEngine = null;
