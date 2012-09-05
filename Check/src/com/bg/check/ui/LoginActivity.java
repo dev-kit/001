@@ -288,6 +288,7 @@ public class LoginActivity extends Activity {
     private void login() {
         if (!Utils.isNetworkAvailable(this)) {
             showVoiceToast(R.string.error_message_connect_fail);
+            return;
         }
 
         if (mEditRole.getText().toString().trim().equals("≤‚ ‘’ﬂ")) {
