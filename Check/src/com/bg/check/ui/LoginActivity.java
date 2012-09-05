@@ -99,18 +99,6 @@ public class LoginActivity extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     final String usercode = mEditUsercode.getText().toString().trim();
-                    // ############ For test
-                    if ("test".equals(usercode) || (usercode != null && usercode.length() == 1)) {
-                        mEditUsercode.postDelayed(new Runnable() {
-                            public void run() {
-                                new UserInformationLoader().testPass();
-                            }
-                        }, 1000);
-                        showDialog(DIALOG_QUERY_PROGRESS);
-                        return;
-                    }
-                    // #############
-
                     if (!Utils.isNetworkAvailable(LoginActivity.this)) {
                         showVoiceToast(R.string.error_message_connect_fail);
                     } else if (!TextUtils.isEmpty(usercode)) {
@@ -215,15 +203,6 @@ public class LoginActivity extends Activity {
 
             dismissDialog(DIALOG_QUERY_PROGRESS);
         }
-
-        public void testPass() {
-            User user = ((Welcome)getApplication()).getCurrentUser();
-            user.mUserDM = "test";
-            user.mUserName = "李白";
-            user.mUserRole = "测试者";
-
-            onPostExecute(user);
-        }
     }
 
     private class LoginLoader extends AsyncTask<Void, Void, Integer> {
@@ -290,13 +269,13 @@ public class LoginActivity extends Activity {
             showVoiceToast(R.string.error_message_connect_fail);
         }
 
-        if (mEditRole.getText().toString().trim().equals("测试者")) {
-            CycleDownloadTaskManager.getInstance(LoginActivity.this).run("mad", "马爱东", "SXT");
-            final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
+//        if (mEditRole.getText().toString().trim().equals("测试者")) {
+//            CycleDownloadTaskManager.getInstance(LoginActivity.this).run("mad", "马爱东", "SXT");
+//            final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
+//            startActivity(intent);
+//            finish();
+//        } else {
             new LoginLoader().execute();
-        }
+//        }
     }
 }
