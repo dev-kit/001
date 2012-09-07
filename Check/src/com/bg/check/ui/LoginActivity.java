@@ -282,6 +282,7 @@ public class LoginActivity extends Activity {
             return;
         }
 
+
         if (mEditRole.getText().toString().trim().equals("≤‚ ‘’ﬂ")) {
             User user = ((Welcome)getApplication()).getCurrentUser();
             user.mUserDM = "mad";
