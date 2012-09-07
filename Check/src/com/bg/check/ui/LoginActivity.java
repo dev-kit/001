@@ -99,18 +99,6 @@ public class LoginActivity extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     final String usercode = mEditUsercode.getText().toString().trim();
-                    // ############ For test
-                    if ("test".equals(usercode) || (usercode != null && usercode.length() == 1)) {
-                        mEditUsercode.postDelayed(new Runnable() {
-                            public void run() {
-                                new UserInformationLoader().testPass();
-                            }
-                        }, 1000);
-                        showDialog(DIALOG_QUERY_PROGRESS);
-                        return;
-                    }
-                    // #############
-
                     if (!Utils.isNetworkAvailable(LoginActivity.this)) {
                         showVoiceToast(R.string.error_message_connect_fail);
                     } else if (!TextUtils.isEmpty(usercode)) {
@@ -221,6 +209,9 @@ public class LoginActivity extends Activity {
             user.mUserDM = "test";
             user.mUserName = "李白";
             user.mUserRole = "测试者";
+//            user.mUserDM = "mad";
+//            user.mUserName = "马爱东";
+//            user.mUserZMLM = "SXT";
 
             onPostExecute(user);
         }
@@ -292,6 +283,10 @@ public class LoginActivity extends Activity {
         }
 
         if (mEditRole.getText().toString().trim().equals("测试者")) {
+            User user = ((Welcome)getApplication()).getCurrentUser();
+            user.mUserDM = "mad";
+            user.mUserName = "马爱东";
+            user.mUserZMLM = "SXT";
             CycleDownloadTaskManager.getInstance(LoginActivity.this).run("mad", "马爱东", "SXT");
             final Intent intent = new Intent(LoginActivity.this, CheckerActivity.class);
             startActivity(intent);

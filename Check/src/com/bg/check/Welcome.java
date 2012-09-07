@@ -22,9 +22,6 @@ public class Welcome extends Application {
         Database.init(getApplicationContext());
         sayHello();
 
-        mUser.mUserDM = "mad";
-        mUser.mUserName = "Âí°®¶«";
-        mUser.mUserZMLM = "SXT";
         // For test
         // TaskEngine.getInstance().appendTask(new GetUserInfoTask("mad"));
         // TaskEngine.getInstance().appendTask(new LoginTask("mad", "1", ""));

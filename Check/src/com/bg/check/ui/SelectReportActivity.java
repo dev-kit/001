@@ -203,8 +203,8 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             String where = null;
             if (contentID != null && contentID[0] >= 0) {
                 where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0] + " and "
-                        + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT
-                        + " and " + Database.TASK_CONTENT_USERDM + "='" + user.mUserDM + "'";
+//                        + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT + " and "
+                         + Database.TASK_CONTENT_USERDM + "='" + user.mUserDM + "'";
             }
 
             Cursor c = DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null,
@@ -220,7 +220,7 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                             null, null, null);
                 }
             }
-            if (c.getCount() == 0) {
+            if (isAllTaskContentCompleted(c)) {
                 // Update task to complete status that don't has available task
                 // content
                 // ContentValues values = new ContentValues();
@@ -233,6 +233,18 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
                         false);
             }
             return c;
+        }
+
+        private boolean isAllTaskContentCompleted(Cursor c) {
+            if (c != null) {
+                while (c.moveToNext()) {
+                    int complete = c.getInt(c.getColumnIndex(Database.TASK_CONTENT_STATUS));
+                    if (complete == Database.TASK_STATUS_DEFAULT) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         @Override
@@ -263,10 +275,10 @@ public class SelectReportActivity extends ListActivity implements DatabaseObserv
             s.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapter, View v, int pos, long id) {
                     cursor.moveToPosition(pos);
-//                    if (pos != 0) {
-//                        mRadioOrderPositive.setChecked(false);
-//                    }
-//                    mRadioOrderNegative.setChecked(false);
+                    if (pos != 0) {
+                        mRadioOrderPositive.setChecked(false);
+                        mRadioOrderNegative.setChecked(false);
+                    }
                 }
 
                 public void onNothingSelected(AdapterView<?> arg0) {

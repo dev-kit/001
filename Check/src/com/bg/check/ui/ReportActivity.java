@@ -146,8 +146,8 @@ public class ReportActivity extends Activity implements DatabaseObserver, OnClic
 
         @Override
         protected Cursor doInBackground(Integer... contentID) {
-            String where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0] + " and "
-                    + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT;
+            String where = Database.TASK_CONTENT_CONTENT_ID + "=" + contentID[0];
+//                    + " and " + Database.TASK_CONTENT_STATUS + "=" + Database.TASK_STATUS_DEFAULT;
             return DatabaseHandler.query(Database.TABLE_SC_TASK_CONTENT, null, where, null, null,
                     null, null);
         }
